@@ -1,0 +1,9 @@
+<p-carousel [value]="images" styleClass="custom-carousel" [circular]="false"
+            [responsiveOptions]="responsiveOptions" [showIndicators]="false">
+  <ng-template let-image pTemplate="item">
+    <div class="text-center">
+      <img src="{{image.picture}}" class="img-fluid carousel-element" alt="...">
+      <a class="movie-name">{{image.random}}</a>
+    </div>
+  </ng-template>
+</p-carousel>

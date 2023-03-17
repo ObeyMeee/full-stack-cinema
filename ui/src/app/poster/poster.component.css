@@ -1,0 +1,49 @@
+:host ::ng-deep .p-carousel-prev,
+:host ::ng-deep .p-carousel-next {
+  position: absolute;
+  height: 5rem !important;
+  width: 5rem !important;
+  background: orangered !important;
+  border: #190d1b 4px solid !important;
+  color: white !important;
+  z-index: 1000;
+}
+:host ::ng-deep .p-carousel-next {
+  right: 0
+}
+
+:host ::ng-deep .p-carousel-prev:hover,
+:host ::ng-deep .p-carousel-next:hover {
+  border: white 4px solid !important;
+}
+
+:host ::ng-deep .p-carousel-prev-icon {
+  font-size: 3em!important;
+}
+
+/*todo*/
+:host ::ng-deep .p-disabled,
+:host ::ng-deep .p-disabled {
+  display: none !important;
+}
+
+.carousel-element {
+  height: calc(100vh - 60px);
+  min-width: 350px;
+  max-width: 350px;
+}
+
+.movie-name {
+  font-weight: bold;
+  font-size: 1.5em;
+  color: white;
+  text-decoration: none;
+  position: relative;
+  bottom: 150px;
+}
+
+.movie-name:hover {
+  background: -webkit-linear-gradient(orangered, #ff001b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
