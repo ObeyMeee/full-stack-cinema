@@ -1,9 +1,9 @@
-<p-carousel [value]="images" styleClass="custom-carousel" [circular]="false"
+<p-carousel [value]="posters" styleClass="custom-carousel" [circular]="false"
             [responsiveOptions]="responsiveOptions" [showIndicators]="false">
-  <ng-template let-image pTemplate="item">
+  <ng-template let-poster pTemplate="item">
     <div class="text-center">
-      <img src="{{image.picture}}" class="img-fluid carousel-element" alt="...">
-      <a class="movie-name">{{image.random}}</a>
+      <img src="{{poster.media.image}}" class="img-fluid carousel-element" alt="{{poster.name}}">
+      <a class="film-name">{{poster.name}}</a>
     </div>
   </ng-template>
 </p-carousel>

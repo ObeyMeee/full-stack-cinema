@@ -1,10 +1,11 @@
 package ua.com.andromeda.genre;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import ua.com.andromeda.filmdetails.FilmDetails;
+import ua.com.andromeda.film.Film;
 
 import java.util.List;
 import java.util.UUID;
@@ -19,9 +20,9 @@ public class Genre {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(name = "name")
     private String name;
 
     @ManyToMany(mappedBy = "genres")
-    private List<FilmDetails> filmDetailsList;
+    @JsonIgnore
+    private List<Film> films;
 }

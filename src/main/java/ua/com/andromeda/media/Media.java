@@ -1,10 +1,11 @@
 package ua.com.andromeda.media;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import ua.com.andromeda.filmdetails.FilmDetails;
+import ua.com.andromeda.film.Film;
 
 import java.util.UUID;
 
@@ -19,11 +20,13 @@ public class Media {
     private UUID id;
 
     @Column(columnDefinition = "TEXT")
-    private String poster;
+    private String image;
 
     @Column(columnDefinition = "TEXT")
     private String trailer;
 
     @OneToOne(mappedBy = "media")
-    private FilmDetails filmDetails;
+    @JsonIgnore
+    @ToString.Exclude
+    private Film film;
 }

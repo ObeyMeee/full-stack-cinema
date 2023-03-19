@@ -33,7 +33,7 @@
   max-width: 350px;
 }
 
-.movie-name {
+.film-name {
   font-weight: bold;
   font-size: 1.5em;
   color: white;
@@ -42,7 +42,7 @@
   bottom: 150px;
 }
 
-.movie-name:hover {
+.film-name:hover {
   background: -webkit-linear-gradient(orangered, #ff001b);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;

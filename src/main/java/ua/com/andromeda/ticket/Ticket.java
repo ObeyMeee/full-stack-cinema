@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import ua.com.andromeda.film.Film;
+import ua.com.andromeda.session.Session;
 import ua.com.andromeda.user.User;
 
 import java.time.LocalDateTime;
@@ -31,7 +31,9 @@ public class Ticket {
     private TicketType type;
 
     @ManyToOne
-    private Film film;
+    @JoinColumn(name = "film_id", nullable = false)
+    private Session session;
     @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 }

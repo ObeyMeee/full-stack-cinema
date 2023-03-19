@@ -1,4 +1,7 @@
 import {Component, OnInit} from '@angular/core';
+import {PosterService} from "./poster.service";
+import {Observable} from "rxjs";
+import {PosterDto} from "./poster.dto";
 
 @Component({
   selector: 'app-poster',
@@ -6,10 +9,10 @@ import {Component, OnInit} from '@angular/core';
   styleUrls: ['./poster.component.css']
 })
 export class PosterComponent implements OnInit {
-  images!: any;
+  posters!: PosterDto[];
   responsiveOptions;
 
-  constructor() {
+  constructor(private posterService: PosterService) {
     this.responsiveOptions = [
       {
         breakpoint: '1920px',
@@ -39,20 +42,9 @@ export class PosterComponent implements OnInit {
     ];
   }
 
-  ngOnInit(): void {
-    this.images = [
-      {random: 'Random', picture: 'https://picsum.photos/id/123/900/500'},
-      {random: 'Samoa', picture: 'https://picsum.photos/id/222/900/500'},
-      {random: 'Tonga', picture: 'https://picsum.photos/id/432/900/500'},
-      {random: 'Cook Island', picture: 'https://picsum.photos/id/431/900/500'},
-      {random: 'Niue', picture: 'https://picsum.photos/id/101/900/500'},
-      {random: 'Niue', picture: 'https://picsum.photos/id/141/900/500'},
-      {random: 'Niue', picture: 'https://picsum.photos/id/151/900/500'},
-      {random: 'Niue', picture: 'https://picsum.photos/id/161/900/500'},
-      {random: 'Niue', picture: 'https://picsum.photos/id/171/900/500'},
-      {random: 'Niue', picture: 'https://picsum.photos/id/181/900/500'},
-      {random: 'American Samoa', picture: 'https://picsum.photos/id/2/900/500'}
-    ];
+  ngOnInit() {
+    this.posterService.getPoster().subscribe(responseData => {
+      this.posters = responseData;
+    });
   }
-
 }

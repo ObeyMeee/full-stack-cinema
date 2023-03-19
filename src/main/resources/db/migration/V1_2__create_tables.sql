@@ -1,125 +1,126 @@
-create table if not exists actors
+create table public.actors
 (
     id        uuid not null
         primary key,
     full_name varchar(255)
 );
 
-alter table actors
+alter table public.actors
     owner to postgres;
 
-create table if not exists countries
+create table public.countries
 (
     id   uuid not null
         primary key,
     name varchar(255)
 );
 
-alter table countries
+alter table public.countries
     owner to postgres;
 
-create table if not exists genres
+create table public.genres
 (
     id   uuid not null
         primary key,
     name varchar(255)
 );
 
-alter table genres
+alter table public.genres
     owner to postgres;
 
-create table if not exists media
+create table public.media
 (
     id      uuid not null
         primary key,
-    poster  text,
+    image  text,
     trailer text
 );
 
-alter table media
+alter table public.media
     owner to postgres;
 
-create table if not exists film_details
+create table public.films
 (
     id              uuid    not null
         primary key,
     description     varchar(255),
     director        varchar(255),
     duration        integer not null,
+    enabled         boolean not null,
+    name            varchar(255),
     production_year integer,
     media_id        uuid
-        constraint fk7aj3tgy4ti6tv769yhi5lhldb
-            references media
+        constraint fkrdfc2dr0b455fesu2qf11qovo
+            references public.media
 );
 
-alter table film_details
+alter table public.films
     owner to postgres;
 
-create table if not exists film_details_actors
+create table public.films_actors
 (
-    film_details_id uuid not null
-        constraint fkbk4jhx1dpfea91a7mdqaorr08
-            references film_details,
-    actor_id        uuid not null
-        constraint fkkid7g23jxb70iwex4jmnfvr9b
-            references actors
+    film_id  uuid not null
+        constraint fkm871tpbjgvlefqev7aaq827s0
+            references public.films,
+    actor_id uuid not null
+        constraint fkdjtf3dy8e0s3x13r8noaif9w
+            references public.actors
 );
 
-alter table film_details_actors
+alter table public.films_actors
     owner to postgres;
 
-create table if not exists film_details_countries
+create table public.films_countries
 (
-    film_details_id uuid not null
-        constraint fk7kanjmw7ooaxbvel00kn0a189
-            references film_details,
-    country_id      uuid not null
-        constraint fk782i5eqd7h6h4ruoe3o6u5q7e
-            references countries
+    film_id    uuid not null
+        constraint fk6tkrwhgida3f5394lkxl7gogp
+            references public.films,
+    country_id uuid not null
+        constraint fkr4qe9orc9gf3qnioq1fj1wgxq
+            references public.countries
 );
 
-alter table film_details_countries
+alter table public.films_countries
     owner to postgres;
 
-create table if not exists film_details_genres
+create table public.films_genres
 (
-    film_details_id uuid not null
-        constraint fk7jqcf9pj8bf6unt0y45re3hfm
-            references film_details,
-    genre_id        uuid not null
-        constraint fkk46wr48a1dejs71h90mfiu6c5
-            references genres
+    film_id  uuid not null
+        constraint fkqr8m71obccc9w6cp91l3k8r2w
+            references public.films,
+    genre_id uuid not null
+        constraint fktcwy3ocjyhnni2yr22y2hpb9p
+            references public.genres
 );
 
-alter table film_details_genres
+alter table public.films_genres
     owner to postgres;
 
-create table if not exists films
-(
-    id         uuid    not null
-        primary key,
-    enabled    boolean not null,
-    name       varchar(255),
-    start_at   timestamp(6),
-    details_id uuid
-        constraint fkart5dwwh5j8v4g97608rnwgcg
-            references film_details
-);
-
-alter table films
-    owner to postgres;
-
-create table if not exists roles
+create table public.roles
 (
     id   uuid not null
         primary key,
     name varchar(255)
 );
 
-alter table roles
+alter table public.roles
     owner to postgres;
 
-create table if not exists users
+create table public.sessions
+(
+    id       uuid    not null
+        primary key,
+    enabled  boolean not null,
+    start_at timestamp(6),
+    film_id  uuid    not null
+        constraint fkn2m0d43s7i2gofapl0d8qkvq7
+            references public.films
+);
+
+alter table public.sessions
+    owner to postgres;
+
+create table public.users
 (
     id       uuid not null
         primary key,
@@ -128,10 +129,10 @@ create table if not exists users
     password varchar(255)
 );
 
-alter table users
+alter table public.users
     owner to postgres;
 
-create table if not exists tickets
+create table public.tickets
 (
     id        uuid    not null
         primary key,
@@ -140,27 +141,28 @@ create table if not exists tickets
     row       integer not null,
     seat      integer not null,
     type      varchar(255),
-    film_id   uuid
-        constraint fkmi16yi0ieu68mw07r57jnk8tq
-            references films,
-    user_id   uuid
+    film_id   uuid    not null
+        constraint fk6t5777nsc5ela5uwyh9ot3a0w
+            references public.sessions,
+    user_id   uuid    not null
         constraint fk4eqsebpimnjen0q46ja6fl2hl
-            references users
+            references public.users
 );
 
-alter table tickets
+alter table public.tickets
     owner to postgres;
 
-create table if not exists users_roles
+create table public.users_roles
 (
     user_id uuid not null
         constraint fk2o0jvgh89lemvvo17cbqvdxaa
-            references users,
+            references public.users,
     role_id uuid not null
         constraint fkj6m8fwv7oqv74fcehir1a9ffy
-            references roles,
+            references public.roles,
     primary key (user_id, role_id)
 );
 
-alter table users_roles
+alter table public.users_roles
     owner to postgres;
+
