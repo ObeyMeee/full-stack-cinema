@@ -6,12 +6,14 @@ import { HeaderComponent } from './header/header.component';
 import {CarouselModule} from "primeng/carousel";
 import { PosterComponent } from './poster/poster.component';
 import {HttpClientModule} from "@angular/common/http";
+import { BlurDirective } from './poster/blur.directive';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    PosterComponent
+    PosterComponent,
+    BlurDirective
   ],
   imports: [
     BrowserModule,

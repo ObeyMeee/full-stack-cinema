@@ -9,7 +9,7 @@ import {PosterDto} from "./poster.dto";
   styleUrls: ['./poster.component.css']
 })
 export class PosterComponent implements OnInit {
-  posters!: PosterDto[];
+  posters$!: Observable<PosterDto[]>;
   responsiveOptions;
 
   constructor(private posterService: PosterService) {
@@ -43,8 +43,7 @@ export class PosterComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.posterService.getPoster().subscribe(responseData => {
-      this.posters = responseData;
-    });
+    this.posters$ = this.posterService.getPoster()
   }
+
 }
