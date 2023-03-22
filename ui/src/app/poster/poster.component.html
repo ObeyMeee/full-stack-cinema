@@ -6,7 +6,7 @@
         <img src="{{poster.media.image}}" class="img-fluid carousel-img" alt="{{poster.name}}">
         <div class="poster-content row text-white invisible">
           <div class="col m-xxl-2">
-            <a href="#" class="text-decoration-none text-white">
+            <a [routerLink]="['/film', poster.filmId]" class="text-decoration-none text-white">
               <span class="row align-items-center">
                 <span class="col-xxl-4">
                   <i class="fa-solid fa-info fa-2x"></i>
@@ -38,7 +38,9 @@
               </a>
           </div>
           <div class="row-cols-xxl-12 gy-xxl-5 text-center visible">
-            <a class="film-name fs-4 fw-bold text-white text-decoration-none" href="#">{{poster.name}}</a>
+            <a class="film-name fs-4 fw-bold text-white text-decoration-none" [routerLink]="['/film', poster.filmId]">
+              {{poster.name}}
+            </a>
           </div>
         </div>
       </div>
