@@ -1,4 +1,4 @@
-INSERT INTO public.films (id, enabled, name, description, director, duration, media_id, production_year)
+INSERT INTO public.films (id, enabled, title, description, director, duration, media_id, production_year)
 VALUES ('2073d25d-bf80-46d0-9c20-da96dd8cbaad',
         true,
         'The Lord of the Rings: The Return of the King',
@@ -8,7 +8,7 @@ VALUES ('2073d25d-bf80-46d0-9c20-da96dd8cbaad',
         'c3ef119e-92b6-45b1-991d-634e7a849714',
         2001);
 
-INSERT INTO public.films (id, enabled, name, description, director, duration, media_id, production_year)
+INSERT INTO public.films (id, enabled, title, description, director, duration, media_id, production_year)
 VALUES ('303e7f44-4606-4848-ab3c-b8ba767ea526',
         true,
         'Dark Knight rises',
@@ -18,7 +18,7 @@ VALUES ('303e7f44-4606-4848-ab3c-b8ba767ea526',
         '3b234015-49e1-4a4a-aeb8-96f29e72d31f',
         2012);
 
-INSERT INTO public.films (id, enabled, name, description, director, duration, media_id, production_year)
+INSERT INTO public.films (id, enabled, title, description, director, duration, media_id, production_year)
 VALUES ('dba5a1bb-454e-484c-8695-48010c99a57a',
         true,
         'Pirates of the Caribbean: The Curse of the Black Pearl',
@@ -28,7 +28,7 @@ VALUES ('dba5a1bb-454e-484c-8695-48010c99a57a',
         '1bc2f315-e393-431e-8b37-1999c3f0f77f',
         2003);
 
-INSERT INTO public.films (id, enabled, name, description, director, duration, media_id, production_year)
+INSERT INTO public.films (id, enabled, title, description, director, duration, media_id, production_year)
 VALUES ('203c2490-f370-4684-a7cd-7290ceeddae0',
         true,
         'Home alone',
@@ -38,7 +38,7 @@ VALUES ('203c2490-f370-4684-a7cd-7290ceeddae0',
         '0aa0d281-33c4-4aa1-a2ae-eca6143c9b6c',
         1990);
 
-INSERT INTO public.films (id, enabled, name, description, director, duration, media_id, production_year)
+INSERT INTO public.films (id, enabled, title, description, director, duration, media_id, production_year)
 VALUES ('4108bc1f-cc23-422c-babd-3e19be79ac05',
         true,
         'Harry Potter and the Philosopher stone',
@@ -48,7 +48,7 @@ VALUES ('4108bc1f-cc23-422c-babd-3e19be79ac05',
         '263646ad-e642-43b2-85ba-21f8dcd4b27e',
         2001);
 
-INSERT INTO public.films (id, enabled, name, description, director, duration, media_id, production_year)
+INSERT INTO public.films (id, enabled, title, description, director, duration, media_id, production_year)
 VALUES ('37262b52-d1b4-420d-ae3a-fc32574da793',
         true,
         'Star Wars',

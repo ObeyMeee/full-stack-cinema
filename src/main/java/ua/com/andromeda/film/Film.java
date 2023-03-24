@@ -6,10 +6,11 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import ua.com.andromeda.actor.Actor;
+import ua.com.andromeda.comment.Comment;
 import ua.com.andromeda.country.Country;
-import ua.com.andromeda.session.Session;
 import ua.com.andromeda.genre.Genre;
 import ua.com.andromeda.media.Media;
+import ua.com.andromeda.session.Session;
 
 import java.util.List;
 import java.util.UUID;
@@ -25,7 +26,7 @@ public class Film {
     private UUID id;
 
     private boolean enabled;
-    private String name;
+    private String title;
 
     private String description;
     private String director;
@@ -71,4 +72,10 @@ public class Film {
     @JsonIgnore
     @ToString.Exclude
     private List<Session> sessions;
+
+    @OneToMany(mappedBy = "film")
+    @JsonIgnore
+    @ToString.Exclude
+    private List<Comment> comments;
+
 }

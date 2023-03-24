@@ -57,7 +57,7 @@
 
 .fa-play:hover,
 .fa-info:hover {
- background: orangered;
+  background: orangered;
 }
 
 .cl-orangered {
@@ -67,3 +67,4 @@
 .cl-white-hover:hover {
   color: white;
 }
+

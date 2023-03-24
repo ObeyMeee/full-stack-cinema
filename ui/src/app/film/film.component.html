@@ -1,13 +1,13 @@
-<div class="row position-sticky m-4" *ngIf="film$ | async as film">
+<div *ngIf="film$ | async as film" class="row position-sticky ms-4 mt-4">
   <div class="col-xxl-3">
-    <img class="poster" src="{{film.media.image}}" alt="{{film.name}}">
+    <img alt="{{film.title}}" class="poster" src="{{film.media.image}}">
     <button class="trailer-btn fw-bold text-white mt-3 d-flex justify-content-center">
       <i class="bi bi-play-fill fs-4 me-2 my-2"></i>
       <span class="align-self-center fs-5">Watch trailer</span>
     </button>
   </div>
   <div class="col-xxl-6 text-white">
-    <h1>{{film.name}}</h1>
+    <h1>{{film.title}}</h1>
     <div class="row">
       <div class="col">Age:</div>
       <div class="col">16+</div>
@@ -29,7 +29,7 @@
       <div class="col">Genre:</div>
       <div class="col">
         <ng-container *ngFor="let genre of film.genres">
-          <a href="#" class="text-decoration-none text-white">{{genre.name}}</a>
+          <a class="text-decoration-none text-white" href="#">{{genre.name}}</a>
           <span>, &nbsp;</span>
         </ng-container>
       </div>
@@ -58,6 +58,27 @@
       <div class="col-xxl-12">
         {{film.description}}
       </div>
+    </div>
+  </div>
+  <div class="col-xxl-3">
+    <div class="select-day p-4 border-bottom rounded-top">
+      <span class="fs-4 text-white">Schedule of sessions</span>
+      <select class="form-select m-2">
+        <option>Fr, 24 March</option>
+        <option>St, 25 March</option>
+        <option>Sn, 26 March</option>
+        <option>Mn, 27 March</option>
+      </select>
+    </div>
+    <div class="row-cols-xxl-3 session-dates border-top rounded-bottom">
+      <ng-container *ngIf="sessions$ | async as sessions">
+        <a *ngFor="let session of sessions" class="cl-orangered cl-white-hover col-xxl-2 fs-5 text-decoration-none m-2"
+           data-bs-placement="bottom"
+           data-bs-toggle="tooltip" href="{{session.id}}"
+           title="From 100 UAH">
+          {{session.startAt | date: 'HH:mm'}}
+        </a>
+      </ng-container>
     </div>
   </div>
 </div>

@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import ua.com.andromeda.comment.Comment;
 import ua.com.andromeda.role.Role;
 import ua.com.andromeda.ticket.Ticket;
 
@@ -43,4 +44,9 @@ public class User {
     @JsonIgnore
     @ToString.Exclude
     private List<Ticket> tickets;
+
+    @OneToOne(mappedBy = "user")
+    @JsonIgnore
+    @ToString.Exclude
+    private Comment comment;
 }

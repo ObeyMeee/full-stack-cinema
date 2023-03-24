@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {PosterService} from "./poster.service";
 import {Observable} from "rxjs";
-import {PosterDto} from "./poster.dto";
+import {PosterDto} from "./dto/poster.dto";
+import {SessionDto} from "./dto/session.dto";
 
 @Component({
   selector: 'app-poster',
@@ -10,6 +11,7 @@ import {PosterDto} from "./poster.dto";
 })
 export class PosterComponent implements OnInit {
   posters$!: Observable<PosterDto[]>;
+  map!: Map<string, SessionDto[]>;
   responsiveOptions;
 
   constructor(private posterService: PosterService) {
@@ -43,7 +45,7 @@ export class PosterComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.posters$ = this.posterService.getPoster()
+    this.posters$ = this.posterService.getPoster();
+    this.posterService.getSessions().subscribe(response => this.map = response);
   }
-
 }

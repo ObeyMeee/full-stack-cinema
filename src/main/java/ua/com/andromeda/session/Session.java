@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import ua.com.andromeda.film.Film;
+import ua.com.andromeda.hall.Hall;
 import ua.com.andromeda.ticket.Ticket;
 
 import java.time.LocalDateTime;
@@ -28,6 +29,10 @@ public class Session {
     @ManyToOne
     @JoinColumn(name = "film_id", nullable = false)
     private Film film;
+
+    @OneToOne
+    @JoinColumn(name = "hall_id", nullable = false)
+    private Hall hall;
 
     @OneToMany(mappedBy = "session")
     @JsonIgnore

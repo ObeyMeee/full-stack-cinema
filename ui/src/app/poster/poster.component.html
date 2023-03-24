@@ -1,9 +1,9 @@
 <ng-container *ngIf="posters$ | async as posters">
-  <p-carousel [value]="posters" styleClass="custom-carousel" [circular]="false"
-              [responsiveOptions]="responsiveOptions" [showIndicators]="false">
+  <p-carousel [circular]="false" [responsiveOptions]="responsiveOptions" [showIndicators]="false"
+              [value]="posters" styleClass="custom-carousel">
     <ng-template let-poster pTemplate="item">
-      <div class="poster" appBlur>
-        <img src="{{poster.media.image}}" class="img-fluid carousel-img" alt="{{poster.name}}">
+      <div appBlur class="poster">
+        <img alt="{{poster.title}}" class="img-fluid carousel-img" src="{{poster.media.image}}">
         <div class="poster-content row text-white invisible">
           <div class="col m-xxl-2">
             <a [routerLink]="['/film', poster.filmId]" class="text-decoration-none text-white">
@@ -18,7 +18,7 @@
             </a>
           </div>
           <div class="col m-xxl-2">
-            <a href="#" class="text-decoration-none text-white">
+            <a class="text-decoration-none text-white" href="#">
               <span class="row align-items-center">
                 <span class="col-xxl-4">
                   <i class="fa-solid fa-play fa-2x"></i>
@@ -31,15 +31,22 @@
           </div>
           <span class="cl-orangered cl-white-hover  gy-xxl-5 fs-3 text-center">Today</span>
           <span class="row-cols-xxl-12 text-center fs-3 gy-xxl-5">Schedule</span>
-          <div class="row d-flex justify-content-center gy-xxl-3">
-              <a class="cl-orangered cl-white-hover col-xxl-2 fw-bold fs-5 text-decoration-none m-2"
-                 *ngFor="let session of poster.sessions" href="{{session.id}}">
-                {{session.startAt | date: 'HH:mm'}}
-              </a>
+          <div *ngIf="map" class="row d-flex justify-content-center gy-xxl-3">
+            <ng-template [ngForOf]="map | keyvalue" let-entry ngFor>
+              <ng-template [ngForOf]="entry.value" let-session ngFor>
+                <a *ngIf="poster.filmId === entry.key"
+                   class="cl-orangered cl-white-hover col-xxl-2 fw-bold fs-5 text-decoration-none m-2" data-bs-placement="bottom"
+                   data-bs-toggle="tooltip"
+                   href="{{session.id}}"
+                   title="From 100 UAH">
+                  {{session.startAt | date: 'HH:mm'}}
+                </a>
+              </ng-template>
+            </ng-template>
           </div>
           <div class="row-cols-xxl-12 gy-xxl-5 text-center visible">
-            <a class="film-name fs-4 fw-bold text-white text-decoration-none" [routerLink]="['/film', poster.filmId]">
-              {{poster.name}}
+            <a [routerLink]="['/film', poster.filmId]" class="film-name fs-4 fw-bold text-white text-decoration-none">
+              {{poster.title}}
             </a>
           </div>
         </div>

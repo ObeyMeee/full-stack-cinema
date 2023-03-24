@@ -17,7 +17,6 @@ public class FilmService {
         this.mapper = mapper;
     }
 
-
     public List<PosterDto> getPoster() {
         List<Film> enabledFilms = filmRepository.findAllByEnabled(true);
         return enabledFilms.stream()

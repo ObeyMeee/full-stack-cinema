@@ -27,8 +27,6 @@ public class Ticket {
     private int row;
     private int seat;
 
-    @Enumerated(EnumType.STRING)
-    private TicketType type;
 
     @ManyToOne
     @JoinColumn(name = "film_id", nullable = false)

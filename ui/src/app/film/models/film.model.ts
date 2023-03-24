@@ -5,13 +5,13 @@ import {Genre} from "./genre.model";
 
 
 export class Film {
-  enabled!: boolean ;
-  name!: string ;
-  description!: string ;
-  director!: string ;
-  duration!: number ;
+  enabled!: boolean;
+  title!: string;
+  description!: string;
+  director!: string;
+  duration!: number;
   productionYear!: number;
-  countries!: Country[] ;
+  countries!: Country[];
   media!: Media;
   actors!: Actor[];
   genres!: Genre[];
