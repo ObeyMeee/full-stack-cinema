@@ -74,7 +74,8 @@
       <ng-container *ngIf="sessions$ | async as sessions">
         <a *ngFor="let session of sessions" class="cl-orangered cl-white-hover col-xxl-2 fs-5 text-decoration-none m-2"
            data-bs-placement="bottom"
-           data-bs-toggle="tooltip" href="{{session.id}}"
+           data-bs-toggle="tooltip"
+           [routerLink]="['sessions', session.id]"
            title="From 100 UAH">
           {{session.startAt | date: 'HH:mm'}}
         </a>

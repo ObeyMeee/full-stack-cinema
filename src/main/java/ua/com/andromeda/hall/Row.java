@@ -22,10 +22,10 @@ public class Row {
 
     @Enumerated(EnumType.STRING)
     private RowType type;
-    @OneToMany(mappedBy = "row")
-    @JsonIgnore
-    @ToString.Exclude
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "row")
     private List<Seat> seats;
     @ManyToOne
+    @JsonIgnore
+    @ToString.Exclude
     private Hall hall;
 }

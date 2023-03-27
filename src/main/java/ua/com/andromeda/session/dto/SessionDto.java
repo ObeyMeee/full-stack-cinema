@@ -1,9 +1,10 @@
-package ua.com.andromeda.session;
+package ua.com.andromeda.session.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ua.com.andromeda.session.SessionProjection;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

@@ -1,0 +1,77 @@
+<div class="row text-white m-3" *ngIf="session$ | async as session">
+  <div class="col-xxl-8">
+    <div class="row">
+      <div class="col-auto">
+        <img src="{{session.image}}"
+             alt="{{session.title}}"
+             class="w-250">
+      </div>
+      <div class="col-xxl-8 m-2">
+        <span class="row row-cols-xxl-12 h4">{{session.title}}</span>
+        <div class="row">
+          <div class="col-auto my-2">
+            <div class="row row-cols-xxl-auto text-center">
+              <div class="bg-dark border border-white border-1 rounded-3 me-3">2D</div>
+              <div class="bg-dark border border-white border-1 rounded-3">{{session.hall.type}}</div>
+            </div>
+          </div>
+        </div>
+        <div class="row my-2">
+          <div class="col-auto bg-dark border border-white border-1 rounded-3 me-3">
+            <div class="row">
+              <div class="col-auto mt-1">
+                <i class="bi bi-geo-alt-fill"></i>
+              </div>
+              <div class="col-auto border-start border-2 border-white">
+                <div>Hall {{session.hall.number}}</div>
+                <div>Kharkiv</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-auto bg-dark border border-1 border-white rounded-3 me-3">
+            <div class="row">
+              <div class="col-auto mt-1">
+                <i class="bi bi-calendar3"></i>
+              </div>
+              <div class="col-auto border-start border-2 border-white">
+                <div>{{session.startAt | date: 'shortDate'}}</div>
+                <div>{{session.startAt | date: 'EEEE'}}</div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-auto bg-dark border border-1 border-white rounded-3 d-flex justify-content-center align-items-center">
+            <div class="row">
+              <div class="col">
+                <i class="bi bi-clock"></i>
+              </div>
+              <div class="col border-start border-2 border-white p-1">
+                {{session.startAt | date: 'HH:mm'}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row row-cols-xxl-auto mt-5 d-flex justify-content-center">
+      <div class="screen">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 806 21" fill="orangered">
+          <path
+            d="M3.2,20l-2,0.2l-0.3-4l2-0.2C136.2,5.3,269.6,0,403,0s266.8,5.3,400.2,16l2,0.2l-0.3,4l-2-0.2 C669.5,9.3,536.3,4,403,4S136.4,9.3,3.2,20z"></path>
+        </svg>
+        <div class="text-center">ЕКРАН</div>
+      </div>
+    </div>
+    <div class="mt-4">
+      <div class="row d-flex justify-content-center" *ngFor="let row of session.hall.rows; index as rowIndex; last as lastRow">
+        <div class="col-auto" *ngFor="let seat of row.seats; index as seatIndex">
+          <button type="button" class="bg-transparent p-0">
+            <i *ngIf="lastRow" class="bi bi-square lux-seat"></i>
+            <i *ngIf="!lastRow" class="bi bi-square"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xxl-4"></div>
+</div>

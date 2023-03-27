@@ -22,12 +22,11 @@ public class Hall {
     private int number;
     @Enumerated(EnumType.STRING)
     private HallType type;
-    @OneToMany(mappedBy = "hall")
-    @ToString.Exclude
-    @JsonIgnore
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "hall")
     private List<Row> rows;
 
     @OneToOne(mappedBy = "hall")
     @JsonIgnore
+    @ToString.Exclude
     private Session session;
 }

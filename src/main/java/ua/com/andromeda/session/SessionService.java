@@ -2,9 +2,12 @@ package ua.com.andromeda.session;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ua.com.andromeda.session.dto.SessionBuyTicketDto;
+import ua.com.andromeda.session.dto.SessionDto;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -33,5 +36,9 @@ public class SessionService {
 
     public List<SessionDto> getSessionByFilmId(UUID filmId) {
         return sessionRepository.findAllByFilmId(filmId);
+    }
+
+    public Optional<SessionBuyTicketDto> findById(UUID id) {
+        return sessionRepository.findSessionBuyTicketDtoById(id);
     }
 }

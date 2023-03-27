@@ -6,7 +6,7 @@
         <img alt="{{poster.title}}" class="img-fluid carousel-img" src="{{poster.media.image}}">
         <div class="poster-content row text-white invisible">
           <div class="col m-xxl-2">
-            <a [routerLink]="['/film', poster.filmId]" class="text-decoration-none text-white">
+            <a [routerLink]="['/films', poster.filmId]" class="text-decoration-none text-white">
               <span class="row align-items-center">
                 <span class="col-xxl-4">
                   <i class="fa-solid fa-info fa-2x"></i>
@@ -37,7 +37,7 @@
                 <a *ngIf="poster.filmId === entry.key"
                    class="cl-orangered cl-white-hover col-xxl-2 fw-bold fs-5 text-decoration-none m-2" data-bs-placement="bottom"
                    data-bs-toggle="tooltip"
-                   href="{{session.id}}"
+                   [routerLink]="['/films', poster.filmId, 'sessions', session.id]"
                    title="From 100 UAH">
                   {{session.startAt | date: 'HH:mm'}}
                 </a>
@@ -45,7 +45,7 @@
             </ng-template>
           </div>
           <div class="row-cols-xxl-12 gy-xxl-5 text-center visible">
-            <a [routerLink]="['/film', poster.filmId]" class="film-name fs-4 fw-bold text-white text-decoration-none">
+            <a [routerLink]="['/films', poster.filmId]" class="film-name fs-4 fw-bold text-white text-decoration-none">
               {{poster.title}}
             </a>
           </div>

@@ -9,10 +9,12 @@ import {HttpClientModule} from "@angular/common/http";
 import {BlurDirective} from './poster/blur.directive';
 import {Route, RouterModule} from "@angular/router";
 import {FilmComponent} from './film/film.component';
+import { HallComponent } from './hall/hall.component';
 
 const routes: Route[] = [
   {path: '', component: PosterComponent, pathMatch: 'full'},
-  {path: 'film/:id', component: FilmComponent},
+  {path: 'films/:id', component: FilmComponent},
+  {path: 'films/:id/sessions/:sessionId', component: HallComponent},
   {path: '**', component: PosterComponent}
 ]
 
@@ -22,7 +24,8 @@ const routes: Route[] = [
     HeaderComponent,
     PosterComponent,
     BlurDirective,
-    FilmComponent
+    FilmComponent,
+    HallComponent
   ],
   imports: [
     BrowserModule,
