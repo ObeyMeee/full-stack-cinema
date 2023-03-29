@@ -123,6 +123,7 @@ create table rows
         primary key,
     number  integer not null,
     type    varchar(255),
+    price   integer not null,
     hall_id uuid
         constraint fk8dwpdpkba6x7g4qbgg1ic0ik7
             references halls

@@ -11,7 +11,8 @@ i {
   width: 62.6rem;
 }
 
-.bi-square {
+.bi-square, .bi-square-fill {
+  font-size: 150%;
   color: deepskyblue;
 }
 

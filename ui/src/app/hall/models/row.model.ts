@@ -4,5 +4,6 @@ export class Row {
   id!: string;
   number!: number;
   type!: string;
+  price!: number;
   seats!: Seat[];
 }

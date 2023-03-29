@@ -38,7 +38,7 @@
                    class="cl-orangered cl-white-hover col-xxl-2 fw-bold fs-5 text-decoration-none m-2" data-bs-placement="bottom"
                    data-bs-toggle="tooltip"
                    [routerLink]="['/films', poster.filmId, 'sessions', session.id]"
-                   title="From 100 UAH">
+                   title="From {{session.minPrice}} UAH">
                   {{session.startAt | date: 'HH:mm'}}
                 </a>
               </ng-template>

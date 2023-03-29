@@ -15,5 +15,6 @@ import java.util.UUID;
 public class SessionProjection {
     private UUID id;
     private LocalDateTime startAt;
+    private int minPrice;
     private UUID filmId;
 }

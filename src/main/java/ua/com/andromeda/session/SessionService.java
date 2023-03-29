@@ -1,6 +1,7 @@
 package ua.com.andromeda.session;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 import ua.com.andromeda.session.dto.SessionBuyTicketDto;
 import ua.com.andromeda.session.dto.SessionDto;
@@ -21,13 +22,13 @@ public class SessionService {
     }
 
     public Map<UUID, List<SessionDto>> getSessions(boolean enabled) {
-        List<SessionProjection> sessions = sessionRepository.findAllByEnabledEquals(enabled);
+        Streamable<Session> sessions = sessionRepository.findAllByEnabledEquals(enabled);
         return sessions.stream()
                 .collect(Collectors.toMap(
-                        SessionProjection::getFilmId,
-                        sessionProjection ->
+                        session -> session.getFilm().getId(),
+                        session ->
                                 sessions.stream()
-                                        .filter(s -> sessionProjection.getFilmId().equals(s.getFilmId()))
+                                        .filter(s -> session.getFilm().getId().equals(s.getFilm().getId()))
                                         .map(SessionDto::new)
                                         .toList(),
                         (s1, s2) -> s1
@@ -35,7 +36,9 @@ public class SessionService {
     }
 
     public List<SessionDto> getSessionByFilmId(UUID filmId) {
-        return sessionRepository.findAllByFilmId(filmId);
+        return sessionRepository.findAllByFilmId(filmId)
+                .map(SessionDto::new)
+                .toList();
     }
 
     public Optional<SessionBuyTicketDto> findById(UUID id) {
