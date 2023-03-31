@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {APP_INITIALIZER, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
 import {AppComponent} from './app.component';
@@ -10,6 +10,8 @@ import {BlurDirective} from './poster/blur.directive';
 import {Route, RouterModule} from "@angular/router";
 import {FilmComponent} from './film/film.component';
 import { HallComponent } from './hall/hall.component';
+import {KeycloakAngularModule, KeycloakService} from "keycloak-angular";
+import {initializeKeycloak} from "./config/keycloak-init.factory";
 
 const routes: Route[] = [
   {path: '', component: PosterComponent, pathMatch: 'full'},
@@ -31,9 +33,17 @@ const routes: Route[] = [
     BrowserModule,
     CarouselModule,
     HttpClientModule,
+    KeycloakAngularModule,
     RouterModule.forRoot(routes)
   ],
-  providers: [],
+  providers: [
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeKeycloak,
+      multi: true,
+      deps: [KeycloakService]
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

@@ -13,7 +13,7 @@ export class PosterService {
   }
 
   getPoster() {
-    const url = `${environment.apiUrl}films`
+    const url = `${environment.apiUrl}films`;
     return this.http.get<PosterDto[]>(url);
   }
 

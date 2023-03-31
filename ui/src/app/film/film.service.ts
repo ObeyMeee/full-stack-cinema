@@ -19,6 +19,7 @@ export class FilmService {
   }
 
   getSessionsId(id: string) {
+
     return this.http.get<SessionDto[]>(`${this.baseUrl}${id}/sessions`)
   }
 }
