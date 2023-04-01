@@ -12,9 +12,7 @@ export class HeaderComponent {
   }
 
   onLogin() {
-    this.keycloakService.login().then(console.log).catch(console.error);
-    console.log(1);
-
+    this.keycloakService.login();
   }
 
   onLogout() {
