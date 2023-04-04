@@ -16,14 +16,14 @@ export class HeaderComponent {
   }
 
   onLogout() {
-    this.keycloakService.logout();
+    this.keycloakService.getKeycloakInstance().logout();
   }
 
+  onSignup() {
+    this.keycloakService.getKeycloakInstance().register();
+  }
 
-  isLoggedIn() {
-    // console.log(1);
-    // let loggedIn = await this.keycloakService.isLoggedIn();
-    // console.log(2);
-    return false;
+  isAuthenticated() {
+    return this.keycloakService.getKeycloakInstance().authenticated;
   }
 }
