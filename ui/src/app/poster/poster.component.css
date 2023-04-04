@@ -3,7 +3,7 @@
   position: absolute;
   height: 5rem !important;
   width: 5rem !important;
-  background: orangered !important;
+  background: var(--primary-red) !important;
   border: #190d1b 4px solid !important;
   color: white !important;
   z-index: 1000;
@@ -27,27 +27,6 @@
   display: none !important;
 }
 
-.carousel-img {
-  height: calc(100vh - 60px);
-  min-width: 350px;
-  max-width: 350px;
-}
-
-.film-name:hover {
-  background: -webkit-linear-gradient(orangered, #ff001b);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.blurred {
-  filter: blur(7px) brightness(50%);
-}
-
-.poster-content {
-  position: relative;
-  bottom: 90vh;
-}
-
 .fa-play,
 .fa-info {
   padding: 10px 15px;
@@ -57,14 +36,23 @@
 
 .fa-play:hover,
 .fa-info:hover {
-  background: orangered;
-}
-
-.cl-orangered {
-  color: orangered;
+  background: var(--primary-red);
 }
 
 .cl-white-hover:hover {
   color: white;
 }
 
+.title:hover {
+  color: var(--primary-red)!important;
+}
+
+.blurred {
+  filter: blur(7px) brightness(50%);
+}
+
+.film-title {
+  top: calc(100% - 120px);
+  left: 20px;
+  right: 20px;
+}

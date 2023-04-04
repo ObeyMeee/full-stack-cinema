@@ -9,14 +9,14 @@ export class BlurDirective {
   }
 
   @HostListener('mouseenter') onMouseEnter() {
-    const element = this.elementRef.nativeElement;
-    element.querySelector('.carousel-img').classList.add('blurred');
-    element.querySelector('.poster-content').classList.remove('invisible');
+    const element: HTMLElement = this.elementRef.nativeElement;
+    element.querySelector('.bg-image')?.classList.add('blurred');
+    element.querySelector('.poster-content')?.classList.remove('invisible');
   }
 
   @HostListener('mouseleave') onMouseLeave() {
-    const element = this.elementRef.nativeElement;
-    element.querySelector('.carousel-img').classList.remove('blurred');
-    element.querySelector('.poster-content').classList.add('invisible');
+    const element: HTMLElement = this.elementRef.nativeElement;
+    element.querySelector('.bg-image')?.classList.remove('blurred');
+    element.querySelector('.poster-content')?.classList.add('invisible');
   }
 }

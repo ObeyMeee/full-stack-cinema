@@ -10,11 +10,7 @@
 }
 
 .trailer-btn:hover {
-  background: #ff001b;
-}
-
-.cl-orangered {
-  color: orangered;
+  background: var(--primary-red);
 }
 
 .cl-white-hover:hover {
@@ -22,7 +18,7 @@
 }
 
 .select-day {
-  background: linear-gradient(#6e6e7c, #393939);
+  background: linear-gradient(#222023, #19171a);
 }
 
 .session-dates {

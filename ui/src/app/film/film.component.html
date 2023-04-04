@@ -29,7 +29,7 @@
       <div class="col">Genre:</div>
       <div class="col">
         <ng-container *ngFor="let genre of film.genres">
-          <a class="text-decoration-none text-white" href="#">{{genre.name}}</a>
+          <a class="text-decoration-none text-white cl-primary-hover" href="#">{{genre.name}}</a>
           <span>, &nbsp;</span>
         </ng-container>
       </div>
@@ -72,7 +72,7 @@
     </div>
     <div class="row-cols-xxl-3 session-dates border-top rounded-bottom">
       <ng-container *ngIf="sessions$ | async as sessions">
-        <a *ngFor="let session of sessions" class="cl-orangered cl-white-hover col-xxl-2 fs-5 text-decoration-none m-2"
+        <a *ngFor="let session of sessions" class="cl-primary cl-white-hover col-xxl-2 fs-5 text-decoration-none m-2"
            data-bs-placement="bottom"
            data-bs-toggle="tooltip"
            [routerLink]="['sessions', session.id]"

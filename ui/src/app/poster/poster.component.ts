@@ -18,7 +18,7 @@ export class PosterComponent implements OnInit {
     this.responsiveOptions = [
       {
         breakpoint: '1920px',
-        numVisible: 5,
+        numVisible: 4,
         numScroll: 3
       },
       {
@@ -28,17 +28,17 @@ export class PosterComponent implements OnInit {
       },
       {
         breakpoint: '1024px',
-        numVisible: 4,
-        numScroll: 2
+        numVisible: 2,
+        numScroll: 1
       },
       {
         breakpoint: '768px',
-        numVisible: 3,
-        numScroll: 2
+        numVisible: 2,
+        numScroll: 1
       },
       {
         breakpoint: '560px',
-        numVisible: 2,
+        numVisible: 1,
         numScroll: 1
       }
     ];
