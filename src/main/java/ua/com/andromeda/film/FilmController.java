@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ua.com.andromeda.film.dto.PosterDto;
-import ua.com.andromeda.session.dto.SessionDto;
 import ua.com.andromeda.session.SessionService;
+import ua.com.andromeda.session.dto.SessionDto;
 
 import java.util.List;
 import java.util.UUID;

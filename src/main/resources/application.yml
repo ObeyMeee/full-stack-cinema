@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  flyway:
+    url: ${DB_URL}
+    user: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    schemas: public
+    baseline-on-migrate: true
+    clean-on-validation-error: true
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+
+okta:
+  oauth2:
+    issuer: ${OKTA_ISSUER}
+    client-id: ${OKTA_CLIENT_ID}
+
+allowed:
+  origins: http://localhost:4200

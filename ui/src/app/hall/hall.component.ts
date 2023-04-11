@@ -1,10 +1,11 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {HallService} from "./hall.service";
-import {Observable, Subscription} from "rxjs";
+import {filter, map, Observable, Subscription} from "rxjs";
 import {SessionBuyTicketDto} from "./session-buy-ticket.dto";
 import {Ticket} from "./models/ticket.model";
-import {KeycloakService} from "keycloak-angular";
+import {OKTA_AUTH, OktaAuthStateService} from "@okta/okta-angular";
+import OktaAuth, {AuthState} from "@okta/okta-auth-js";
 
 @Component({
   selector: 'app-hall',
@@ -14,16 +15,25 @@ import {KeycloakService} from "keycloak-angular";
 export class HallComponent implements OnInit, OnDestroy {
   private routeSubscription!: Subscription;
   session$!: Observable<SessionBuyTicketDto>;
+  sessionId!: string;
   tickets: Ticket[] = [];
+  isAuthenticated$!: Observable<boolean>;
 
   constructor(private route: ActivatedRoute,
               private hallService: HallService,
-              private keycloakService: KeycloakService) {
+              private oktaStateService: OktaAuthStateService,
+              @Inject(OKTA_AUTH) private oktaAuth: OktaAuth) {
   }
 
   ngOnInit() {
-    this.routeSubscription = this.route.params.subscribe(params =>
-      this.session$ = this.hallService.getSession(params['sessionId'])
+    this.routeSubscription = this.route.params.subscribe(params => {
+        this.sessionId = params['sessionId'];
+        this.session$ = this.hallService.getSession(this.sessionId);
+      }
+    );
+    this.isAuthenticated$ = this.oktaStateService.authState$.pipe(
+      filter((s: AuthState) => !!s),
+      map((s: AuthState) => s.isAuthenticated ?? false)
     );
   }
 
@@ -31,13 +41,15 @@ export class HallComponent implements OnInit, OnDestroy {
     this.routeSubscription.unsubscribe();
   }
 
-  isAuthenticated() {
-    return this.keycloakService.getKeycloakInstance().authenticated;
-  }
-
   getTotalPrice() {
     return this.tickets.map(ticket => ticket.price)
       .reduce((acc, price) => acc + price, 0);
+  }
+
+  async onPurchaseTickets() {
+    this.isAuthenticated$.subscribe(value =>
+      value && this.hallService.purchaseTickets(this.tickets, this.sessionId)
+    )
   }
 
   onSelectSeat(btnSeat: HTMLButtonElement) {

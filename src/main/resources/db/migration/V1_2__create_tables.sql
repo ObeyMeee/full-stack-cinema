@@ -169,7 +169,8 @@ create table users
         primary key,
     email    varchar(255),
     name     varchar(255),
-    password varchar(255)
+    password varchar(255),
+    enabled boolean
 );
 
 alter table users

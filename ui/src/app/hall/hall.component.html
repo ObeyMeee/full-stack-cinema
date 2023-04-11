@@ -116,9 +116,10 @@
         <div class="me-auto">Total price:</div>
         <div class="me-2">{{getTotalPrice()}} UAH</div>
       </div>
-      <div class="col-xxl-12 alert alert-danger" *ngIf="!isAuthenticated()">Please log in to buy tickets</div>
+      <div class="col-xxl-12 alert alert-danger" *ngIf="!(isAuthenticated$ | async)">Please log in to buy tickets</div>
       <button class="col-xxl-12 btn btn-danger rounded-4 p-2"
-              [disabled]="!isAuthenticated()">
+              [disabled]="!(isAuthenticated$ | async)"
+              (click)="onPurchaseTickets()">
         Purchase
       </button>
     </div>

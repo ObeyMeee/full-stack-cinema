@@ -16,13 +16,13 @@ import java.util.List;
 import java.util.Set;
 
 @Configuration
-public class DataRestConfiguration implements RepositoryRestConfigurer {
+public class DataRestConfig implements RepositoryRestConfigurer {
     private final EntityManager entityManager;
     @Value("${allowed.origins}")
     private String[] allowedOrigins;
 
     @Autowired
-    public DataRestConfiguration(EntityManager entityManager) {
+    public DataRestConfig(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 
