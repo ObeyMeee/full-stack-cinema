@@ -1,34 +1,34 @@
-create table actors
+create table public.actors
 (
     id        uuid not null
         primary key,
     full_name varchar(255)
 );
 
-alter table actors
+alter table public.actors
     owner to postgres;
 
-create table countries
+create table public.countries
 (
     id   uuid not null
         primary key,
     name varchar(255)
 );
 
-alter table countries
+alter table public.countries
     owner to postgres;
 
-create table genres
+create table public.genres
 (
     id   uuid not null
         primary key,
     name varchar(255)
 );
 
-alter table genres
+alter table public.genres
     owner to postgres;
 
-create table halls
+create table public.halls
 (
     id     uuid    not null
         primary key,
@@ -36,10 +36,10 @@ create table halls
     type   varchar(255)
 );
 
-alter table halls
+alter table public.halls
     owner to postgres;
 
-create table media
+create table public.media
 (
     id      uuid not null
         primary key,
@@ -47,10 +47,10 @@ create table media
     trailer text
 );
 
-alter table media
+alter table public.media
     owner to postgres;
 
-create table films
+create table public.films
 (
     id              uuid    not null
         primary key,
@@ -62,77 +62,82 @@ create table films
     title           varchar(255),
     media_id        uuid
         constraint fkrdfc2dr0b455fesu2qf11qovo
-            references media
+            references public.media
 );
 
-alter table films
+alter table public.films
     owner to postgres;
 
-create table films_actors
+create table public.comments
+(
+    id       uuid             not null
+        primary key,
+    mark     double precision not null,
+    review   text,
+    username varchar(255),
+    film_id  uuid             not null
+        constraint fkpiw1eyj5u8hwd162g9kgj3vuc
+            references public.films
+);
+
+alter table public.comments
+    owner to postgres;
+
+create table public.films_actors
 (
     film_id  uuid not null
         constraint fkm871tpbjgvlefqev7aaq827s0
-            references films,
+            references public.films,
     actor_id uuid not null
         constraint fkdjtf3dy8e0s3x13r8noaif9w
-            references actors
+            references public.actors
 );
 
-alter table films_actors
+alter table public.films_actors
     owner to postgres;
 
-create table films_countries
+create table public.films_countries
 (
     film_id    uuid not null
         constraint fk6tkrwhgida3f5394lkxl7gogp
-            references films,
+            references public.films,
     country_id uuid not null
         constraint fkr4qe9orc9gf3qnioq1fj1wgxq
-            references countries
+            references public.countries
 );
 
-alter table films_countries
+alter table public.films_countries
     owner to postgres;
 
-create table films_genres
+create table public.films_genres
 (
     film_id  uuid not null
         constraint fkqr8m71obccc9w6cp91l3k8r2w
-            references films,
+            references public.films,
     genre_id uuid not null
         constraint fktcwy3ocjyhnni2yr22y2hpb9p
-            references genres
+            references public.genres
 );
 
-alter table films_genres
+alter table public.films_genres
     owner to postgres;
 
-create table roles
-(
-    id   uuid not null
-        primary key,
-    name varchar(255)
-);
-
-alter table roles
-    owner to postgres;
-
-create table rows
+create table public.rows
 (
     id      uuid    not null
         primary key,
     number  integer not null,
-    type    varchar(255),
     price   integer not null,
+    type    varchar(255),
     hall_id uuid
         constraint fk8dwpdpkba6x7g4qbgg1ic0ik7
-            references halls
+            references public.halls
 );
 
-alter table rows
+alter table public.rows
     owner to postgres;
 
-create table seats
+create table public.seats
 (
     id       uuid    not null
         primary key,
@@ -140,13 +145,13 @@ create table seats
     number   integer not null,
     row_id   uuid
         constraint fkfi3owtwwqbc0mh605hq2ygs1x
-            references rows
+            references public.rows
 );
 
-alter table seats
+alter table public.seats
     owner to postgres;
 
-create table sessions
+create table public.sessions
 (
     id       uuid    not null
         primary key,
@@ -154,73 +159,28 @@ create table sessions
     start_at timestamp(6),
     film_id  uuid    not null
         constraint fkn2m0d43s7i2gofapl0d8qkvq7
-            references films,
+            references public.films,
     hall_id  uuid    not null
         constraint fkcbrgca6k34wv4jr41ik2qdoaf
-            references halls
+            references public.halls
 );
 
-alter table sessions
+alter table public.sessions
     owner to postgres;
 
-create table users
-(
-    id       uuid not null
-        primary key,
-    email    varchar(255),
-    name     varchar(255),
-    password varchar(255),
-    enabled boolean
-);
-
-alter table users
-    owner to postgres;
-
-create table comments
-(
-    id      uuid             not null
-        primary key,
-    mark    double precision not null,
-    review  text,
-    film_id uuid             not null
-        constraint fkpiw1eyj5u8hwd162g9kgj3vuc
-            references films,
-    user_id uuid             not null
-        constraint fk8omq0tc18jd43bu5tjh6jvraq
-            references users
-);
-
-alter table comments
-    owner to postgres;
-
-create table tickets
+create table public.tickets
 (
     id        uuid    not null
         primary key,
     bought_at timestamp(6),
     price     integer not null,
+    row       integer not null,
+    seat      integer not null,
+    username  varchar(255),
     film_id   uuid    not null
         constraint fk6t5777nsc5ela5uwyh9ot3a0w
-            references sessions,
-    user_id   uuid    not null
-        constraint fk4eqsebpimnjen0q46ja6fl2hl
-            references users
+            references public.sessions
 );
 
-alter table tickets
+alter table public.tickets
     owner to postgres;
-
-create table users_roles
-(
-    user_id uuid not null
-        constraint fk2o0jvgh89lemvvo17cbqvdxaa
-            references users,
-    role_id uuid not null
-        constraint fkj6m8fwv7oqv74fcehir1a9ffy
-            references roles,
-    primary key (user_id, role_id)
-);
-
-alter table users_roles
-    owner to postgres;
-

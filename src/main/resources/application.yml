@@ -19,6 +19,8 @@ okta:
   oauth2:
     issuer: ${OKTA_ISSUER}
     client-id: ${OKTA_CLIENT_ID}
+    scopes: openid,profile,email
+    redirect-uri: http://localhost:4200/login/callback
 
 allowed:
   origins: http://localhost:4200
