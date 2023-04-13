@@ -1,4 +1,4 @@
-<div class="row text-white m-3" *ngIf="session$ | async as session">
+<div class="row text-white m-3" *ngIf="session">
   <div class="col-xxl-8">
     <div class="row">
       <div class="col-auto">
@@ -54,7 +54,7 @@
       </div>
     </div>
     <div class="row mt-4 d-flex justify-content-center">
-      <div class="col-auto">
+      <div *ngIf="session.hall.type !== 'CHILL_OUT'" class="col-auto">
         <i class="bi bi-square-fill"></i>
         <span class="ms-2">{{session.hall.rows[0].type}} - {{session.hall.rows[0].price}} UAH</span>
       </div>
@@ -85,12 +85,16 @@
                   [disabled]="seat.taken"
                   #btn
                   (click)="onSelectSeat(btn)">
-            <i class="bi bi-square lux-seat p-0 m-0"
-               [ngClass]="{'lux-seat': lastRow}"
-               data-bs-toggle="tooltip"
-               data-bs-placement="top"
-               title="{{row.number + ' Row, ' + seat.number + ' Seat\nPrice: ' + row.price  + ' UAH'}}">
-            </i>
+            <div class="seat p-0 m-0"
+                 [ngClass]="{
+                 'lux-seat': lastRow || session.hall.type === 'CHILL_OUT',
+                 'good-seat': !lastRow && session.hall.type !== 'CHILL_OUT',
+                 'taken-seat': seat.taken
+                 }"
+                 data-bs-toggle="tooltip"
+                 data-bs-placement="top"
+                 title="{{row.number + ' Row, ' + seat.number + ' Seat\nPrice: ' + row.price  + ' UAH'}}">
+            </div>
           </button>
         </div>
       </div>
@@ -116,10 +120,11 @@
         <div class="me-auto">Total price:</div>
         <div class="me-2">{{getTotalPrice()}} UAH</div>
       </div>
-      <div class="col-xxl-12 alert alert-danger" *ngIf="!(isAuthenticated$ | async)">Please log in to buy tickets</div>
+      <div class="col-xxl-12 alert alert-danger" *ngIf="!isAuthenticated">Please log in to buy tickets</div>
       <button class="col-xxl-12 btn btn-danger rounded-4 p-2"
-              [disabled]="!(isAuthenticated$ | async)"
-              (click)="onPurchaseTickets()">
+              [disabled]="!isAuthenticated"
+              (click)="onPurchaseTickets()"
+              #purchaseButton>
         Purchase
       </button>
     </div>

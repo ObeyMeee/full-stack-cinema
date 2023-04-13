@@ -1,5 +1,6 @@
 package ua.com.andromeda.film;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,15 +16,10 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/films")
+@RequiredArgsConstructor
 public class FilmController {
-
     private final FilmService filmService;
     private final SessionService sessionService;
-
-    public FilmController(FilmService filmService, SessionService sessionService) {
-        this.filmService = filmService;
-        this.sessionService = sessionService;
-    }
 
     @GetMapping
     public ResponseEntity<List<PosterDto>> getAll() {

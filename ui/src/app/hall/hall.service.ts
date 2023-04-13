@@ -18,7 +18,6 @@ export class HallService {
 
   purchaseTickets(tickets: Ticket[], sessionId: string) {
     const {apiUrl} = environment;
-    this.http.post(`${apiUrl}tickets`, {tickets, sessionId})
-      .subscribe({next: console.log, error: console.error});
+    return this.http.post(`${apiUrl}tickets`, {tickets, sessionId});
   }
 }

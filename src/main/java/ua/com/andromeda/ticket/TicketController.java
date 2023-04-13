@@ -6,8 +6,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ua.com.andromeda.user.User;
-import ua.com.andromeda.user.UserService;
 
 import java.security.Principal;
 
@@ -16,12 +14,10 @@ import java.security.Principal;
 @RequiredArgsConstructor
 public class TicketController {
     private final TicketService ticketService;
-    private final UserService userService;
 
     @PostMapping
     public ResponseEntity<String> purchase(@RequestBody PurchaseDto purchaseDto, Principal principal) {
-        User user = userService.findByEmail(principal.getName()).get();
-        ticketService.save(purchaseDto, user);
+        ticketService.save(purchaseDto, principal.getName());
         return ResponseEntity.ok("Everything is ok! :-)");
     }
 }
