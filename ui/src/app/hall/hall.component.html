@@ -54,12 +54,12 @@
       </div>
     </div>
     <div class="row mt-4 d-flex justify-content-center">
-      <div *ngIf="session.hall.type !== 'CHILL_OUT'" class="col-auto">
-        <i class="bi bi-square-fill"></i>
+      <div *ngIf="session.hall.type !== 'CHILL_OUT'" class="col-auto d-flex align-items-center">
+        <div class="seat good-seat d-inline-block"></div>
         <span class="ms-2">{{session.hall.rows[0].type}} - {{session.hall.rows[0].price}} UAH</span>
       </div>
-      <div class="col-auto">
-        <i class="bi bi-square-fill lux-seat"></i>
+      <div class="col-auto d-flex align-items-center">
+        <div class="seat lux-seat d-inline-block"></div>
         <span class="ms-2">{{session.hall.rows.at(-1)?.type}} - {{session.hall.rows.at(-1)?.price}} UAH</span>
       </div>
     </div>
@@ -75,7 +75,7 @@
     <div class="mt-4">
       <div class="row d-flex justify-content-center"
            *ngFor="let row of session.hall.rows; last as lastRow">
-        <div class="col-auto" *ngFor="let seat of row.seats">
+        <div class="col-auto p-2" *ngFor="let seat of row.seats">
           <button type="button"
                   class="bg-transparent border-0 p-0"
                   [attr.data-row]="row.number"
@@ -91,9 +91,8 @@
                  'good-seat': !lastRow && session.hall.type !== 'CHILL_OUT',
                  'taken-seat': seat.taken
                  }"
-                 data-bs-toggle="tooltip"
-                 data-bs-placement="top"
-                 title="{{row.number + ' Row, ' + seat.number + ' Seat\nPrice: ' + row.price  + ' UAH'}}">
+                 pTooltip="{{row.number + ' Row, ' + seat.number + ' Seat\nPrice: ' + row.price  + ' UAH'}}"
+                 tooltipPosition="top">
             </div>
           </button>
         </div>

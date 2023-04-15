@@ -15,6 +15,9 @@ import {OktaAuthModule, OktaCallbackComponent} from "@okta/okta-angular";
 import {environment} from "../environments/environment.development";
 import OktaAuth from "@okta/okta-auth-js";
 import {AuthInterceptorService} from "./auth/auth-interceptor.service";
+import { HoverDirective } from './poster/hover.directive';
+import { IconTextComponent } from './poster/icon-text/icon-text.component';
+import {TooltipModule} from "primeng/tooltip";
 
 const routes: Route[] = [
   {path: '', component: PosterComponent, pathMatch: 'full'},
@@ -34,15 +37,18 @@ const oktaAuth = new OktaAuth(environment.okta);
     BlurDirective,
     FilmComponent,
     HallComponent,
-    LoginComponent
+    LoginComponent,
+    HoverDirective,
+    IconTextComponent
   ],
-  imports: [
-    BrowserModule,
-    CarouselModule,
-    HttpClientModule,
-    RouterModule.forRoot(routes),
-    OktaAuthModule.forRoot({oktaAuth}),
-  ],
+    imports: [
+        BrowserModule,
+        CarouselModule,
+        HttpClientModule,
+        RouterModule.forRoot(routes),
+        OktaAuthModule.forRoot({oktaAuth}),
+        TooltipModule,
+    ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true},
   ],

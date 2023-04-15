@@ -9,7 +9,7 @@
   border-radius: 10px;
 }
 
-.trailer-btn:hover {
+.bg-primary-hover:hover {
   background: var(--primary-red);
 }
 
@@ -17,10 +17,26 @@
   color: white;
 }
 
-.select-day {
+.select-day-container {
   background: linear-gradient(#222023, #19171a);
 }
 
 .session-dates {
   background: linear-gradient(#393939, #342e33);
+}
+
+.bg-gray {
+  background: #333333
+}
+
+.fs-small {
+  font-size: 12px;
+}
+
+.text-gray {
+  color: #676f70;
+}
+
+.text-white-hover:hover {
+  color: white;
 }

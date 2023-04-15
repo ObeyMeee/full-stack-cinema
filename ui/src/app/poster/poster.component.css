@@ -27,18 +27,6 @@
   display: none !important;
 }
 
-.fa-play,
-.fa-info {
-  padding: 10px 15px;
-  background: #1d2327;
-  border-radius: 5px;
-}
-
-.fa-play:hover,
-.fa-info:hover {
-  background: var(--primary-red);
-}
-
 .cl-white-hover:hover {
   color: white;
 }
@@ -55,4 +43,8 @@
   top: calc(100% - 120px);
   left: 20px;
   right: 20px;
+}
+
+.select-date:hover {
+  background: #230804
 }

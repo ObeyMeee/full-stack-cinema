@@ -1,5 +1,5 @@
 export class SessionDto {
   id!: string;
-  startAt!: Date;
+  startAt!: string;
   minPrice!: number;
 }

@@ -2,7 +2,7 @@
   <p-carousel [circular]="false" [responsiveOptions]="responsiveOptions" [showIndicators]="false"
               [value]="posters" styleClass="custom-carousel">
     <ng-template let-poster pTemplate="item">
-      <div appBlur class="poster position-relative" >
+      <div appBlur class="poster position-relative">
         <div class="bg-image" [ngStyle]="{
                'background-image':'url(' + poster.media.image + ')',
                'background-repeat': 'no-repeat',
@@ -10,42 +10,64 @@
                'background-size': '370px calc(100vh - var(--header-height))'
               }">
         </div>
-        <div class="position-absolute poster-content row text-white invisible top-0 start-0">
+        <div class="position-absolute poster-content row text-white invisible top-0 start-0"
+             (click)="onHideDaySelection(daySelect, $event)">
           <div class="col m-xxl-2">
-            <a [routerLink]="['/films', poster.filmId]" class="text-decoration-none text-white">
-              <span class="row align-items-center">
-                <span class="col-xxl-4">
-                  <i class="fa-solid fa-info fa-2x"></i>
-                </span>
-                <span class="col-xxl-8">
-                  More details of film
-                </span>
-              </span>
-            </a>
+            <app-icon-text iconClass="fa-solid fa-info fa-2x"
+                           label="More details of film"
+                           [linkRef]="['/films', poster.filmId]">
+            </app-icon-text>
           </div>
           <div class="col m-xxl-2">
-            <a class="text-decoration-none text-white" href="#">
-              <span class="row align-items-center">
-                <span class="col-xxl-4">
-                  <i class="fa-solid fa-play fa-2x"></i>
-                </span>
-                  <span class="col-xxl-8">
-                    Watch trailer
+            <app-icon-text iconClass="fa-solid fa-play fa-2x"
+                           label="Watch trailer"
+                           [linkRef]="['/films', poster.filmId]">
+            </app-icon-text>
+          </div>
+          <button
+            class="cl-primary cl-white-hover gy-xxl-5 fs-3 text-center bg-transparent border border-0 show-schedule-list"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapseExample"
+            aria-expanded="false"
+            aria-controls="collapseExample"
+            (click)="onShowSchedule(poster.filmId, daySelect)">
+            <ng-container [ngSwitch]="getDateType(selectedDate)">
+              <ng-template [ngIf]="isTodayOrFuture(selectedDate)">
+                <ng-container *ngSwitchCase="'today'">Today</ng-container>
+                <ng-container *ngSwitchCase="'tomorrow'">Tomorrow</ng-container>
+                <ng-container *ngSwitchDefault>{{selectedDate | date:'EEE, MM/dd'}}</ng-container>
+              </ng-template>
+            </ng-container>
+          </button>
+          <div class="row row-cols-xxl-1 text-center bg-dark top-0 start-0 m-0 p-0 invisible" #daySelect>
+            <div *ngFor="let date of currentSelectDates"
+                 class="border-top border-bottom border-secondary border-1 border-secondary border-opacity-50
+                  cl-primary select-date cursor-pointer m-0 p-0"
+                 (click)="onSelectDate(date, daySelect)">
+              <ng-container [ngSwitch]="getDateType(date)">
+                <ng-template [ngIf]="isTodayOrFuture(date)">
+                  <span class="cl-primary"
+                          [ngClass]="{
+                            'text-white': isSameDay(date, selectedDate)
+                          }">
+                    <ng-container *ngSwitchCase="'today'">Today</ng-container>
+                    <ng-container *ngSwitchCase="'tomorrow'">Tomorrow</ng-container>
+                    <ng-container *ngSwitchDefault>{{date | date:'EEE, MM/dd'}}</ng-container>
                   </span>
-              </span>
-            </a>
+                </ng-template>
+              </ng-container>
+            </div>
+            <span class="text-white">Further schedule is not formed yet. See our news :-)</span>
           </div>
-          <span class="cl-primary cl-white-hover  gy-xxl-5 fs-3 text-center">Today</span>
-          <span class="row-cols-xxl-12 text-center fs-3 gy-xxl-5">Schedule</span>
+          <span class="row-cols-xxl-12 text-center fs-4 gy-xxl-5">Schedule</span>
           <div *ngIf="map" class="row d-flex justify-content-center gy-xxl-3">
             <ng-template [ngForOf]="map | keyvalue" let-entry ngFor>
               <ng-template [ngForOf]="entry.value" let-session ngFor>
-                <a *ngIf="poster.filmId === entry.key"
+                <a *ngIf="poster.filmId === entry.key && isDateSelected(session.startAt)"
                    class="cl-primary cl-white-hover col-xxl-2 fw-bold fs-5 text-decoration-none m-2"
-                   data-bs-placement="bottom"
-                   data-bs-toggle="tooltip"
-                   [routerLink]="['/films', poster.filmId, 'sessions', session.id]"
-                   title="From {{session.minPrice}} UAH">
+                   pTooltip="From {{session.minPrice}} UAH"
+                   tooltipPosition="bottom"
+                   [routerLink]="['/films', poster.filmId, 'sessions', session.id]">
                   {{session.startAt | date: 'HH:mm'}}
                 </a>
               </ng-template>

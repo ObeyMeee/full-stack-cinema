@@ -26,6 +26,7 @@
     "angular-oauth2-oidc": "^15.0.1",
     "bootstrap": "^5.2.3",
     "bootstrap-icons": "^1.10.3",
+    "date-fns": "^2.29.3",
     "primeicons": "^6.0.1",
     "primeng": "^15.2.0",
     "rxjs": "~7.8.0",

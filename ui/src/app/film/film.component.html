@@ -1,7 +1,7 @@
 <div *ngIf="film$ | async as film" class="row position-sticky ms-4 mt-4">
   <div class="col-xxl-3">
     <img alt="{{film.title}}" class="poster" src="{{film.media.image}}">
-    <button class="trailer-btn fw-bold text-white mt-3 d-flex justify-content-center">
+    <button class="trailer-btn bg-primary-hover fw-bold text-white mt-3 d-flex justify-content-center">
       <i class="bi bi-play-fill fs-4 me-2 my-2"></i>
       <span class="align-self-center fs-5">Watch trailer</span>
     </button>
@@ -60,26 +60,57 @@
       </div>
     </div>
   </div>
-  <div class="col-xxl-3">
-    <div class="select-day p-4 border-bottom rounded-top">
-      <span class="fs-4 text-white">Schedule of sessions</span>
-      <select class="form-select m-2">
-        <option>Fr, 24 March</option>
-        <option>St, 25 March</option>
-        <option>Sn, 26 March</option>
-        <option>Mn, 27 March</option>
-      </select>
+  <ng-container *ngIf="sessions">
+    <div class="col-xxl-3">
+      <div class="row select-day-container p-4 rounded-top"
+           (click)="onOpenSelection()">
+        <span class="fs-4 text-white">Schedule of sessions</span>
+        <div class="row text-white cursor-pointer bg-gray bg-primary-hover rounded-top m-0 p-0">
+        <span class="col-auto me-auto p-2">
+            {{selectedDate | date:'EEE, MM/dd'}}
+          </span>
+          <div class="col-auto d-flex align-items-center">
+            <ng-container [ngSwitch]="getDateType(selectedDate)">
+              <span class="fs-small">
+                <ng-container *ngSwitchCase="'today'">Today</ng-container>
+                <ng-container *ngSwitchCase="'tomorrow'">Tomorrow</ng-container>
+              </span>
+            </ng-container>
+            <i class="bi bi-arrow-down-short"></i>
+          </div>
+        </div>
+        <div class="row row-cols-xxl-1 text-center bg-gray m-0 p-0 rounded-bottom d-none" #daySelect>
+          <div *ngFor="let date of mapStartAtDates()">
+            <ng-template [ngIf]="isTodayOrFuture(date)">
+              <ng-container [ngSwitch]="getDateType(date)">
+                <div class="row-cols-6 border-top border-bottom border-secondary border-1 border-secondary border-opacity-50
+              cl-primary select-date cursor-pointer m-0 p-3 text-gray text-white-hover"
+                     (click)="onSelectDate(date)">
+                  <span [ngClass]="{
+                            'text-white': isSameDay(date, selectedDate)
+                          }">
+                    <ng-container *ngSwitchCase="'today'">Today</ng-container>
+                    <ng-container *ngSwitchCase="'tomorrow'">Tomorrow</ng-container>
+                    <ng-container *ngSwitchDefault>{{date | date:'EEE, MM/dd'}}</ng-container>
+                  </span>
+                </div>
+              </ng-container>
+            </ng-template>
+          </div>
+          <span class="text-white">Further schedule is not formed yet. See our news :-)</span>
+        </div>
+      </div>
+      <div class="row row-cols-xxl-3 session-dates rounded-bottom">
+        <ng-template [ngForOf]="sessions" let-session ngFor>
+          <a *ngIf="isSameDay(session.startAt, selectedDate)"
+             class="cl-primary cl-white-hover col-xxl-2 fs-5 text-decoration-none m-2"
+             pTooltip="From {{session.minPrice}} UAH"
+             tooltipPosition="bottom"
+             [routerLink]="['sessions', session.id]">
+            {{session.startAt | date: 'HH:mm'}}
+          </a>
+        </ng-template>
+      </div>
     </div>
-    <div class="row-cols-xxl-3 session-dates border-top rounded-bottom">
-      <ng-container *ngIf="sessions$ | async as sessions">
-        <a *ngFor="let session of sessions" class="cl-primary cl-white-hover col-xxl-2 fs-5 text-decoration-none m-2"
-           data-bs-placement="bottom"
-           data-bs-toggle="tooltip"
-           [routerLink]="['sessions', session.id]"
-           title="From {{session.minPrice}} UAH">
-          {{session.startAt | date: 'HH:mm'}}
-        </a>
-      </ng-container>
-    </div>
-  </div>
+  </ng-container>
 </div>
