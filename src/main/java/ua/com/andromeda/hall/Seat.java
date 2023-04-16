@@ -16,9 +16,8 @@ public class Seat {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-
     private int number;
-    private boolean isTaken;
+
     @ManyToOne
     @JsonIgnore
     @ToString.Exclude

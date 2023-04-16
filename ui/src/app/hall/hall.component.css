@@ -21,6 +21,9 @@ i {
   border: 1px solid deepskyblue;
 }
 
+.lux-seat {
+  border: 1px solid var(--primary-red);
+}
 .selected-good-seat {
   background-color: dodgerblue;
 }
@@ -30,8 +33,7 @@ i {
 }
 
 .taken-seat {
+  border: #333333;
   background-color: #676f70;
 }
-.lux-seat {
-  border: 1px solid var(--primary-red);
-}
+

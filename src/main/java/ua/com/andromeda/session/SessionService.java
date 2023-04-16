@@ -1,10 +1,12 @@
 package ua.com.andromeda.session;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 import ua.com.andromeda.session.dto.SessionBuyTicketDto;
 import ua.com.andromeda.session.dto.SessionDto;
+import ua.com.andromeda.ticket.TicketDto;
+import ua.com.andromeda.ticket.TicketRepository;
 
 import java.util.List;
 import java.util.Map;
@@ -13,13 +15,10 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class SessionService {
     private final SessionRepository sessionRepository;
-
-    @Autowired
-    public SessionService(SessionRepository sessionRepository) {
-        this.sessionRepository = sessionRepository;
-    }
+    private final TicketRepository ticketRepository;
 
     public Map<UUID, List<SessionDto>> getSessions(boolean enabled) {
         Streamable<Session> sessions = sessionRepository.findAllByEnabledEquals(enabled);
@@ -42,6 +41,11 @@ public class SessionService {
     }
 
     public Optional<SessionBuyTicketDto> findById(UUID id) {
-        return sessionRepository.findSessionBuyTicketDtoById(id);
+        Optional<SessionBuyTicketDto> optionalSessionDto = sessionRepository.findSessionBuyTicketDtoById(id);
+        optionalSessionDto.ifPresent(session -> {
+            List<TicketDto> boughtTickets = ticketRepository.findBySessionId(id);
+            session.setBoughtTickets(boughtTickets);
+        });
+        return optionalSessionDto;
     }
 }

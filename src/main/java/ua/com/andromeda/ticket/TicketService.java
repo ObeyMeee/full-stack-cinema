@@ -17,8 +17,8 @@ public class TicketService {
 
     public void save(PurchaseDto purchaseDto, String username) {
         UUID sessionId = UUID.fromString(purchaseDto.getSessionId());
-        Session session = sessionRepository.findById(sessionId).get();
         LocalDateTime now = LocalDateTime.now();
+        Session session = sessionRepository.findById(sessionId).get();
         List<Ticket> tickets = purchaseDto.getTickets().stream().map(ticketDto -> {
                     Ticket ticket = new Ticket();
                     ticket.setSeat(ticketDto.getSeat());

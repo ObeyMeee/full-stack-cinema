@@ -141,7 +141,6 @@ create table public.seats
 (
     id       uuid    not null
         primary key,
-    is_taken boolean not null,
     number   integer not null,
     row_id   uuid
         constraint fkfi3owtwwqbc0mh605hq2ygs1x

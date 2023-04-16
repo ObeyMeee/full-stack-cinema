@@ -54,7 +54,7 @@
       </div>
     </div>
     <div class="row mt-4 d-flex justify-content-center">
-      <div *ngIf="session.hall.type !== 'CHILL_OUT'" class="col-auto d-flex align-items-center">
+      <div *ngIf="session.hall.type !== 'CHILL_OUT'" class="col-auto d-flex align-items-center  ">
         <div class="seat good-seat d-inline-block"></div>
         <span class="ms-2">{{session.hall.rows[0].type}} - {{session.hall.rows[0].price}} UAH</span>
       </div>
@@ -82,17 +82,19 @@
                   [attr.data-seat]="seat.number"
                   [attr.data-type]="row.type"
                   [attr.data-price]="row.price"
-                  [disabled]="seat.taken"
                   #btn
                   (click)="onSelectSeat(btn)">
-            <div class="seat p-0 m-0"
+            <div class="seat text-white p-0 m-0"
                  [ngClass]="{
-                 'lux-seat': lastRow || session.hall.type === 'CHILL_OUT',
-                 'good-seat': !lastRow && session.hall.type !== 'CHILL_OUT',
-                 'taken-seat': seat.taken
+                 'lux-seat': !isSeatTaken(row.number, seat.number) && lastRow || session.hall.type === 'CHILL_OUT',
+                 'good-seat': !isSeatTaken(row.number, seat.number) && !lastRow && session.hall.type !== 'CHILL_OUT',
+                 'taken-seat': isSeatTaken(row.number, seat.number)
                  }"
-                 pTooltip="{{row.number + ' Row, ' + seat.number + ' Seat\nPrice: ' + row.price  + ' UAH'}}"
+                 pTooltip="{{isSeatTaken(row.number, seat.number) ? 'This seat is taken' : row.number + ' Row, ' + seat.number + ' Seat\nPrice: ' + row.price  + ' UAH'}}"
                  tooltipPosition="top">
+              <ng-container *ngIf="isSeatTaken(row.number, seat.number)">
+                x
+              </ng-container>
             </div>
           </button>
         </div>

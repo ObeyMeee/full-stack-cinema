@@ -33,9 +33,13 @@ export class HallComponent implements OnInit {
     this.isAuthenticated = (await firstValueFrom(this.oktaStateService.authState$)).isAuthenticated
   }
 
+  isSeatTaken(row: number, seat: number) {
+    return !!this.session.boughtTickets.find(ticket => ticket.row === row && ticket.seat === seat);
+  }
+
   getTotalPrice() {
     return this.tickets.map(ticket => ticket.price)
-      .reduce((acc, price) => acc + price, 0);
+      .reduce((acc, price) => acc! + price!, 0);
   }
 
   async onPurchaseTickets() {
@@ -49,9 +53,7 @@ export class HallComponent implements OnInit {
     const dataset = btnSeat.dataset;
     const selectedRow = +dataset['row']!;
     const selectedSeat = +dataset['seat']!;
-    const isAlreadyTaken = this.session.hall.rows.find(row => row.number === selectedRow)
-      ?.seats.find(seat => seat.number === selectedSeat)?.taken;
-    if (isAlreadyTaken) return;
+    if (this.isSeatTaken(selectedRow, selectedSeat)) return;
 
     this.changeSeatIcon(btnSeat);
     const ticket = new Ticket(selectedRow, selectedSeat, dataset['type']!, +dataset['price']!);

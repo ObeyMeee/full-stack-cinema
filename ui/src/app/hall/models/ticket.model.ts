@@ -1,8 +1,8 @@
 export class Ticket {
   row!: number;
   seat!: number;
-  type!: string;
-  price!: number
+  type?: string;
+  price?: number
 
   constructor(row: number, seat: number, type: string, price: number) {
     this.row = row;
