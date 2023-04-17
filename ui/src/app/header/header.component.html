@@ -5,7 +5,7 @@
     </button>
   </div>
   <div>
-    <a class="navbar-brand p-2 me-auto" href="#">
+    <a class="navbar-brand p-2 me-auto" routerLink="/">
       <img alt="Andromeda cinema" height="50" src="favicon.ico">
     </a>
   </div>
@@ -23,9 +23,23 @@
           <i class="fas fa-bell"></i>
         </a>
       </li>
+      <li class="nav-item mx-2">
+        <a class="nav-link" [routerLink]="['user', 'tickets']">
+          <i class="bi bi-person"></i>
+        </a>
+      </li>
       <li class="nav-item">
-        <button class="nav-link bg-transparent border-0" *ngIf="!(isAuthenticated$ | async)" (click)="onLogin()">Log in</button>
-        <button class="nav-link bg-transparent border-0" *ngIf="isAuthenticated$ | async" (click)="onLogout()">Log out</button>
+        <a class="nav-link bg-transparent border-0"
+           routerLink="login"
+           *ngIf="!(isAuthenticated$ | async)">
+          Log in
+        </a>
+        <button
+          class="nav-link bg-transparent border-0"
+          *ngIf="isAuthenticated$ | async"
+          (click)="onLogout()">
+          Log out
+        </button>
       </li>
     </ul>
   </div>

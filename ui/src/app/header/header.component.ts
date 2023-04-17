@@ -15,15 +15,11 @@ export class HeaderComponent implements OnInit {
               @Inject(OKTA_AUTH) private oktaAuth: OktaAuth) {
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.isAuthenticated$ = this.oktaStateService.authState$.pipe(
       filter((s: AuthState) => !!s),
       map((s: AuthState) => s.isAuthenticated ?? false)
     );
-  }
-
-  async onLogin() {
-    await this.oktaAuth.signInWithRedirect();
   }
 
   async onLogout() {
