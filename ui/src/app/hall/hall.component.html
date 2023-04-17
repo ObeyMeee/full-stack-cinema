@@ -101,19 +101,22 @@
       </div>
     </div>
   </div>
-  <div class="col-xxl-4 fs-5 border border-1 border-dark rounded-4 d-flex flex-column">
+  <div class="col-xxl-4 fs-5 tickets-container border border-1 border-dark rounded-4
+   d-flex flex-column position-sticky top-20px">
     <div class="row mt-4 row-cols-xxl-auto fw-bold">
       <div class="me-auto">Tickets</div>
       <div class="text-white-50"> {{tickets.length}} tickets, {{getTotalPrice()}} UAH</div>
     </div>
 
-    <div class="row row-cols-xxl-auto m-2 p-4 border border-1 rounded-4 justify-content-between"
-         [ngClass]="{'border-info': ticket.type === 'GOOD', 'border-danger': ticket.type === 'LUX'}"
-         *ngFor="let ticket of tickets">
-      <span>{{ticket.row}} row</span>
-      <span>{{ticket.seat}} seat</span>
-      <span>{{ticket.type}}</span>
-      <span>{{ticket.price}} UAH</span>
+    <div class="overflow-auto">
+      <div class="row row-cols-xxl-auto m-2 p-4 border border-1 rounded-4 justify-content-between"
+           [ngClass]="{'border-info': ticket.type === 'GOOD', 'border-danger': ticket.type === 'LUX'}"
+           *ngFor="let ticket of tickets">
+        <span>{{ticket.row}} row</span>
+        <span>{{ticket.seat}} seat</span>
+        <span>{{ticket.type}}</span>
+        <span>{{ticket.price}} UAH</span>
+      </div>
     </div>
 
     <div class="row mt-auto border-1 border-top border-white fs-4">
@@ -122,7 +125,7 @@
         <div class="me-2">{{getTotalPrice()}} UAH</div>
       </div>
       <div class="col-xxl-12 alert alert-danger" *ngIf="!isAuthenticated">Please log in to buy tickets</div>
-      <button class="col-xxl-12 btn btn-danger rounded-4 p-2"
+      <button class="col-xxl-12 btn btn-danger rounded-4"
               [disabled]="!isAuthenticated"
               (click)="onPurchaseTickets()"
               #purchaseButton>

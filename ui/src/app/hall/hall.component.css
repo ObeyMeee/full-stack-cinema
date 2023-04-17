@@ -3,6 +3,14 @@
   height: auto;
 }
 
+.top-20px {
+  top: 20px;
+}
+
+.tickets-container {
+  height: calc(100vh - var(--header-height));
+}
+
 i {
   font-size: 150%;
 }
@@ -36,4 +44,3 @@ i {
   border: #333333;
   background-color: #676f70;
 }
-
