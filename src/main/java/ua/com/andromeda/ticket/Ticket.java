@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.format.annotation.DateTimeFormat;
 import ua.com.andromeda.session.Session;
 
 import java.time.LocalDateTime;
@@ -20,6 +21,7 @@ public class Ticket {
     private UUID id;
 
     @Column(name = "bought_at")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
     private LocalDateTime boughtAt;
     private int price;
     private int row;

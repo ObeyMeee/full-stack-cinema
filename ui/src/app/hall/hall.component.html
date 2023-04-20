@@ -1,10 +1,10 @@
-<div class="row text-white m-3" *ngIf="session">
+<div *ngIf="session" class="row text-white m-3">
   <div class="col-xxl-8">
     <div class="row">
       <div class="col-auto">
-        <img src="{{session.image}}"
-             alt="{{session.title}}"
-             class="w-250">
+        <img alt="{{session.title}}"
+             class="w-250"
+             src="{{session.image}}">
       </div>
       <div class="col-xxl-8 m-2">
         <span class="row row-cols-xxl-12 h4">{{session.title}}</span>
@@ -65,7 +65,7 @@
     </div>
     <div class="row row-cols-xxl-auto mt-3 d-flex justify-content-center">
       <div class="screen">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 806 21" fill="orangered">
+        <svg fill="orangered" viewBox="0 0 806 21" xmlns="http://www.w3.org/2000/svg">
           <path
             d="M3.2,20l-2,0.2l-0.3-4l2-0.2C136.2,5.3,269.6,0,403,0s266.8,5.3,400.2,16l2,0.2l-0.3,4l-2-0.2 C669.5,9.3,536.3,4,403,4S136.4,9.3,3.2,20z"></path>
         </svg>
@@ -73,23 +73,23 @@
       </div>
     </div>
     <div class="mt-4">
-      <div class="row d-flex justify-content-center"
-           *ngFor="let row of session.hall.rows; last as lastRow">
-        <div class="col-auto p-2" *ngFor="let seat of row.seats">
-          <button type="button"
-                  class="bg-transparent border-0 p-0"
+      <div *ngFor="let row of session.hall.rows; last as lastRow"
+           class="row d-flex justify-content-center">
+        <div *ngFor="let seat of row.seats" class="col-auto p-2">
+          <button #btn
+                  (click)="onSelectSeat(btn)"
+                  [attr.data-price]="row.price"
                   [attr.data-row]="row.number"
                   [attr.data-seat]="seat.number"
                   [attr.data-type]="row.type"
-                  [attr.data-price]="row.price"
-                  #btn
-                  (click)="onSelectSeat(btn)">
-            <div class="seat text-white p-0 m-0"
-                 [ngClass]="{
+                  class="bg-transparent border-0 p-0"
+                  type="button">
+            <div [ngClass]="{
                  'lux-seat': !isSeatTaken(row.number, seat.number) && lastRow || session.hall.type === 'CHILL_OUT',
                  'good-seat': !isSeatTaken(row.number, seat.number) && !lastRow && session.hall.type !== 'CHILL_OUT',
                  'taken-seat': isSeatTaken(row.number, seat.number)
                  }"
+                 class="seat text-white p-0 m-0"
                  pTooltip="{{isSeatTaken(row.number, seat.number) ? 'This seat is taken' : row.number + ' Row, ' + seat.number + ' Seat\nPrice: ' + row.price  + ' UAH'}}"
                  tooltipPosition="top">
               <ng-container *ngIf="isSeatTaken(row.number, seat.number)">
@@ -109,9 +109,9 @@
     </div>
 
     <div class="overflow-auto">
-      <div class="row row-cols-xxl-auto m-2 p-4 border border-1 rounded-4 justify-content-between"
+      <div *ngFor="let ticket of tickets"
            [ngClass]="{'border-info': ticket.type === 'GOOD', 'border-danger': ticket.type === 'LUX'}"
-           *ngFor="let ticket of tickets">
+           class="row row-cols-xxl-auto m-2 p-4 border border-1 rounded-4 justify-content-between">
         <span>{{ticket.row}} row</span>
         <span>{{ticket.seat}} seat</span>
         <span>{{ticket.type}}</span>
@@ -124,11 +124,11 @@
         <div class="me-auto">Total price:</div>
         <div class="me-2">{{getTotalPrice()}} UAH</div>
       </div>
-      <div class="col-xxl-12 alert alert-danger" *ngIf="!isAuthenticated">Please log in to buy tickets</div>
-      <button class="col-xxl-12 btn btn-danger rounded-4"
-              [disabled]="!isAuthenticated"
+      <div *ngIf="!isAuthenticated" class="col-xxl-12 alert alert-danger">Please log in to buy tickets</div>
+      <button #purchaseButton
               (click)="onPurchaseTickets()"
-              #purchaseButton>
+              [disabled]="!isAuthenticated"
+              class="col-xxl-12 btn btn-danger rounded-4">
         Purchase
       </button>
     </div>

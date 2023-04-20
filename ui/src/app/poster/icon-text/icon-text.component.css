@@ -1,9 +1,5 @@
 .fa-play,
 .fa-info {
   padding: 10px 15px;
-  background: #1d2327;
   border-radius: 5px;
-}
-.icon-bg {
-  background: var(--primary-red);
 }

@@ -1,7 +1,7 @@
-<a appHover [routerLink]="linkRef" class="text-decoration-none text-white">
+<a [routerLink]="linkRef" appHover class="text-decoration-none text-white" selector="i">
   <div class="row align-items-center">
     <span class="col-xxl-4">
-      <i [class]="iconClass"></i>
+      <i [classList]="[iconClass]"></i>
     </span>
     <span class="col-xxl-8">{{label}}</span>
   </div>

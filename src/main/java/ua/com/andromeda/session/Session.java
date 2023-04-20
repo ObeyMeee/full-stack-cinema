@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.format.annotation.DateTimeFormat;
 import ua.com.andromeda.film.Film;
 import ua.com.andromeda.hall.Hall;
 import ua.com.andromeda.ticket.Ticket;
@@ -23,6 +24,7 @@ public class Session {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
     private LocalDateTime startAt;
     private boolean enabled;
 

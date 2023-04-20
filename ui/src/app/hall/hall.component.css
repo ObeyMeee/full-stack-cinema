@@ -32,6 +32,7 @@ i {
 .lux-seat {
   border: 1px solid var(--primary-red);
 }
+
 .selected-good-seat {
   background-color: dodgerblue;
 }

@@ -11,6 +11,7 @@ import {filter, map, Observable} from "rxjs";
 export class HeaderComponent implements OnInit {
 
   isAuthenticated$!: Observable<boolean>;
+
   constructor(private oktaStateService: OktaAuthStateService,
               @Inject(OKTA_AUTH) private oktaAuth: OktaAuth) {
   }

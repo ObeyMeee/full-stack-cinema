@@ -1,0 +1,9 @@
+
+.tab {
+  border: 1px solid #676f70;
+  border-radius: 10px;
+}
+
+.tab:hover {
+  border-color: white;
+}

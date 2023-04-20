@@ -34,9 +34,9 @@ public class Film {
     @Column(name = "production_year")
     private int productionYear;
 
-    @ManyToMany(cascade = {
-            CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH
-    })
+    @ManyToMany(
+            cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+    )
     @JoinTable(
             name = "films_countries",
             joinColumns = @JoinColumn(name = "film_id"),
@@ -48,9 +48,9 @@ public class Film {
     @JoinColumn(name = "media_id")
     private Media media;
 
-    @ManyToMany(cascade = {
-            CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH
-    })
+    @ManyToMany(
+            cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+    )
     @JoinTable(
             name = "films_actors",
             joinColumns = @JoinColumn(name = "film_id"),
@@ -58,9 +58,9 @@ public class Film {
     )
     private List<Actor> actors;
 
-    @ManyToMany(cascade = {
-            CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH
-    })
+    @ManyToMany(
+            cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+    )
     @JoinTable(
             name = "films_genres",
             joinColumns = @JoinColumn(name = "film_id"),
@@ -77,5 +77,4 @@ public class Film {
     @JsonIgnore
     @ToString.Exclude
     private List<Comment> comments;
-
 }

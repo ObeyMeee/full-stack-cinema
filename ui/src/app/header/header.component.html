@@ -23,21 +23,21 @@
           <i class="fas fa-bell"></i>
         </a>
       </li>
-      <li class="nav-item mx-2" *ngIf="isAuthenticated$ | async">
-        <a class="nav-link" [routerLink]="['user', 'tickets']">
+      <li *ngIf="isAuthenticated$ | async" class="nav-item mx-2">
+        <a [routerLink]="['user', 'tickets']" class="nav-link">
           <i class="bi bi-person"></i>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link bg-transparent border-0"
-           routerLink="login"
-           *ngIf="!(isAuthenticated$ | async)">
+        <a *ngIf="!(isAuthenticated$ | async)"
+           class="nav-link bg-transparent border-0"
+           routerLink="login">
           Log in
         </a>
         <button
-          class="nav-link bg-transparent border-0"
+          (click)="onLogout()"
           *ngIf="isAuthenticated$ | async"
-          (click)="onLogout()">
+          class="nav-link bg-transparent border-0">
           Log out
         </button>
       </li>

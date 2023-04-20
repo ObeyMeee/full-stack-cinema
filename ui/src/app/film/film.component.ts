@@ -17,6 +17,7 @@ export class FilmComponent implements OnInit {
   sessions!: SessionDto[];
   selectedDate = new Date();
   @ViewChild('daySelect') daySelect!: ElementRef;
+  protected readonly isSameDay = isSameDay;
 
   constructor(private filmService: FilmService,
               private route: ActivatedRoute) {
@@ -29,7 +30,7 @@ export class FilmComponent implements OnInit {
   }
 
   mapStartAtDates() {
-    return this.sessions.map(session => new Date(session.startAt))
+    return this.sessions.map(session => session.startAt)
       .sort((a, b) => a.getTime() - b.getTime());
   }
 
@@ -43,10 +44,6 @@ export class FilmComponent implements OnInit {
     return 'other';
   }
 
-  isSameDay(dateStr: string | Date, date: Date) {
-    return isSameDay(new Date(dateStr), date);
-  }
-
   isTodayOrFuture(date: Date) {
     return isToday(date) || isFuture(date);
   }
@@ -56,14 +53,11 @@ export class FilmComponent implements OnInit {
     this.hideSelection();
   }
 
-  private hideSelection() {
-    console.log(this.daySelect.nativeElement, this.daySelect.nativeElement.classList.contains('d-none'));
-    this.daySelect.nativeElement.classList.add('d-none');
-    console.log(this.daySelect.nativeElement, this.daySelect.nativeElement.classList.contains('d-none'));
-
-  }
-
   onOpenSelection() {
     this.daySelect.nativeElement.classList.remove('d-none');
+  }
+
+  private hideSelection() {
+    this.daySelect.nativeElement.classList.add('d-none');
   }
 }

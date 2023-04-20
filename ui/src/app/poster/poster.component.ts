@@ -56,7 +56,7 @@ export class PosterComponent implements OnInit {
   onShowSchedule(filmId: string, daySelect: HTMLElement) {
     daySelect.classList.toggle('invisible');
     this.currentSelectDates = this.map.get(filmId)!
-      .map(session => new Date(Date.parse(session.startAt)))
+      .map(session => session.startAt)
       .sort((a, b) => a.getTime() - b.getTime());
   }
 
@@ -74,12 +74,6 @@ export class PosterComponent implements OnInit {
     daySelectElement.classList.add('invisible');
     this.selectedDate = date;
   }
-
-  isDateSelected(startAtStr: string) {
-    const startAt = new Date(Date.parse(startAtStr));
-    return isSameDay(startAt, this.selectedDate);
-  }
-
 
   onHideDaySelection(daySelectElement: HTMLElement, $event: MouseEvent) {
     if (!(<HTMLButtonElement>$event.target).classList.contains('show-schedule-list')) {
