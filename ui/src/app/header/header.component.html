@@ -23,7 +23,7 @@
           <i class="fas fa-bell"></i>
         </a>
       </li>
-      <li class="nav-item mx-2">
+      <li class="nav-item mx-2" *ngIf="isAuthenticated$ | async">
         <a class="nav-link" [routerLink]="['user', 'tickets']">
           <i class="bi bi-person"></i>
         </a>
