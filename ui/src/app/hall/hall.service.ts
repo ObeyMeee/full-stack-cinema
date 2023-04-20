@@ -1,23 +1,22 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
-import {environment} from "../../environments/environment.development";
 import {SessionBuyTicketDto} from "./session-buy-ticket.dto";
 import {Ticket} from "./models/ticket.model";
+import {Service} from "../shared/base.service";
 
 @Injectable({
   providedIn: 'root'
 })
-export class HallService {
+export class HallService extends Service {
   constructor(private http: HttpClient) {
+    super();
   }
 
   getSession(id: string) {
-    const {apiUrl} = environment;
-    return this.http.get<SessionBuyTicketDto>(`${apiUrl}sessions/${id}`);
+    return this.http.get<SessionBuyTicketDto>(`${this.baseUrl}sessions/${id}`);
   }
 
   purchaseTickets(tickets: Ticket[], sessionId: string) {
-    const {apiUrl} = environment;
-    return this.http.post(`${apiUrl}tickets`, {tickets, sessionId});
+    return this.http.post(`${this.baseUrl}tickets`, {tickets, sessionId});
   }
 }
