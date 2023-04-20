@@ -2,18 +2,21 @@ package ua.com.andromeda.ticket;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
 
 @RestController
 @RequestMapping("/tickets")
 @RequiredArgsConstructor
 public class TicketController {
     private final TicketService ticketService;
+
+    @GetMapping("/user")
+    public ResponseEntity<List<TicketProfileDto>> getTicketsByUser(Principal principal) {
+        return ResponseEntity.ok(ticketService.findAllByUsername(principal.getName()));
+    }
 
     @PostMapping
     public ResponseEntity<String> purchase(@RequestBody PurchaseDto purchaseDto, Principal principal) {

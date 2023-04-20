@@ -1,0 +1,32 @@
+<div class="col-xxl-12 bg-dark rounded-5 p-3">
+  <p class="fs-3">{{sectionName}}</p>
+  <p *ngIf="!filmTransactions.length">{{noTransactionsMessage}}</p>
+  <table *ngIf="filmTransactions.length"
+         class="table table-dark table-striped table-hover cursor-pointer text-center">
+    <thead>
+    <tr class="text-secondary">
+      <th>Date of transaction</th>
+      <th>Film</th>
+      <th>Date of session</th>
+      <th>Tickets</th>
+      <th>Price</th>
+      <th>Details</th>
+    </tr>
+    </thead>
+    <tbody class="table-group-divider">
+    <tr #rowElement
+        (click)="onShowDetails(rowElement)"
+        *ngFor="let transaction of filmTransactions"
+        [attr.data-bought-at]="transaction.boughtAt"
+        appHover
+        selector=".bi-chevron-down">
+      <td>{{transaction.boughtAt | date: 'short'}}</td>
+      <td>{{transaction.filmTitle}}</td>
+      <td>{{transaction.sessionStartAt | date: 'short'}}</td>
+      <td>{{transaction.quantity}}</td>
+      <td>{{transaction.totalPrice}}</td>
+      <td><i class="bi bi-chevron-down bg-dark rounded-circle fs-5 p-1"></i></td>
+    </tr>
+    </tbody>
+  </table>
+</div>

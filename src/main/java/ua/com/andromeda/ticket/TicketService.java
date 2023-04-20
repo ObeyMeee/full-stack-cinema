@@ -32,4 +32,8 @@ public class TicketService {
         ).toList();
         ticketRepository.saveAll(tickets);
     }
+
+    public List<TicketProfileDto> findAllByUsername(String username) {
+        return ticketRepository.findByUsername(username);
+    }
 }
