@@ -39,7 +39,7 @@
               </ng-template>
             </ng-container>
           </button>
-          <div #daySelect class="row row-cols-xxl-1 text-center bg-dark top-0 start-0 m-0 p-0 invisible">
+          <div #daySelect class="row row-cols-xxl-1 text-center bg-dark position-absolute top-50 m-0 p-0 invisible">
             <div (click)="onSelectDate(date, daySelect)"
                  *ngFor="let date of currentSelectDates"
                  class="border-top border-bottom border-secondary border-1 border-secondary border-opacity-50
