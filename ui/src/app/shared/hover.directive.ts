@@ -6,6 +6,7 @@ import {Directive, ElementRef, HostListener, Input} from '@angular/core';
 export class HoverDirective {
   @Input() selector!: string;
   classToAdd = 'bg-cl-primary';
+  @Input() classToRemove!: string;
 
   constructor(private elementRef: ElementRef) {
   }
@@ -21,7 +22,7 @@ export class HoverDirective {
   private toggleClasses() {
     const element = (<HTMLElement>this.elementRef.nativeElement).querySelector(this.selector);
     element?.classList.toggle(this.classToAdd);
-    element?.classList.toggle('bg-dark');
+    element?.classList.toggle(this.classToRemove);
   }
 
 }

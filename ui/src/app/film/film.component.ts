@@ -16,7 +16,7 @@ export class FilmComponent implements OnInit {
   film$!: Observable<Film>;
   sessions!: SessionDto[];
   selectedDate = new Date();
-  @ViewChild('daySelect') daySelect!: ElementRef;
+  @ViewChild('daySelect') daySelectElementRef!: ElementRef;
   protected readonly isSameDay = isSameDay;
 
   constructor(private filmService: FilmService,
@@ -26,7 +26,7 @@ export class FilmComponent implements OnInit {
   async ngOnInit() {
     const id = this.route.snapshot.params['id'];
     this.film$ = this.filmService.getFilm(id);
-    this.sessions = await firstValueFrom(this.filmService.getSessionsId(id));
+    this.sessions = await firstValueFrom(this.filmService.getSessionsById(id));
   }
 
   mapStartAtDates() {
@@ -38,10 +38,7 @@ export class FilmComponent implements OnInit {
     if (isToday(date)) {
       return 'today';
     }
-    if (isTomorrow(date)) {
-      return 'tomorrow';
-    }
-    return 'other';
+    return isTomorrow(date) ? 'tomorrow' : 'other';
   }
 
   isTodayOrFuture(date: Date) {
@@ -50,14 +47,5 @@ export class FilmComponent implements OnInit {
 
   onSelectDate(date: Date) {
     this.selectedDate = date;
-    this.hideSelection();
-  }
-
-  onOpenSelection() {
-    this.daySelect.nativeElement.classList.remove('d-none');
-  }
-
-  private hideSelection() {
-    this.daySelect.nativeElement.classList.add('d-none');
   }
 }

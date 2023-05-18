@@ -30,6 +30,10 @@ body {
   background: var(--primary-red);
 }
 
+.cl-white-hover:hover {
+  color: white !important;
+}
+
 .cursor-pointer {
   cursor: pointer;
 }

@@ -6,7 +6,7 @@ import {HeaderComponent} from './header/header.component';
 import {CarouselModule} from "primeng/carousel";
 import {PosterComponent} from './poster/poster.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
-import {BlurDirective} from './poster/blur.directive';
+import {BlurDirective} from './poster/poster-element/blur.directive';
 import {Route, RouterModule} from "@angular/router";
 import {FilmComponent} from './film/film.component';
 import {HallComponent} from './hall/hall.component';
@@ -16,13 +16,19 @@ import {environment} from "../environments/environment.development";
 import OktaAuth from "@okta/okta-auth-js";
 import {AuthInterceptorService} from "./auth/auth-interceptor.service";
 import {HoverDirective} from './shared/hover.directive';
-import {IconTextComponent} from './poster/icon-text/icon-text.component';
+import {IconTextComponent} from './poster/poster-element/icon-text/icon-text.component';
 import {TooltipModule} from "primeng/tooltip";
 import {UserComponent} from './user/user.component';
 import {ProfileComponent} from './user/profile/profile.component';
-import {TicketListComponent} from './user/ticket-list/ticket-list.component';
-import {TransactionsTableComponent} from './user/ticket-list/transactions-table/transactions-table.component';
+import {OperationsContainerComponent} from './user/operations-container/operations-container.component';
+import {TransactionsTableComponent} from './user/operations-container/transactions-table/transactions-table.component';
 import {ConvertDateInterceptorService} from "./shared/convert-date-interceptor.service";
+import {
+  TransactionElementComponent
+} from './user/operations-container/transactions-table/transaction-element/transaction-element.component';
+import {PosterElementComponent} from './poster/poster-element/poster-element.component';
+import {DropdownDirective} from './shared/dropdown.directive';
+import {TicketComponent} from './hall/ticket/ticket.component';
 
 const routes: Route[] = [
   {path: '', component: PosterComponent, pathMatch: 'full'},
@@ -30,7 +36,7 @@ const routes: Route[] = [
     path: 'user',
     children: [
       {path: 'profile', component: ProfileComponent,},
-      {path: 'tickets', component: TicketListComponent},
+      {path: 'tickets', component: OperationsContainerComponent},
     ],
     canActivate: [OktaAuthGuard],
     component: UserComponent
@@ -57,8 +63,12 @@ const oktaAuth = new OktaAuth(environment.okta);
     IconTextComponent,
     UserComponent,
     ProfileComponent,
-    TicketListComponent,
-    TransactionsTableComponent
+    OperationsContainerComponent,
+    TransactionsTableComponent,
+    TransactionElementComponent,
+    PosterElementComponent,
+    DropdownDirective,
+    TicketComponent,
   ],
   imports: [
     BrowserModule,

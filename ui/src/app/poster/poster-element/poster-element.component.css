@@ -1,0 +1,17 @@
+.title:hover {
+  color: var(--primary-red) !important;
+}
+
+.blurred {
+  filter: blur(7px) brightness(50%);
+}
+
+.film-title {
+  top: calc(100% - 120px);
+  left: 20px;
+  right: 20px;
+}
+
+.select-date:hover {
+  background: #230804
+}

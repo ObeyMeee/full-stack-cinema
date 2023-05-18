@@ -13,10 +13,10 @@ export class FilmService extends Service {
   }
 
   getFilm(id: string) {
-    return this.http.get<Film>(`${this.baseUrl}${id}`);
+    return this.http.get<Film>(`${this.baseUrl}films/${id}`);
   }
 
-  getSessionsId(id: string) {
-    return this.http.get<SessionDto[]>(`${this.baseUrl}${id}/sessions`)
+  getSessionsById(id: string) {
+    return this.http.get<SessionDto[]>(`${this.baseUrl}films/${id}/sessions`)
   }
 }

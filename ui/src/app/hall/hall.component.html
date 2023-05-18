@@ -109,14 +109,7 @@
     </div>
 
     <div class="overflow-auto">
-      <div *ngFor="let ticket of tickets"
-           [ngClass]="{'border-info': ticket.type === 'GOOD', 'border-danger': ticket.type === 'LUX'}"
-           class="row row-cols-xxl-auto m-2 p-4 border border-1 rounded-4 justify-content-between">
-        <span>{{ticket.row}} row</span>
-        <span>{{ticket.seat}} seat</span>
-        <span>{{ticket.type}}</span>
-        <span>{{ticket.price}} UAH</span>
-      </div>
+      <app-ticket *ngFor="let ticket of tickets" [ticket]="ticket"></app-ticket>
     </div>
 
     <div class="row mt-auto border-1 border-top border-white fs-4">

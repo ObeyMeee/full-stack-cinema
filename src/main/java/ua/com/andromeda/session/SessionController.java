@@ -8,10 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ua.com.andromeda.session.dto.SessionBuyTicketDto;
-import ua.com.andromeda.session.dto.SessionDto;
 
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -25,16 +22,11 @@ public class SessionController {
         this.sessionService = sessionService;
     }
 
-    @GetMapping
-    public ResponseEntity<Map<UUID, List<SessionDto>>> getAll() {
-        return new ResponseEntity<>(sessionService.getSessions(true), HttpStatus.OK);
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<SessionBuyTicketDto> getById(@PathVariable String id) {
         Optional<SessionBuyTicketDto> optionalSession = sessionService.findById(UUID.fromString(id));
         return optionalSession
-                .map(session -> new ResponseEntity<>(session, HttpStatus.OK))
+                .map(ResponseEntity::ok)
                 .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.BAD_REQUEST));
     }
 }

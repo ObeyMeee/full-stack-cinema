@@ -19,8 +19,8 @@ public class TicketController {
     }
 
     @PostMapping
-    public ResponseEntity<String> purchase(@RequestBody PurchaseDto purchaseDto, Principal principal) {
+    public ResponseEntity<Void> purchase(@RequestBody PurchaseDto purchaseDto, Principal principal) {
         ticketService.save(purchaseDto, principal.getName());
-        return ResponseEntity.ok("Everything is ok! :-)");
+        return ResponseEntity.ok().contentLength(0).build();
     }
 }

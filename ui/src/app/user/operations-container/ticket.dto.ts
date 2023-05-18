@@ -1,6 +1,6 @@
 import {Ticket} from "../../hall/models/ticket.model";
 
-export class ProfileDto {
+export class TicketDto {
   ticket!: Ticket
   sessionId!: string;
   sessionStartAt!: Date;

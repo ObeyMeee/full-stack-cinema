@@ -1,32 +1,37 @@
 import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {HallService} from "./hall.service";
 import {firstValueFrom} from "rxjs";
 import {SessionBuyTicketDto} from "./session-buy-ticket.dto";
 import {Ticket} from "./models/ticket.model";
 import {OKTA_AUTH, OktaAuthStateService} from "@okta/okta-angular";
 import OktaAuth from "@okta/okta-auth-js";
+import {TicketService} from "./ticket.service";
 
 @Component({
   selector: 'app-hall',
   templateUrl: './hall.component.html',
-  styleUrls: ['./hall.component.css']
+  styleUrls: ['./hall.component.css'],
+  providers: [TicketService]
 })
 export class HallComponent implements OnInit {
   session!: SessionBuyTicketDto;
   sessionId!: string;
-  tickets: Ticket[] = [];
+  tickets!: Ticket[];
   isAuthenticated: boolean | undefined;
 
   @ViewChild("purchaseButton") purchaseButtonElementRef!: ElementRef;
 
   constructor(private route: ActivatedRoute,
+              private router: Router,
               private hallService: HallService,
+              private ticketService: TicketService,
               private oktaStateService: OktaAuthStateService,
               @Inject(OKTA_AUTH) private oktaAuth: OktaAuth) {
   }
 
   async ngOnInit() {
+    this.tickets = this.ticketService.tickets;
     const params = await firstValueFrom(this.route.params);
     this.sessionId = params['sessionId'];
     this.session = await firstValueFrom(this.hallService.getSession(this.sessionId));
@@ -38,15 +43,23 @@ export class HallComponent implements OnInit {
   }
 
   getTotalPrice() {
-    return this.tickets.map(ticket => ticket.price)
-      .reduce((acc, price) => acc! + price!, 0);
+    return this.ticketService.getTotalPrice();
   }
 
   async onPurchaseTickets() {
     this.purchaseButtonElementRef.nativeElement.disabled = true;
-    this.isAuthenticated && this.hallService.purchaseTickets(this.tickets, this.sessionId).subscribe(_ =>
-      alert('Our cats get their tickets for free! Enjoy the film =)')
-    )
+    this.isAuthenticated && this.hallService.purchaseTickets(this.tickets, this.sessionId)
+      .subscribe(() => {
+          alert('Our cats get their tickets for free! Enjoy the film =)');
+          this.reloadCurrentRoute();
+        }
+      );
+  }
+
+  private reloadCurrentRoute() {
+    const currentUrl = this.router.url;
+    this.router.navigateByUrl('/', {skipLocationChange: true})
+      .then(() => this.router.navigate([currentUrl]));
   }
 
   async onSelectSeat(btnSeat: HTMLButtonElement) {
@@ -56,23 +69,15 @@ export class HallComponent implements OnInit {
     if (this.isSeatTaken(selectedRow, selectedSeat)) return;
 
     this.changeSeatIcon(btnSeat);
-    const ticket = new Ticket(selectedRow, selectedSeat, dataset['type']!, +dataset['price']!);
+    const ticket = new Ticket(selectedRow, selectedSeat, dataset['type'], +dataset['price']!);
     const foundedIndex = this.tickets.findIndex(value => JSON.stringify(value) === JSON.stringify(ticket));
     const isTicketSelected = foundedIndex !== -1;
-    isTicketSelected ? this.removeTicket(foundedIndex) : this.add(ticket);
+    isTicketSelected ? this.ticketService.removeByIndex(foundedIndex) : this.ticketService.add(ticket);
   }
 
   private changeSeatIcon(btnSeat: HTMLButtonElement) {
     const seatDiv = btnSeat.querySelector('.seat');
     const className = `selected-${seatDiv!.classList.contains('good-seat') ? 'good' : 'lux'}-seat`;
     seatDiv!.classList.toggle(className);
-  }
-
-  private add(ticket: Ticket) {
-    this.tickets.push(ticket);
-  }
-
-  private removeTicket(index: number) {
-    return this.tickets.splice(index, 1);
   }
 }

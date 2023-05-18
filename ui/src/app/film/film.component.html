@@ -62,13 +62,11 @@
   </div>
   <ng-container *ngIf="sessions">
     <div class="col-xxl-3">
-      <div (click)="onOpenSelection()"
-           class="row select-day-container p-4 rounded-top">
+      <div class="row select-day-container p-4 rounded-top">
         <span class="fs-4 text-white">Schedule of sessions</span>
-        <div class="row text-white cursor-pointer bg-gray bg-primary-hover rounded-top m-0 p-0">
-        <span class="col-auto me-auto p-2">
-            {{selectedDate | date:'EEE, MM/dd'}}
-          </span>
+        <div [element]="daySelect" appDropdown
+             class="row text-white cursor-pointer bg-gray bg-primary-hover rounded-top m-0 p-0">
+          <span class="col-auto me-auto p-2">{{selectedDate | date:'EEE, MM/dd'}}</span>
           <div class="col-auto d-flex align-items-center">
             <ng-container [ngSwitch]="getDateType(selectedDate)">
               <span class="fs-small">
@@ -76,16 +74,16 @@
                 <ng-container *ngSwitchCase="'tomorrow'">Tomorrow</ng-container>
               </span>
             </ng-container>
-            <i class="bi bi-arrow-down-short"></i>
+            <i class="ms-1 bi bi-chevron-down"></i>
           </div>
         </div>
-        <div #daySelect class="row row-cols-xxl-1 text-center bg-gray m-0 p-0 rounded-bottom d-none">
+        <div #daySelect class="row row-cols-xxl-1 text-center bg-gray m-0 p-0 rounded-bottom invisible">
           <div *ngFor="let date of mapStartAtDates()">
             <ng-template [ngIf]="isTodayOrFuture(date)">
               <ng-container [ngSwitch]="getDateType(date)">
                 <div (click)="onSelectDate(date)"
                      class="row-cols-6 border-top border-bottom border-secondary border-1 border-secondary border-opacity-50
-              cl-primary select-date cursor-pointer m-0 p-3 text-gray text-white-hover">
+              cl-primary select-date cursor-pointer m-0 p-3 text-gray cl-white-hover">
                   <span [ngClass]="{
                             'text-white': isSameDay(date, selectedDate)
                           }">
