@@ -15,7 +15,9 @@ export class ConvertDateInterceptorService implements HttpInterceptor {
         map(response => {
             if (response instanceof HttpResponse) {
               const body = response.body;
-              Array.isArray(body) ? body.map(item => this.convertDates(item)) : this.convertDates(body);
+              if (body) {
+                Array.isArray(body) ? body.map(item => this.convertDates(item)) : this.convertDates(body);
+              }
             }
             return response;
           }
