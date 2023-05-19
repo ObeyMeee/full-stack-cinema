@@ -28,7 +28,7 @@ public class Ticket {
     private int seat;
 
     @ManyToOne
-    @JoinColumn(name = "film_id", nullable = false)
+    @JoinColumn(name = "session_id", nullable = false)
     private Session session;
     private String username;
 }

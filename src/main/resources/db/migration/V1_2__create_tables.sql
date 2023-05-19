@@ -139,10 +139,10 @@ alter table public.rows
 
 create table public.seats
 (
-    id       uuid    not null
+    id     uuid    not null
         primary key,
-    number   integer not null,
-    row_id   uuid
+    number integer not null,
+    row_id uuid
         constraint fkfi3owtwwqbc0mh605hq2ygs1x
             references public.rows
 );
@@ -176,7 +176,7 @@ create table public.tickets
     row       integer not null,
     seat      integer not null,
     username  varchar(255),
-    film_id   uuid    not null
+    session_id   uuid    not null
         constraint fk6t5777nsc5ela5uwyh9ot3a0w
             references public.sessions
 );
