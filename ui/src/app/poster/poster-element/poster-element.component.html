@@ -38,7 +38,7 @@
       <div (click)="onSelectDate(date)"
            *ngFor="let date of selectDates"
            class="border-top border-bottom border-secondary border-1 border-secondary border-opacity-50
-                  cl-primary select-date cursor-pointer m-0 p-0">
+                  cl-primary select-date pe-auto">
         <ng-container [ngSwitch]="getDateType(date)">
           <ng-template [ngIf]="isTodayOrFuture(date)">
                   <span [ngClass]="{
@@ -56,7 +56,7 @@
     </div>
     <span class="row-cols-xxl-12 text-center fs-4 gy-xxl-5">Schedule</span>
     <div *ngIf="sessions" class="row d-flex justify-content-center gy-xxl-3">
-      <ng-template [ngForOf]="sessions" let-session ngFor>
+      <ng-template [ngForOf]="sessionsSorted()" let-session ngFor>
         <a *ngIf="isSameDay(session.startAt, selectedDate)"
            [routerLink]="['/films', poster.filmId, 'sessions', session.id]"
            class="cl-primary cl-white-hover col-xxl-2 fw-bold fs-5 text-decoration-none m-2"

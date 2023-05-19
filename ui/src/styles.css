@@ -34,10 +34,6 @@ body {
   color: white !important;
 }
 
-.cursor-pointer {
-  cursor: pointer;
-}
-
 ::-webkit-scrollbar {
   width: 10px;
 }

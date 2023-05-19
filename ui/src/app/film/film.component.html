@@ -65,7 +65,7 @@
       <div class="row select-day-container p-4 rounded-top">
         <span class="fs-4 text-white">Schedule of sessions</span>
         <div [element]="daySelect" appDropdown
-             class="row text-white cursor-pointer bg-gray bg-primary-hover rounded-top m-0 p-0">
+             class="row text-white pe-auto bg-gray bg-primary-hover rounded-top m-0 p-0">
           <span class="col-auto me-auto p-2">{{selectedDate | date:'EEE, MM/dd'}}</span>
           <div class="col-auto d-flex align-items-center">
             <ng-container [ngSwitch]="getDateType(selectedDate)">
@@ -83,7 +83,7 @@
               <ng-container [ngSwitch]="getDateType(date)">
                 <div (click)="onSelectDate(date)"
                      class="row-cols-6 border-top border-bottom border-secondary border-1 border-secondary border-opacity-50
-              cl-primary select-date cursor-pointer m-0 p-3 text-gray cl-white-hover">
+              cl-primary select-date pe-auto m-0 p-3 text-gray cl-white-hover">
                   <span [ngClass]="{
                             'text-white': isSameDay(date, selectedDate)
                           }">

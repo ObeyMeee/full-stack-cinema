@@ -1,5 +1,5 @@
 import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
-import {isFuture, isSameDay, isToday, isTomorrow} from "date-fns";
+import {compareAsc, isFuture, isSameDay, isToday, isTomorrow} from "date-fns";
 import {PosterDto} from "../dto/poster.dto";
 import {SessionDto} from "../dto/session.dto";
 import {PosterService} from "../poster.service";
@@ -32,7 +32,7 @@ export class PosterElementComponent implements OnInit {
   onShowSchedule() {
     this.daySelectElementRef.nativeElement.classList.toggle('invisible');
     this.selectDates = this.sessions.map(session => session.startAt)
-      .sort((a, b) => a.getTime() - b.getTime());
+      .sort(compareAsc);
   }
 
   getDateType(date: Date): 'today' | 'tomorrow' | 'other' {
@@ -43,7 +43,7 @@ export class PosterElementComponent implements OnInit {
   }
 
   onSelectDate(date: Date) {
-    this.daySelectElementRef.nativeElement.classList.add('invisible');
+    this.hideDaySelection();
     this.selectedDate = date;
   }
 
@@ -61,4 +61,7 @@ export class PosterElementComponent implements OnInit {
     return isToday(date) || isFuture(date);
   }
 
+  sessionsSorted() {
+    return this.sessions.sort((a, b) => compareAsc(a.startAt, b.startAt));
+  }
 }
