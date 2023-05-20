@@ -4,7 +4,7 @@ import {Film} from "./models/film.model";
 import {ActivatedRoute} from "@angular/router";
 import {firstValueFrom, Observable} from "rxjs";
 import {SessionDto} from "../poster/dto/session.dto";
-import {isFuture, isSameDay, isToday, isTomorrow} from "date-fns";
+import {differenceInMinutes, isFuture, isPast, isSameDay, isToday, isTomorrow} from "date-fns";
 
 
 @Component({
@@ -47,5 +47,14 @@ export class FilmComponent implements OnInit {
 
   onSelectDate(date: Date) {
     this.selectedDate = date;
+    (<HTMLElement>this.daySelectElementRef.nativeElement).classList.add('invisible');
+  }
+
+  isSessionWithinPastThirtyMinutes(session: SessionDto) {
+    const now = new Date();
+    const SECONDS_PER_MINUTE = 60;
+    const minutes = 30;
+    const THIRTY_MINUTES = SECONDS_PER_MINUTE * minutes;
+    return isPast(session.startAt) && differenceInMinutes(now, session.startAt) < THIRTY_MINUTES;
   }
 }
