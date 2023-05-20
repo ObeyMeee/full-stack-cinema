@@ -1,5 +1,5 @@
 import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
-import {compareAsc, isFuture, isSameDay, isToday, isTomorrow} from "date-fns";
+import {compareAsc, differenceInMinutes, isFuture, isPast, isSameDay, isToday, isTomorrow} from "date-fns";
 import {PosterDto} from "../dto/poster.dto";
 import {SessionDto} from "../dto/session.dto";
 import {PosterService} from "../poster.service";
@@ -63,5 +63,13 @@ export class PosterElementComponent implements OnInit {
 
   sessionsSorted() {
     return this.sessions.sort((a, b) => compareAsc(a.startAt, b.startAt));
+  }
+
+  isSessionWithinPastThirtyMinutes(session: SessionDto) {
+    const now = new Date();
+    const SECONDS_PER_MINUTE = 60;
+    const minutes = 30;
+    const THIRTY_MINUTES = SECONDS_PER_MINUTE * minutes;
+    return isPast(session.startAt) && differenceInMinutes(now, session.startAt) < THIRTY_MINUTES;
   }
 }

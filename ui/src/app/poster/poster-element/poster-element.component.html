@@ -21,11 +21,7 @@
       </app-icon-text>
     </div>
     <button (click)="onShowSchedule()"
-      aria-controls="collapseExample"
-      aria-expanded="false"
-      class="cl-primary cl-white-hover gy-xxl-5 fs-3 text-center bg-transparent border border-0 show-schedule-list"
-      data-bs-target="#collapseExample"
-      data-bs-toggle="collapse">
+            class="cl-primary cl-white-hover gy-xxl-5 fs-3 text-center bg-transparent border border-0 show-schedule-list">
       <ng-container [ngSwitch]="getDateType(selectedDate)">
         <ng-template [ngIf]="isTodayOrFuture(selectedDate)">
           <ng-container *ngSwitchCase="'today'">Today</ng-container>
@@ -34,11 +30,12 @@
         </ng-template>
       </ng-container>
     </button>
-    <div #daySelect class="row row-cols-xxl-1 text-center bg-dark position-absolute top-50 m-0 p-0 invisible">
+    <div #daySelect role="button"
+         class="row row-cols-xxl-1 text-center bg-dark position-absolute top-50 m-0 p-0 invisible">
       <div (click)="onSelectDate(date)"
            *ngFor="let date of selectDates"
            class="border-top border-bottom border-secondary border-1 border-secondary border-opacity-50
-                  cl-primary select-date pe-auto">
+                  cl-primary select-date">
         <ng-container [ngSwitch]="getDateType(date)">
           <ng-template [ngIf]="isTodayOrFuture(date)">
                   <span [ngClass]="{
@@ -59,7 +56,12 @@
       <ng-template [ngForOf]="sessionsSorted()" let-session ngFor>
         <a *ngIf="isSameDay(session.startAt, selectedDate)"
            [routerLink]="['/films', poster.filmId, 'sessions', session.id]"
-           class="cl-primary cl-white-hover col-xxl-2 fw-bold fs-5 text-decoration-none m-2"
+           class="cl-white-hover col-xxl-2 fw-bold fs-5 text-decoration-none m-2"
+           [ngClass]="{
+            'pe-none': isSessionWithinPastThirtyMinutes(session),
+            'text-secondary': isSessionWithinPastThirtyMinutes(session),
+            'cl-primary': !isSessionWithinPastThirtyMinutes(session)
+           }"
            pTooltip="From {{session.minPrice}} UAH"
            tooltipPosition="bottom">
           {{session.startAt | date: 'HH:mm'}}
