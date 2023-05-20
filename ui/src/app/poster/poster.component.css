@@ -1,8 +1,8 @@
 :host ::ng-deep .p-carousel-prev,
 :host ::ng-deep .p-carousel-next {
   position: absolute;
-  height: 5rem !important;
-  width: 5rem !important;
+  height: 5.5rem !important;
+  width: 5.5rem !important;
   background: var(--primary-red) !important;
   border: #190d1b 4px solid !important;
   color: white !important;
@@ -10,8 +10,13 @@
 }
 
 :host ::ng-deep .p-carousel-next {
-  right: 0
+  right: 25px;
 }
+
+:host ::ng-deep .p-carousel-prev {
+  left: 25px;
+}
+
 
 :host ::ng-deep .p-carousel-prev:hover,
 :host ::ng-deep .p-carousel-next:hover {
