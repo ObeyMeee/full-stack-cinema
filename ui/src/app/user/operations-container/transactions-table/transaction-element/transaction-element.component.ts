@@ -19,8 +19,6 @@ export class TransactionElementComponent {
 
   onToggleDetails() {
     this.isDetailsShown = !this.isDetailsShown;
-    const boughtAt = new Date(this.rowElement.nativeElement.dataset['boughtAt']!);
-    // this.ticketService.getTickets().filter(p => isSameSecond(p.boughtAt, boughtAt));
   }
 
   onMouseOverRow() {
