@@ -1,38 +1,68 @@
-import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {TicketDto} from "../ticket.dto";
 import {FilmTransaction} from "./film-transaction.interface";
+import {TicketService} from "../ticket-service";
+import {Observable} from "rxjs";
+import {compareDesc, isEqual} from "date-fns";
 
 @Component({
   selector: 'app-transactions-table',
   templateUrl: './transactions-table.component.html',
   styleUrls: ['./transactions-table.component.css']
 })
-export class TransactionsTableComponent implements OnChanges {
+export class TransactionsTableComponent implements OnChanges, OnInit {
   @Input() sectionName!: string;
   @Input() noTransactionsMessage!: string;
-  @Input() ticketDtos!: TicketDto[];
+  @Input() onlyActiveTickets!: boolean;
+  ticketDtos$!: Observable<TicketDto[]>;
   filmTransactions: FilmTransaction[] = [];
 
+  constructor(private ticketService: TicketService) {
+  }
+
+  ngOnInit() {
+    this.ticketDtos$ = this.ticketService.getAll();
+  }
+
+
   ngOnChanges(changes: SimpleChanges) {
-    console.log(changes['ticketDtos']);
-    if (changes['ticketDtos'] && this.ticketDtos) {
-      this.filmTransactions = this.ticketDtos.reduce((filmTransactions: FilmTransaction[], cur) => {
-        const existingSession = filmTransactions.find(item => item.sessionId === cur.sessionId);
+    if (changes['onlyActiveTickets']) {
+      if (this.onlyActiveTickets) {
+        this.ticketDtos$ = this.ticketService.getAllActive();
+      } else {
+        this.ticketDtos$ = this.ticketService.getAll();
+      }
+    }
+
+    this.ticketDtos$.subscribe(ticketDtos => {
+      this.filmTransactions = ticketDtos.reduce((filmTransactions: FilmTransaction[], cur) => {
+        const existingSession = filmTransactions.find(item =>
+          isEqual(item.boughtAt, cur.boughtAt)
+        );
         if (existingSession) {
           existingSession.totalPrice += cur.ticket.price!;
           ++existingSession.quantity;
         } else {
-          filmTransactions.push({
-            sessionId: cur.sessionId,
-            sessionStartAt: cur.sessionStartAt,
-            boughtAt: cur.boughtAt,
-            filmTitle: cur.filmTitle,
-            totalPrice: cur.ticket.price!,
-            quantity: 1
-          });
+          this.add(filmTransactions, cur);
         }
         return filmTransactions;
-      }, []);
-    }
+      }, [])
+        .sort((a, b) => compareDesc(a.boughtAt, b.boughtAt));
+    });
+  }
+
+  private add(filmTransactions: FilmTransaction[], ticketDto: TicketDto) {
+    filmTransactions.push({
+      sessionId: ticketDto.sessionId,
+      sessionStartAt: ticketDto.sessionStartAt,
+      boughtAt: ticketDto.boughtAt,
+      filmTitle: ticketDto.filmTitle,
+      totalPrice: ticketDto.ticket.price!,
+      quantity: 1
+    });
+  }
+
+  filterTicketsByTransaction(ticketDtos: TicketDto[], transaction: FilmTransaction) {
+    return ticketDtos.filter(t => isEqual(t.boughtAt, transaction.boughtAt));
   }
 }

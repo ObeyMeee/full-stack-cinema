@@ -1,9 +1,9 @@
-<app-transactions-table [ticketDtos]="filteredTicketDtos"
+<app-transactions-table [onlyActiveTickets]="true"
                         noTransactionsMessage="You haven't got any active tickets. It's time to buy some :)"
                         sectionName="Your tickets">
 </app-transactions-table>
 <div class="mt-4">
-  <app-transactions-table [ticketDtos]="ticketDtos"
+  <app-transactions-table [onlyActiveTickets]="false"
                           noTransactionsMessage="There is no operation yet. Choose your favourite film!"
                           sectionName="All operations">
   </app-transactions-table>

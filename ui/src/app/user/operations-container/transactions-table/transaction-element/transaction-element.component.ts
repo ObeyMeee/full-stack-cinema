@@ -1,6 +1,7 @@
 import {Component, ElementRef, Input, ViewChild} from '@angular/core';
 import {FilmTransaction} from "../film-transaction.interface";
 import {TicketService} from "../../ticket-service";
+import {TicketDto} from "../../ticket.dto";
 
 @Component({
   selector: 'app-transaction-element',
@@ -9,6 +10,7 @@ import {TicketService} from "../../ticket-service";
 })
 export class TransactionElementComponent {
   @Input() transaction!: FilmTransaction;
+  @Input() ticketDtos!: TicketDto[];
   @ViewChild('rowElement') rowElement!: ElementRef;
   isDetailsShown = false;
 
