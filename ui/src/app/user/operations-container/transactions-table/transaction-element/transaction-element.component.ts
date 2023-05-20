@@ -10,11 +10,13 @@ import {TicketService} from "../../ticket-service";
 export class TransactionElementComponent {
   @Input() transaction!: FilmTransaction;
   @ViewChild('rowElement') rowElement!: ElementRef;
+  isDetailsShown = false;
 
   constructor(private ticketService: TicketService) {
   }
 
-  onShowDetails() {
+  onToggleDetails() {
+    this.isDetailsShown = !this.isDetailsShown;
     const boughtAt = new Date(this.rowElement.nativeElement.dataset['boughtAt']!);
     // this.ticketService.getTickets().filter(p => isSameSecond(p.boughtAt, boughtAt));
   }
