@@ -49,9 +49,15 @@ export class HallComponent implements OnInit {
   async onPurchaseTickets() {
     this.purchaseButtonElementRef.nativeElement.disabled = true;
     this.isAuthenticated && this.hallService.purchaseTickets(this.tickets, this.sessionId)
-      .subscribe(() => {
-          alert('Our cats get their tickets for free! Enjoy the film =)');
-          this.reloadCurrentRoute();
+      .subscribe({
+          next: () => {
+            alert('Our cats get their tickets for free! Enjoy the film =)');
+            this.reloadCurrentRoute();
+          },
+          error: err => {
+            alert("Ooops... Something went wrong but don't worry, Androemda is on the way :)");
+            console.log(err);
+          }
         }
       );
   }
