@@ -1,0 +1,88 @@
+<html lang="en">
+<meta charset="UTF-8">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        .img-container {
+            margin-left: 50px;
+        }
+
+        .info {
+            text-align: center;
+            width: 300px;
+            height: 200px;
+        }
+
+        .title {
+            color: red;
+            font-style: italic;
+        }
+
+        img {
+            max-height: 200px;
+            min-height: 200px;
+            min-width: 200px;
+            max-width: 200px;
+        }
+
+        h2, p, h1 {
+            font-family: "Montserrat", "Droid Sans", serif;
+        }
+
+        td h1 {
+            color: #676f70;
+        }
+
+        td {
+            width: 50%;
+        }
+
+        p {
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="img-container">
+        <img src="cid:logo" alt="logo">
+    </div>
+    <div class="info">
+        <h2 th:text="|Hey, ${username}!|">Greeting</h2>
+        <h4>You have successfully purchased tickets of film</h4>
+        <h1 class="title" th:text="'«' + ${title} + '»'">Title</h1>
+    </div>
+</div>
+<table>
+    <tr>
+        <td><h1>Cinema:</h1></td>
+        <td><h2>Andromeda cinema #1</h2></td>
+    </tr>
+    <tr>
+        <td><h1>Date and time:</h1></td>
+        <td><h2 th:text="${tickets[0].session.startAt}">Date</h2></td>
+    </tr>
+    <tr>
+        <td><h1>Seats:</h1></td>
+        <td>
+            <h2>
+                <p th:each="ticket: ${tickets}" th:object="${ticket}"
+                      th:text="|*{row} row, *{seat} seat|">
+                    Row and seat
+                </p>
+            </h2>
+        </td>
+    </tr>
+    <tr>
+        <td><h1>Address:</h1></td>
+        <td><h2>Peremohy st. 10</h2></td>
+    </tr>
+    <tr>
+        <td><h1>Phone:</h1></td>
+        <td><h2>0 800 505 333</h2></td>
+    </tr>
+</table>
+<p>Best regards, <br> Andromeda team</p>
+
+</body>
+</html>

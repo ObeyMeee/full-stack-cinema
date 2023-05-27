@@ -2,6 +2,7 @@ package ua.com.andromeda.ticket;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ua.com.andromeda.common.EmailSender;
 import ua.com.andromeda.session.Session;
 import ua.com.andromeda.session.SessionRepository;
 
@@ -14,6 +15,8 @@ import java.util.UUID;
 public class TicketService {
     private final TicketRepository ticketRepository;
     private final SessionRepository sessionRepository;
+    private final EmailSender emailSender;
+
 
     public void save(PurchaseDto purchaseDto, String username) {
         UUID sessionId = UUID.fromString(purchaseDto.getSessionId());
@@ -30,6 +33,7 @@ public class TicketService {
                     return ticket;
                 }
         ).toList();
+        emailSender.sendTicketsEmail(username, tickets);
         ticketRepository.saveAll(tickets);
     }
 
