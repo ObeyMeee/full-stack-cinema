@@ -1,11 +1,17 @@
 package ua.com.andromeda.ticket;
 
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 import ua.com.andromeda.common.EmailSender;
+import ua.com.andromeda.common.PdfCreator;
+import ua.com.andromeda.common.QRCodeGenerator;
 import ua.com.andromeda.session.Session;
 import ua.com.andromeda.session.SessionRepository;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.nio.file.Files;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -16,25 +22,34 @@ public class TicketService {
     private final TicketRepository ticketRepository;
     private final SessionRepository sessionRepository;
     private final EmailSender emailSender;
+    private final PdfCreator pdfCreator;
+    private final QRCodeGenerator qrCodeGenerator;
 
 
+    @SneakyThrows
     public void save(PurchaseDto purchaseDto, String username) {
         UUID sessionId = UUID.fromString(purchaseDto.getSessionId());
-        LocalDateTime now = LocalDateTime.now();
         Session session = sessionRepository.findById(sessionId).get();
-        List<Ticket> tickets = purchaseDto.getTickets().stream().map(ticketDto -> {
-                    Ticket ticket = new Ticket();
-                    ticket.setSeat(ticketDto.getSeat());
-                    ticket.setRow(ticketDto.getRow());
-                    ticket.setPrice(ticketDto.getPrice());
-                    ticket.setSession(session);
-                    ticket.setUsername(username);
-                    ticket.setBoughtAt(now);
-                    return ticket;
-                }
-        ).toList();
-        emailSender.sendTicketsEmail(username, tickets);
+        List<Ticket> tickets = purchaseDto.getTickets().stream()
+                .map(ticketDto -> getTicket(username, session, ticketDto))
+                .toList();
         ticketRepository.saveAll(tickets);
+        List<ByteArrayOutputStream> qrCodesBytesArray = qrCodeGenerator.generateQRCodesBytesArray(tickets, 110, 110);
+        String fileName = pdfCreator.createTicketsFile(tickets, qrCodesBytesArray);
+        File file = new File(fileName);
+        emailSender.sendTicketsEmail(username, tickets, file);
+        Files.deleteIfExists(file.toPath());
+    }
+
+    private Ticket getTicket(String username, Session session, TicketDto ticketDto) {
+        Ticket ticket = new Ticket();
+        ticket.setSeat(ticketDto.getSeat());
+        ticket.setRow(ticketDto.getRow());
+        ticket.setPrice(ticketDto.getPrice());
+        ticket.setSession(session);
+        ticket.setUsername(username);
+        ticket.setBoughtAt(LocalDateTime.now());
+        return ticket;
     }
 
     public List<TicketProfileDto> findAllByUsername(String username) {

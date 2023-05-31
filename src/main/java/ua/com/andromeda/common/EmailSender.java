@@ -4,7 +4,7 @@ import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -28,7 +28,7 @@ public class EmailSender {
     private final TemplateEngine templateEngine;
 
     @SneakyThrows
-    public void sendTicketsEmail(String to, List<Ticket> tickets) {
+    public void sendTicketsEmail(String to, List<Ticket> tickets, File fileToAttach) {
         MimeMessage message = sender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
         helper.setTo(to);
@@ -37,9 +37,11 @@ public class EmailSender {
         helper.setSubject("Your tickets of " + title);
         Map<String, Object> map = getVariables(to, tickets, title);
         String htmlContent = prepareHtml(map);
-        Resource resource = new FileSystemResource(new File("static/favicon.ico"));
-        helper.addInline("logo", resource);
+        Resource resource = new ClassPathResource("static/logo.png");
+        System.out.println(resource.getFile());
         helper.setText(htmlContent, true);
+        helper.addInline("logo", resource);
+        helper.addAttachment("tickets.pdf", fileToAttach);
         sender.send(message);
     }
 
