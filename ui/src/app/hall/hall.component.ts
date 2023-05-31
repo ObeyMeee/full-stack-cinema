@@ -55,7 +55,7 @@ export class HallComponent implements OnInit {
             this.reloadCurrentRoute();
           },
           error: err => {
-            alert("Ooops... Something went wrong but don't worry, Androemda is on the way :)");
+            alert("Ooops... Something went wrong but don't worry, Andromeda is on the way :)");
             console.log(err);
           }
         }
