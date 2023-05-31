@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <style>
-        .img-container {
-            margin-left: 50px;
+        .center {
+            display: block;
+            margin: 0 auto;
         }
 
         .info {
@@ -44,16 +45,16 @@
 </head>
 <body>
 <div class="container">
-    <div class="img-container">
-        <img src="cid:logo" alt="logo">
+    <div>
+        <img class="center" src="cid:logo" alt="logo">
     </div>
-    <div class="info">
+    <div class="info center">
         <h2 th:text="|Hey, ${username}!|">Greeting</h2>
         <h4>You have successfully purchased tickets of film</h4>
         <h1 class="title" th:text="'«' + ${title} + '»'">Title</h1>
     </div>
 </div>
-<table>
+<table class="center">
     <tr>
         <td><h1>Cinema:</h1></td>
         <td><h2>Andromeda cinema #1</h2></td>
@@ -67,7 +68,7 @@
         <td>
             <h2>
                 <p th:each="ticket: ${tickets}" th:object="${ticket}"
-                      th:text="|*{row} row, *{seat} seat|">
+                   th:text="|*{row} row, *{seat} seat|">
                     Row and seat
                 </p>
             </h2>
