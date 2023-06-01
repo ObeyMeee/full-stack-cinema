@@ -1,6 +1,6 @@
 package ua.com.andromeda.session;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,13 +14,9 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/sessions")
+@RequiredArgsConstructor
 public class SessionController {
     private final SessionService sessionService;
-
-    @Autowired
-    public SessionController(SessionService sessionService) {
-        this.sessionService = sessionService;
-    }
 
     @GetMapping("/{id}")
     public ResponseEntity<SessionBuyTicketDto> getById(@PathVariable String id) {
