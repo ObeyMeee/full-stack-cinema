@@ -2,9 +2,8 @@
   <div [ngStyle]="{
                'background-image':'url(' + poster.media.image + ')',
                'background-repeat': 'no-repeat',
-               'height': 'calc(100vh - var(--header-height))',
                'background-size': '370px calc(100vh - var(--header-height))'
-              }" class="bg-image">
+              }" class="bg-image full-height">
   </div>
   <div (click)="onHideDaySelection($event)"
        class="position-absolute poster-content row text-white invisible top-0 start-0">

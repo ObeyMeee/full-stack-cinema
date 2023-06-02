@@ -29,6 +29,8 @@ import {
 import {PosterElementComponent} from './poster/poster-element/poster-element.component';
 import {DropdownDirective} from './shared/dropdown.directive';
 import {TicketComponent} from './hall/ticket/ticket.component';
+import { SignUpComponent } from './sign-up/sign-up.component';
+import {FormsModule} from "@angular/forms";
 
 const routes: Route[] = [
   {path: '', component: PosterComponent, pathMatch: 'full'},
@@ -41,10 +43,11 @@ const routes: Route[] = [
     canActivate: [OktaAuthGuard],
     component: UserComponent
   },
-  {path: 'login', component: LoginComponent},
-  {path: 'login/callback', component: OktaCallbackComponent},
   {path: 'films/:id', component: FilmComponent},
   {path: 'films/:id/sessions/:sessionId', component: HallComponent},
+  {path: 'login', component: LoginComponent},
+  {path: 'login/callback', component: OktaCallbackComponent},
+  {path: 'register', component: SignUpComponent},
   {path: '**', component: PosterComponent}
 ]
 
@@ -69,6 +72,7 @@ const oktaAuth = new OktaAuth(environment.okta);
     PosterElementComponent,
     DropdownDirective,
     TicketComponent,
+    SignUpComponent,
   ],
   imports: [
     BrowserModule,
@@ -77,6 +81,7 @@ const oktaAuth = new OktaAuth(environment.okta);
     RouterModule.forRoot(routes),
     OktaAuthModule.forRoot({oktaAuth}),
     TooltipModule,
+    FormsModule,
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true},

@@ -1,0 +1,38 @@
+<div class="row">
+  <div class="col-6 full-height p-0 d-flex align-items-center justify-content-center">
+    <form class="bg-dark p-5 rounded-4" (ngSubmit)="onSubmit()">
+      <div class="input-group">
+          <span class="p-float-label">
+            <input class="form-control form-control-lg" pInputText id="firstName" name="firstName" [(ngModel)]="user.firstName"/>
+            <label htmlFor="firstName">First name</label>
+          </span>
+      </div>
+      <div class="input-group mt-4">
+          <span class="p-float-label">
+            <input class="form-control form-control-lg" pInputText id="lastName" name="lastName" [(ngModel)]="user.lastName"/>
+            <label htmlFor="lastName">Last name</label>
+          </span>
+      </div>
+      <div class="input-group mt-4">
+          <span class="p-float-label">
+            <input class="form-control form-control-lg" pInputText id="email" name="email" [(ngModel)]="user.email"/>
+            <label htmlFor="lastName">Email</label>
+          </span>
+      </div>
+      <div class="input-group mt-4">
+          <span class="p-float-label">
+            <input class="form-control form-control-lg" pInputText id="password" name="password" [(ngModel)]="user.password"/>
+            <label htmlFor="lastName">Password</label>
+          </span>
+      </div>
+
+      <div class="d-flex justify-content-center mt-3">
+        <button class="btn btn-lg btn-outline-danger">Sign up</button>
+      </div>
+    </form>
+  </div>
+  <div class="col-6 p-0">
+    <img class="full-height" style="width: 50vw"
+         src="https://static.toiimg.com/thumb/msid-96714656,width-1280,resizemode-4/96714656.jpg">
+  </div>
+</div>
