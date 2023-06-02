@@ -1,5 +1,5 @@
 <ng-container *ngIf="posters$ | async as posters">
-  <p-carousel [circular]="false" [responsiveOptions]="responsiveOptions" [showIndicators]="false"
+  <p-carousel [circular]="true" [responsiveOptions]="responsiveOptions" [showIndicators]="false"
               [value]="posters" styleClass="custom-carousel">
     <ng-template let-poster pTemplate="item">
       <app-poster-element [poster]="poster"></app-poster-element>
