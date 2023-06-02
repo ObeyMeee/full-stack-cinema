@@ -3,7 +3,7 @@
     <form class="bg-dark p-5 rounded-4" (ngSubmit)="onSubmit()">
       <div class="input-group">
           <span class="p-float-label">
-            <input class="form-control form-control-lg" pInputText id="firstName" name="firstName" [(ngModel)]="user.firstName"/>
+            <input class="form-control form-control-lg" pInputText id="firstName" name="firstName" [(ngModel)]="user.firstName" autofocus/>
             <label htmlFor="firstName">First name</label>
           </span>
       </div>
@@ -21,7 +21,11 @@
       </div>
       <div class="input-group mt-4">
           <span class="p-float-label">
-            <input class="form-control form-control-lg" pInputText id="password" name="password" [(ngModel)]="user.password"/>
+            <input type="password"
+                   class="form-control form-control-lg"
+                   pInputText id="password"
+                   name="password"
+                   [(ngModel)]="user.password"/>
             <label htmlFor="lastName">Password</label>
           </span>
       </div>
