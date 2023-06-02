@@ -101,7 +101,7 @@
       </div>
     </div>
   </div>
-  <div class="col-xxl-4 fs-5 tickets-container border border-1 border-dark rounded-4
+  <div class="col-xxl-4 fs-5 p-2 tickets-container border border-1 border-dark rounded-4
    d-flex flex-column position-sticky top-20px">
     <div class="row mt-4 row-cols-xxl-auto fw-bold">
       <div class="me-auto">Tickets</div>
@@ -112,18 +112,23 @@
       <app-ticket *ngFor="let ticket of tickets" [ticket]="ticket"></app-ticket>
     </div>
 
-    <div class="row mt-auto border-1 border-top border-white fs-4">
+    <div class="row mt-auto border-1 border-top border-dark fs-4">
       <div class="col-xxl-12 fw-bold d-flex my-2">
         <div class="me-auto">Total price:</div>
         <div class="me-2">{{getTotalPrice()}} UAH</div>
       </div>
       <div *ngIf="!isAuthenticated" class="col-xxl-12 alert alert-danger">Please log in to buy tickets</div>
-      <button #purchaseButton
-              (click)="onPurchaseTickets()"
-              [disabled]="!isAuthenticated"
-              class="col-xxl-12 btn btn-danger rounded-4">
-        Purchase
-      </button>
+      <div class="col-xxl-12">
+        <div class="row d-flex justify-content-center">
+          <button #purchaseButton
+                  (click)="onPurchaseTickets()"
+                  [disabled]="!isAuthenticated"
+                  class="col-xxl-11 btn btn-danger rounded-4">
+            Purchase
+          </button>
+        </div>
+
+      </div>
     </div>
   </div>
 </div>
