@@ -32,9 +32,7 @@ export class LoginComponent implements OnInit {
     this.oktaSignIn.remove();
     this.oktaSignIn.renderEl(
       {el: '#okta-sign-in-widget'},
-      res => {
-        res.status === 'SUCCESS' && this.oktaAuth.signInWithRedirect()
-      },
+      res => res.status === 'SUCCESS' && this.oktaAuth.signInWithRedirect(),
       console.error
     )
   }

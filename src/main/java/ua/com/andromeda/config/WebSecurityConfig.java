@@ -21,6 +21,7 @@ public class WebSecurityConfig {
         http.authorizeHttpRequests()
                 .requestMatchers(HttpMethod.GET, "/films", "/films/{id}", "/films/{id}/sessions").permitAll()
                 .requestMatchers(HttpMethod.GET, "/sessions", "/sessions/{id}").permitAll()
+                .requestMatchers(HttpMethod.POST, "/users/new").permitAll()
                 .anyRequest().authenticated();
         http.oauth2ResourceServer().jwt();
         http.cors();

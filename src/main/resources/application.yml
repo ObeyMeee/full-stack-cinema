@@ -32,6 +32,10 @@ okta:
     client-id: ${OKTA_CLIENT_ID}
     scopes: openid,profile,email
     redirect-uri: http://localhost:4200/login/callback
+  client:
+    connectionTimeout: 30 # seconds
+    org-url: ${OKTA_DOMAIN}
+    token: ${OKTA_TOKEN}
 
 allowed:
   origins: http://localhost:4200
