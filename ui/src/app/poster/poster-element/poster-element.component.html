@@ -7,17 +7,34 @@
   </div>
   <div (click)="onHideDaySelection($event)"
        class="position-absolute poster-content row text-white invisible top-0 start-0">
+
     <div class="col m-xxl-2">
-      <app-icon-text [linkRef]="['/films', poster.filmId]"
-                     iconClass="fa-solid fa-info fa-2x bg-dark"
-                     label="More details of film">
-      </app-icon-text>
+      <a [routerLink]="['/films', poster.filmId]"
+         appHover
+         class="text-decoration-none text-white"
+         classToRemove="bg-dark"
+         selector="i">
+        <div class="row align-items-center">
+          <span class="col-xxl-4">
+            <i class="fa-solid fa-info fa-2x bg-dark px-3 py-2 rounded-2"></i>
+          </span>
+          <span class="col-xxl-8">More details of film</span>
+        </div>
+      </a>
     </div>
     <div class="col m-xxl-2">
-      <app-icon-text [linkRef]="['/films', poster.filmId]"
-                     iconClass="fa-solid fa-play fa-2x bg-dark"
-                     label="Watch trailer">
-      </app-icon-text>
+      <button (click)="triggerOpenTrailerEvent()"
+              appHover
+              class="border-0 bg-transparent text-white"
+              classToRemove="bg-dark"
+              selector="i">
+        <div class="row align-items-center">
+          <span class="col-xxl-4">
+            <i class="fa-solid fa-play fa-2x bg-dark px-3 py-2 rounded-2"></i>
+          </span>
+          <span class="col-xxl-8">Watch trailer</span>
+        </div>
+      </button>
     </div>
     <button (click)="onShowSchedule()"
             class="cl-primary cl-white-hover gy-xxl-5 fs-3 text-center bg-transparent border border-0 show-schedule-list">

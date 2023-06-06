@@ -16,7 +16,6 @@ import {environment} from "../environments/environment.development";
 import OktaAuth from "@okta/okta-auth-js";
 import {AuthInterceptorService} from "./auth/auth-interceptor.service";
 import {HoverDirective} from './shared/hover.directive';
-import {IconTextComponent} from './poster/poster-element/icon-text/icon-text.component';
 import {TooltipModule} from "primeng/tooltip";
 import {UserComponent} from './user/user.component';
 import {ProfileComponent} from './user/profile/profile.component';
@@ -31,6 +30,8 @@ import {DropdownDirective} from './shared/dropdown.directive';
 import {TicketComponent} from './hall/ticket/ticket.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import {FormsModule} from "@angular/forms";
+import { SafeUrlPipe } from './shared/safe-url.pipe';
+import { TrailerComponent } from './shared/trailer/trailer.component';
 
 const routes: Route[] = [
   {path: '', component: PosterComponent, pathMatch: 'full'},
@@ -63,7 +64,6 @@ const oktaAuth = new OktaAuth(environment.okta);
     HallComponent,
     LoginComponent,
     HoverDirective,
-    IconTextComponent,
     UserComponent,
     ProfileComponent,
     OperationsContainerComponent,
@@ -73,6 +73,8 @@ const oktaAuth = new OktaAuth(environment.okta);
     DropdownDirective,
     TicketComponent,
     SignUpComponent,
+    SafeUrlPipe,
+    TrailerComponent,
   ],
   imports: [
     BrowserModule,

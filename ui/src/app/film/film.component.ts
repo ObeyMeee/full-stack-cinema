@@ -16,6 +16,8 @@ export class FilmComponent implements OnInit {
   film$!: Observable<Film>;
   sessions!: SessionDto[];
   selectedDate = new Date();
+  isTrailerShown = false;
+
   @ViewChild('daySelect') daySelectElementRef!: ElementRef;
   protected readonly isSameDay = isSameDay;
 
@@ -56,5 +58,9 @@ export class FilmComponent implements OnInit {
     const minutes = 30;
     const THIRTY_MINUTES = SECONDS_PER_MINUTE * minutes;
     return isPast(session.startAt) && differenceInMinutes(now, session.startAt) < THIRTY_MINUTES;
+  }
+
+  toggleTrailer() {
+    this.isTrailerShown = !this.isTrailerShown;
   }
 }

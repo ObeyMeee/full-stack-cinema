@@ -7,10 +7,6 @@
   top: 20px;
 }
 
-.tickets-container {
-  height: calc(100vh - var(--header-height));
-}
-
 i {
   font-size: 150%;
 }

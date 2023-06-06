@@ -1,7 +1,17 @@
-<div *ngIf="film$ | async as film" class="row position-sticky ms-4 mt-4">
+<ng-container *ngIf="isTrailerShown">
+  <app-trailer *ngIf="film$ | async as film"
+               (closeTrailer)="toggleTrailer()"
+               [title]="film.title"
+               [url]="film.media.trailer">
+  </app-trailer>
+</ng-container>
+
+<div *ngIf="film$ | async as film" class="row ms-4 mt-4">
   <div class="col-xxl-3">
     <img alt="{{film.title}}" class="poster" src="{{film.media.image}}">
-    <button class="trailer-btn bg-primary-hover border-0 rounded-3 fw-bold text-white mt-3 d-flex justify-content-center">
+    <button
+      class="trailer-btn bg-primary-hover border-0 text-decoration-none rounded-3 fw-bold text-white mt-3 d-flex justify-content-center"
+      (click)="toggleTrailer()">
       <i class="bi bi-play-fill fs-4 me-2 my-2"></i>
       <span class="align-self-center fs-5">Watch trailer</span>
     </button>

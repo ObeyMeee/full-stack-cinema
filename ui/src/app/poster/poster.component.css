@@ -6,7 +6,7 @@
   background: var(--primary-red) !important;
   border: #190d1b 4px solid !important;
   color: white !important;
-  z-index: 1000;
+  z-index: 11;
 }
 
 :host ::ng-deep .p-carousel-next {

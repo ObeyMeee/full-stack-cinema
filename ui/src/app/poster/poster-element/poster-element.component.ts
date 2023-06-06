@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {compareAsc, differenceInMinutes, isFuture, isPast, isSameDay, isToday, isTomorrow} from "date-fns";
 import {PosterDto} from "../dto/poster.dto";
 import {SessionDto} from "../dto/session.dto";
@@ -17,6 +17,7 @@ export class PosterElementComponent implements OnInit {
   selectDates!: Date[];
   selectedDate = new Date();
   sessions!: SessionDto[];
+  @Output() openTrailer = new EventEmitter<{ title: string, url: string }>();
 
   protected readonly isSameDay = isSameDay;
 
@@ -71,5 +72,12 @@ export class PosterElementComponent implements OnInit {
     const minutes = 30;
     const THIRTY_MINUTES = SECONDS_PER_MINUTE * minutes;
     return isPast(session.startAt) && differenceInMinutes(now, session.startAt) < THIRTY_MINUTES;
+  }
+
+  triggerOpenTrailerEvent() {
+    this.openTrailer.emit({
+      title: this.poster.title,
+      url: this.poster.media.trailer
+    });
   }
 }

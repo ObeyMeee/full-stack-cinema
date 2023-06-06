@@ -11,6 +11,9 @@ import {PosterDto} from "./dto/poster.dto";
 export class PosterComponent implements OnInit {
   posters$!: Observable<PosterDto[]>;
   responsiveOptions: any;
+  isTrailerShown = false;
+  trailerUrl!: string;
+  title!: string;
 
   constructor(private posterService: PosterService) {
     this.responsiveOptions = [
@@ -44,5 +47,15 @@ export class PosterComponent implements OnInit {
 
   ngOnInit() {
     this.posters$ = this.posterService.getPoster();
+  }
+
+  toggleTrailer() {
+    this.isTrailerShown = !this.isTrailerShown;
+  }
+
+  setData($event: { title: string; url: string }) {
+    this.toggleTrailer()
+    this.title = $event.title
+    this.trailerUrl = $event.url;
   }
 }

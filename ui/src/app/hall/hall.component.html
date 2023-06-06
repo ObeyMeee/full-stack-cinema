@@ -101,7 +101,7 @@
       </div>
     </div>
   </div>
-  <div class="col-xxl-4 fs-5 p-2 tickets-container border border-1 border-dark rounded-4
+  <div class="col-xxl-4 fs-5 p-2 full-height border border-1 border-dark rounded-4
    d-flex flex-column position-sticky top-20px">
     <div class="row mt-4 row-cols-xxl-auto fw-bold">
       <div class="me-auto">Tickets</div>
@@ -114,10 +114,14 @@
 
     <div class="row mt-auto border-1 border-top border-dark fs-4">
       <div class="col-xxl-12 fw-bold d-flex my-2">
-        <div class="me-auto">Total price:</div>
-        <div class="me-2">{{getTotalPrice()}} UAH</div>
+        <div>Total price:</div>
+        <div class="ms-auto me-2">{{getTotalPrice()}} UAH</div>
       </div>
-      <div *ngIf="!isAuthenticated" class="col-xxl-12 alert alert-danger">Please log in to buy tickets</div>
+      <div class="col-xxl-12 alert alert-danger" *ngIf="!isAuthenticated">
+        <div class="row d-flex justify-content-center">
+          <span class="col-xxl-11">Please log in to buy tickets</span>
+        </div>
+      </div>
       <div class="col-xxl-12">
         <div class="row d-flex justify-content-center">
           <button #purchaseButton
@@ -127,7 +131,6 @@
             Purchase
           </button>
         </div>
-
       </div>
     </div>
   </div>
