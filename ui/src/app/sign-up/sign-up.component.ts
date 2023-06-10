@@ -14,10 +14,13 @@ export class SignUpComponent {
     email: '',
     password: ''
   };
+  errorMessages: string[] = [];
 
   constructor(private signUpService: SignUpService) {
   }
   onSubmit() {
-    this.signUpService.register(this.user).subscribe();
+    this.signUpService.register(this.user).subscribe({
+      error: err => this.errorMessages = err.error
+    });
   }
 }

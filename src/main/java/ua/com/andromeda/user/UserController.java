@@ -1,5 +1,6 @@
 package ua.com.andromeda.user;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,7 +15,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/new")
-    public ResponseEntity<Void> register(@RequestBody UserDto userDto) {
+    public ResponseEntity<String> register(@RequestBody @Valid UserDto userDto) {
         userService.register(userDto);
         return ResponseEntity.ok().build();
     }

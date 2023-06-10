@@ -1,37 +1,121 @@
 <div class="row">
   <div class="col-6 full-height p-0 d-flex align-items-center justify-content-center">
-    <form class="bg-dark p-5 rounded-4" (ngSubmit)="onSubmit()">
-      <div class="input-group">
-          <span class="p-float-label">
-            <input class="form-control form-control-lg" pInputText id="firstName" name="firstName" [(ngModel)]="user.firstName" autofocus/>
-            <label htmlFor="firstName">First name</label>
-          </span>
-      </div>
-      <div class="input-group mt-4">
-          <span class="p-float-label">
-            <input class="form-control form-control-lg" pInputText id="lastName" name="lastName" [(ngModel)]="user.lastName"/>
-            <label htmlFor="lastName">Last name</label>
-          </span>
-      </div>
-      <div class="input-group mt-4">
-          <span class="p-float-label">
-            <input class="form-control form-control-lg" pInputText id="email" name="email" [(ngModel)]="user.email"/>
-            <label htmlFor="lastName">Email</label>
-          </span>
-      </div>
-      <div class="input-group mt-4">
-          <span class="p-float-label">
-            <input type="password"
-                   class="form-control form-control-lg"
-                   pInputText id="password"
-                   name="password"
-                   [(ngModel)]="user.password"/>
-            <label htmlFor="lastName">Password</label>
-          </span>
+    <form class="bg-dark p-5 rounded-4" (ngSubmit)="onSubmit()" #registerForm="ngForm">
+      <div class="alert alert-danger" *ngIf="errorMessages.length">
+        <div *ngFor="let message of errorMessages">
+          {{message}}
+        </div>
       </div>
 
+      <div class="form-floating">
+        <input [ngClass]="{
+                      'form-control form-control-lg': true,
+                      'is-invalid': firstName.invalid && (firstName.touched || firstName.dirty)
+                     }"
+               id="firstName"
+               name="firstName"
+               placeholder="John"
+               required
+               maxlength="50"
+               [(ngModel)]="user.firstName"
+               #firstName="ngModel"
+               autofocus/>
+        <label for="firstName">First name</label>
+        <div *ngIf="firstName.errors && (firstName.touched || firstName.dirty)" class="alert alert-danger">
+          <div *ngIf="firstName.errors?.['required']">
+            First name is required
+          </div>
+          <div *ngIf="firstName.errors?.['maxlength']">
+            First name must be up to 50 characters long
+          </div>
+        </div>
+      </div>
+      <div class="form-floating mt-4">
+        <input [ngClass]="{
+              'form-control form-control-lg': true,
+              'is-invalid': lastName.invalid && (lastName.touched || lastName.dirty)
+              }"
+               id="last-name"
+               name="lastName"
+               placeholder="Doe"
+               required
+               maxlength="50"
+               [(ngModel)]="user.lastName"
+               #lastName="ngModel"/>
+        <label for="last-name">Last name</label>
+        <div *ngIf="lastName.errors && (lastName.touched || lastName.dirty)" class="alert alert-danger">
+          <div *ngIf="lastName.errors?.['required']">
+            Last name is required
+          </div>
+          <div *ngIf="lastName.errors?.['maxlength']">
+            Last name must be up to 50 characters long
+          </div>
+        </div>
+      </div>
+      <div class="form-floating mt-4">
+        <input id="email"
+               [ngClass]="{
+                     'form-control form-control-lg': true,
+                     'is-invalid': email.invalid && (email.touched || email.dirty)
+                     }"
+               name="email"
+               placeholder="email@example.com"
+               minlength="5"
+               maxlength="100"
+               appEmail
+               required
+               [(ngModel)]="user.email"
+               #email="ngModel"/>
+        <label for="email">Email</label>
+        <div *ngIf="email.invalid && (email.touched || email.dirty)" class="alert alert-danger">
+          <div *ngIf="email.errors?.['required']">
+            Email is required
+          </div>
+          <div *ngIf="email.errors?.['minlength'] || email.errors?.['maxlength']">
+            Email must be within the range from 5 to 100 characters long.
+          </div>
+          <div *ngIf="email.errors?.['isNotValid']">
+            Email is not valid
+          </div>
+        </div>
+      </div>
+      <div class="form-floating mt-4">
+        <input [ngClass]="{
+                'form-control form-control-lg': true,
+                'is-invalid': password.invalid && (password.touched || password.dirty)
+               }"
+               id="password"
+               name="password"
+               type="password"
+               placeholder="password"
+               required
+               appHasUpperCase
+               appHasLowerCase
+               appHasNumeric
+               [(ngModel)]="user.password"
+               #password="ngModel"/>
+        <label for="password">Password</label>
+        <div *ngIf="password.errors && (password.touched || password.dirty)" class="alert alert-danger">
+          <div *ngIf="password.errors?.['required']">
+            Password is required
+          </div>
+          <div *ngIf="password.errors?.['minlength']">
+            Password must be at least 8 characters long
+          </div>
+          <div *ngIf="password.errors?.['hasUpperCase']">
+            Password must contain at least 1 uppercase character
+          </div>
+          <div *ngIf="password.errors?.['hasLowerCase']">
+            Password must contain at least 1 lowercase character
+          </div>
+          <div *ngIf="password.errors?.['hasNumeric']">
+            Password must contain at least 1 digit
+          </div>
+
+        </div>
+      </div>
       <div class="d-flex justify-content-center mt-3">
-        <button class="btn btn-lg btn-outline-danger">Sign up</button>
+        <button class="btn btn-lg btn-outline-danger" [disabled]="!registerForm.valid">Sign up</button>
       </div>
     </form>
   </div>

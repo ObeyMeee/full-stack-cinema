@@ -14,7 +14,7 @@ public class TicketController {
     private final TicketService ticketService;
 
     @GetMapping("/user")
-    public ResponseEntity<List<TicketProfileDto>> getTicketsByUser(Principal principal) {
+    public ResponseEntity<List<TicketProfileDto>> getByUser(Principal principal) {
         return ResponseEntity.ok(ticketService.findAllByUsername(principal.getName()));
     }
 

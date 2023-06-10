@@ -32,6 +32,12 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 import {FormsModule} from "@angular/forms";
 import { SafeUrlPipe } from './shared/safe-url.pipe';
 import { TrailerComponent } from './shared/trailer/trailer.component';
+import { EmailDirective } from './sign-up/validators/email.directive';
+import {PasswordModule} from "primeng/password";
+import {DividerModule} from "primeng/divider";
+import { HasUpperCaseDirective } from './sign-up/validators/has-upper-case.directive';
+import { HasLowerCaseDirective } from './sign-up/validators/has-lower-case.directive';
+import { HasNumericDirective } from './sign-up/validators/has-numeric.directive';
 
 const routes: Route[] = [
   {path: '', component: PosterComponent, pathMatch: 'full'},
@@ -75,6 +81,10 @@ const oktaAuth = new OktaAuth(environment.okta);
     SignUpComponent,
     SafeUrlPipe,
     TrailerComponent,
+    EmailDirective,
+    HasUpperCaseDirective,
+    HasLowerCaseDirective,
+    HasNumericDirective,
   ],
   imports: [
     BrowserModule,
@@ -84,6 +94,8 @@ const oktaAuth = new OktaAuth(environment.okta);
     OktaAuthModule.forRoot({oktaAuth}),
     TooltipModule,
     FormsModule,
+    PasswordModule,
+    DividerModule,
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true},
