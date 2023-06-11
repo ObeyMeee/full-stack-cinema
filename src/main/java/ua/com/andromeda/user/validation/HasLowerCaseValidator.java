@@ -7,4 +7,3 @@ public class HasLowerCaseValidator extends HasRegexValidator<HasLowerCase> {
         super.regex = "[a-z]";
     }
 }
-x
