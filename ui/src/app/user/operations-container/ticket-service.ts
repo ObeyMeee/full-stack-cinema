@@ -1,8 +1,8 @@
-import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-import { TicketDto } from "./ticket.dto";
-import { Service } from "../../shared/base.service";
-import { isFuture } from "date-fns";
+import {Injectable} from "@angular/core";
+import {HttpClient} from "@angular/common/http";
+import {TicketDto} from "./ticket.dto";
+import {Service} from "../../shared/base.service";
+import {isFuture} from "date-fns";
 import {map, Observable} from "rxjs";
 
 @Injectable({

@@ -55,7 +55,7 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-<!--        For generating QR-code-->
+        <!--        For generating QR-code-->
         <dependency>
             <groupId>com.google.zxing</groupId>
             <artifactId>core</artifactId>
@@ -67,7 +67,7 @@
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
 
-<!--        Mail-->
+        <!--        Mail-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-mail</artifactId>
@@ -79,7 +79,7 @@
             <version>2.1.1</version>
         </dependency>
 
-<!--        Migration-->
+        <!--        Migration-->
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>

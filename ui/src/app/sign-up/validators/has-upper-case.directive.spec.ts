@@ -1,4 +1,4 @@
-import { HasUpperCaseDirective } from './has-upper-case.directive';
+import {HasUpperCaseDirective} from './has-upper-case.directive';
 
 describe('HasUpperCaseDirective', () => {
   it('should create an instance', () => {

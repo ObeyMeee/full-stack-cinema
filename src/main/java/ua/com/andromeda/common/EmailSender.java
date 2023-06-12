@@ -45,7 +45,7 @@ public class EmailSender {
         sender.send(message);
     }
 
-    private static Map<String, Object> getVariables(String to, List<Ticket> tickets, String title) {
+    private Map<String, Object> getVariables(String to, List<Ticket> tickets, String title) {
         Map<String, Object> map = new HashMap<>();
         map.put("username", to);
         map.put("title", title);

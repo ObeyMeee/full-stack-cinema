@@ -30,6 +30,6 @@ export class SignUpService extends Service {
       return request;
     });
 
-    return { data, status };
+    return {data, status};
   }
 }

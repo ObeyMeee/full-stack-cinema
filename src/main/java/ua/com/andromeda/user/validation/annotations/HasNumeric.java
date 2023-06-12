@@ -14,6 +14,8 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = HasNumericValidator.class)
 public @interface HasNumeric {
     String message() default "Value does not have any digits";
+
     Class<?>[] groups() default {};
+
     Class<? extends Payload>[] payload() default {};
 }

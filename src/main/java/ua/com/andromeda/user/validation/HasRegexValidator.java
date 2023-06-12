@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 
 public abstract class HasRegexValidator<T extends Annotation> implements ConstraintValidator<T, String> {
     protected String regex;
+
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
         Pattern pattern = Pattern.compile(regex);

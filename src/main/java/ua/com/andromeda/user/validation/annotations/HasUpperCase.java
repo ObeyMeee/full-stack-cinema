@@ -14,6 +14,8 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = HasUpperCaseValidator.class)
 public @interface HasUpperCase {
     String message() default "Value doesn't any uppercase characters";
+
     Class<?>[] groups() default {};
+
     Class<? extends Payload>[] payload() default {};
 }

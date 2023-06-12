@@ -1,4 +1,4 @@
-import { HasLowerCaseDirective } from './has-lower-case.directive';
+import {HasLowerCaseDirective} from './has-lower-case.directive';
 
 describe('HasLowerCaseDirective', () => {
   it('should create an instance', () => {

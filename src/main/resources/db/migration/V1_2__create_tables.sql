@@ -169,14 +169,14 @@ alter table public.sessions
 
 create table public.tickets
 (
-    id        uuid    not null
+    id         uuid    not null
         primary key,
-    bought_at timestamp(6),
-    price     integer not null,
-    row       integer not null,
-    seat      integer not null,
-    username  varchar(255),
-    session_id   uuid    not null
+    bought_at  timestamp(6),
+    price      integer not null,
+    row        integer not null,
+    seat       integer not null,
+    username   varchar(255),
+    session_id uuid    not null
         constraint fk6t5777nsc5ela5uwyh9ot3a0w
             references public.sessions
 );

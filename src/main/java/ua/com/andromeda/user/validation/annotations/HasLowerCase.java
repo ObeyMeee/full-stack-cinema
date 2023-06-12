@@ -14,6 +14,8 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = HasLowerCaseValidator.class)
 public @interface HasLowerCase {
     String message() default "Value doesn't any lowercase characters";
+
     Class<?>[] groups() default {};
+
     Class<? extends Payload>[] payload() default {};
 }
