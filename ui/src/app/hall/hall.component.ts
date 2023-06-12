@@ -7,6 +7,7 @@ import {Ticket} from "./models/ticket.model";
 import {OKTA_AUTH, OktaAuthStateService} from "@okta/okta-angular";
 import OktaAuth from "@okta/okta-auth-js";
 import {TicketService} from "./ticket.service";
+import {MessageService} from "primeng/api";
 
 @Component({
   selector: 'app-hall',
@@ -26,6 +27,7 @@ export class HallComponent implements OnInit {
               private router: Router,
               private hallService: HallService,
               private ticketService: TicketService,
+              private messageService: MessageService,
               private oktaStateService: OktaAuthStateService,
               @Inject(OKTA_AUTH) private oktaAuth: OktaAuth) {
   }
@@ -50,16 +52,29 @@ export class HallComponent implements OnInit {
     this.purchaseButtonElementRef.nativeElement.disabled = true;
     this.isAuthenticated && this.hallService.purchaseTickets(this.tickets, this.sessionId)
       .subscribe({
-          next: () => {
-            alert('Our cats get their tickets for free! Enjoy the film =)');
-            this.reloadCurrentRoute();
-          },
-          error: err => {
-            alert("Ooops... Something went wrong but don't worry, Andromeda is on the way :)");
-            console.log(err);
-          }
+          next: value => this.handleSuccess(),
+          error: this.handleError
         }
       );
+  }
+
+  private handleSuccess() {
+    this.showToast('success', 'Our cats get their tickets for free! Enjoy the film =)');
+    this.reloadCurrentRoute();
+  }
+
+  private handleError(err: any) {
+    this.showToast('error', "Ooops... Something went wrong but don't worry, Andromeda is on the way :)");
+    console.error(err);
+  }
+
+  showToast(severity: string, detail: string) {
+    this.messageService.add({
+        severity,
+        summary: severity[0].toUpperCase() + severity.slice(1),
+        detail
+      }
+    );
   }
 
   private reloadCurrentRoute() {

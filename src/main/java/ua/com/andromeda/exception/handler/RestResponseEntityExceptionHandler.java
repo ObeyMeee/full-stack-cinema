@@ -15,6 +15,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import ua.com.andromeda.user.UserAlreadyExistsException;
 
+import java.util.Collections;
 import java.util.List;
 
 @RestControllerAdvice
@@ -22,33 +23,37 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
     @ExceptionHandler({UserAlreadyExistsException.class})
     protected ResponseEntity<Object> handleConflict(UserAlreadyExistsException ex, WebRequest request) {
-        String responseBody = ex.getMessage();
-        return handleExceptionInternal(ex, responseBody, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+        List<String> messages = Collections.singletonList(ex.getMessage());
+        ErrorResponse errorResponse = new ErrorResponse(messages, request.getDescription(false));
+        return handleExceptionInternal(ex, errorResponse, new HttpHeaders(), HttpStatus.CONFLICT, request);
     }
 
     @ExceptionHandler({ConstraintViolationException.class})
     protected ResponseEntity<Object> handleConflict(ConstraintViolationException ex, WebRequest request) {
-        List<String> errorMessages = ex.getConstraintViolations().stream()
+        List<String> messages = ex.getConstraintViolations()
+                .stream()
                 .map(ConstraintViolation::getMessage)
                 .toList();
-        return handleExceptionInternal(ex, errorMessages, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+        ErrorResponse errorResponse = new ErrorResponse(messages, request.getDescription(false));
+        return handleExceptionInternal(ex, errorResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         BindingResult bindingResult = ex.getBindingResult();
-        List<String> errorMessages = bindingResult.getAllErrors()
+        List<String> messages = bindingResult.getAllErrors()
                 .stream()
                 .map(ObjectError::getDefaultMessage)
                 .toList();
-        return new ResponseEntity<>(errorMessages, new HttpHeaders(), HttpStatus.BAD_REQUEST);
+        ErrorResponse errorResponse = new ErrorResponse(messages, request.getDescription(false));
+        return handleExceptionInternal(ex, errorResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
 
     @ExceptionHandler({Exception.class})
     protected ResponseEntity<Object> handleConflict(Exception ex, WebRequest request) {
-        String responseBody = "Unknown error occurred";
+        String message = "Unknown error occurred";
         System.out.println(ex.getMessage());
-        return handleExceptionInternal(ex, responseBody, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
+        return handleExceptionInternal(ex, message, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
     }
 }

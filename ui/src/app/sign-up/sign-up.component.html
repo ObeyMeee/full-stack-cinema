@@ -1,18 +1,23 @@
 <div class="row">
   <div class="col-6 full-height p-0 d-flex align-items-center justify-content-center">
     <form class="bg-dark p-5 rounded-4" (ngSubmit)="onSubmit()" #registerForm="ngForm">
-      <div class="alert alert-danger" *ngIf="errorMessages.length">
-        <div *ngFor="let message of errorMessages">
-          {{message}}
-        </div>
+      <div *ngIf="errorMessages.length">
+        <p-messages [(value)]="errorMessages"
+                    severity="error"
+                    showTransitionOptions="500ms"
+                    hideTransitionOptions="500ms"
+                    [enableService]="false">
+        </p-messages>
       </div>
 
       <div class="form-floating">
         <input [ngClass]="{
                       'form-control form-control-lg': true,
-                      'is-invalid': firstName.invalid && (firstName.touched || firstName.dirty)
+                      'is-invalid': firstName.invalid && (firstName.touched || firstName.dirty),
+                      'border border-3 border-success': firstName.valid && (firstName.touched || firstName.dirty),
+                      'input-success': firstName.valid && (firstName.touched || firstName.dirty)
                      }"
-               id="firstName"
+               id="first-name"
                name="firstName"
                placeholder="John"
                required
@@ -20,20 +25,22 @@
                [(ngModel)]="user.firstName"
                #firstName="ngModel"
                autofocus/>
-        <label for="firstName">First name</label>
-        <div *ngIf="firstName.errors && (firstName.touched || firstName.dirty)" class="alert alert-danger">
+        <label for="first-name">First name</label>
+        <small class="p-error" *ngIf="firstName.errors && (firstName.touched || firstName.dirty)">
           <div *ngIf="firstName.errors?.['required']">
             First name is required
           </div>
           <div *ngIf="firstName.errors?.['maxlength']">
             First name must be up to 50 characters long
           </div>
-        </div>
+        </small>
       </div>
-      <div class="form-floating mt-4">
+      <div class="form-floating mt-sm-1 mt-md-2 mt-lg-3 mt-xl-2 mt-xxl-3">
         <input [ngClass]="{
               'form-control form-control-lg': true,
-              'is-invalid': lastName.invalid && (lastName.touched || lastName.dirty)
+              'is-invalid': lastName.invalid && (lastName.touched || lastName.dirty),
+              'border border-3 border-success': lastName.valid && (lastName.touched || lastName.dirty),
+              'input-success': lastName.valid && (lastName.touched || lastName.dirty)
               }"
                id="last-name"
                name="lastName"
@@ -43,20 +50,22 @@
                [(ngModel)]="user.lastName"
                #lastName="ngModel"/>
         <label for="last-name">Last name</label>
-        <div *ngIf="lastName.errors && (lastName.touched || lastName.dirty)" class="alert alert-danger">
+        <small class="p-error" *ngIf="lastName.errors && (lastName.touched || lastName.dirty)">
           <div *ngIf="lastName.errors?.['required']">
             Last name is required
           </div>
           <div *ngIf="lastName.errors?.['maxlength']">
             Last name must be up to 50 characters long
           </div>
-        </div>
+        </small>
       </div>
-      <div class="form-floating mt-4">
+      <div class="form-floating mt-sm-1 mt-md-2 mt-lg-3 mt-xl-2 mt-xxl-3">
         <input id="email"
                [ngClass]="{
                      'form-control form-control-lg': true,
-                     'is-invalid': email.invalid && (email.touched || email.dirty)
+                     'is-invalid': email.invalid && (email.touched || email.dirty),
+                     'border border-3 border-success': email.valid && (email.touched || email.dirty),
+                     'input-success': email.valid && (email.touched || email.dirty)
                      }"
                name="email"
                placeholder="email@example.com"
@@ -67,7 +76,7 @@
                [(ngModel)]="user.email"
                #email="ngModel"/>
         <label for="email">Email</label>
-        <div *ngIf="email.invalid && (email.touched || email.dirty)" class="alert alert-danger">
+        <small class="p-error" *ngIf="email.errors && (email.touched || email.dirty)">
           <div *ngIf="email.errors?.['required']">
             Email is required
           </div>
@@ -77,12 +86,14 @@
           <div *ngIf="email.errors?.['isNotValid']">
             Email is not valid
           </div>
-        </div>
+        </small>
       </div>
-      <div class="form-floating mt-4">
+      <div class="form-floating mt-sm-1 mt-md-2 mt-lg-3 mt-xl-2 mt-xxl-3">
         <input [ngClass]="{
                 'form-control form-control-lg': true,
-                'is-invalid': password.invalid && (password.touched || password.dirty)
+                'is-invalid': password.invalid && (password.touched || password.dirty),
+                'border border-3 border-success': password.valid && (password.touched || password.dirty),
+                'input-success': password.valid && (password.touched || password.dirty)
                }"
                id="password"
                name="password"
@@ -95,7 +106,7 @@
                [(ngModel)]="user.password"
                #password="ngModel"/>
         <label for="password">Password</label>
-        <div *ngIf="password.errors && (password.touched || password.dirty)" class="alert alert-danger">
+        <small class="p-error" *ngIf="password.errors && (password.touched || password.dirty)">
           <div *ngIf="password.errors?.['required']">
             Password is required
           </div>
@@ -111,11 +122,18 @@
           <div *ngIf="password.errors?.['hasNumeric']">
             Password must contain at least 1 digit
           </div>
-
-        </div>
+        </small>
       </div>
-      <div class="d-flex justify-content-center mt-3">
-        <button class="btn btn-lg btn-outline-danger" [disabled]="!registerForm.valid">Sign up</button>
+      <div class="d-flex justify-content-center mt-sm-1 mt-md-2 mt-lg-3 mt-xl-3 mt-xxl-3">
+        <button class="btn btn-lg btn-outline-danger"
+                [disabled]="!registerForm.valid || (response?.status | async) === Status.LOADING">
+          <ng-container *ngIf="(response?.status | async) === Status.LOADING; else signUp">
+            <p-progressSpinner styleClass="h-4rem"></p-progressSpinner>
+          </ng-container>
+          <ng-template #signUp>
+            Sign up
+          </ng-template>
+        </button>
       </div>
     </form>
   </div>

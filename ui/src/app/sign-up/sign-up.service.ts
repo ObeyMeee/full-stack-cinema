@@ -2,6 +2,8 @@ import {Injectable} from "@angular/core";
 import {Service} from "../shared/base.service";
 import {HttpClient} from "@angular/common/http";
 import {User} from "../shared/user.model";
+import {catchError, defer, ReplaySubject, retry, tap} from "rxjs";
+import {Status} from "../shared/status.enum";
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +14,22 @@ export class SignUpService extends Service {
   }
 
   register(user: User) {
-    return this.http.post(`${this.baseUrl}users/new`, user);
+    const status = new ReplaySubject<Status>();
+    const request = this.http.post<void>(`${this.baseUrl}users/new`, user)
+      .pipe(
+        retry(1),
+        catchError(err => {
+          status.next(Status.ERROR);
+          throw err;
+        }),
+        tap(() => status.next(Status.SUCCESS))
+      );
+
+    const data = defer(() => {
+      status.next(Status.LOADING);
+      return request;
+    });
+
+    return { data, status };
   }
 }

@@ -15,7 +15,7 @@ import {OktaAuthGuard, OktaAuthModule, OktaCallbackComponent} from "@okta/okta-a
 import {environment} from "../environments/environment.development";
 import OktaAuth from "@okta/okta-auth-js";
 import {AuthInterceptorService} from "./auth/auth-interceptor.service";
-import {HoverDirective} from './shared/hover.directive';
+import {HoverDirective} from './shared/directives/hover.directive';
 import {TooltipModule} from "primeng/tooltip";
 import {UserComponent} from './user/user.component';
 import {ProfileComponent} from './user/profile/profile.component';
@@ -26,18 +26,23 @@ import {
   TransactionElementComponent
 } from './user/operations-container/transactions-table/transaction-element/transaction-element.component';
 import {PosterElementComponent} from './poster/poster-element/poster-element.component';
-import {DropdownDirective} from './shared/dropdown.directive';
+import {DropdownDirective} from './shared/directives/dropdown.directive';
 import {TicketComponent} from './hall/ticket/ticket.component';
-import { SignUpComponent } from './sign-up/sign-up.component';
+import {SignUpComponent} from './sign-up/sign-up.component';
 import {FormsModule} from "@angular/forms";
-import { SafeUrlPipe } from './shared/safe-url.pipe';
-import { TrailerComponent } from './shared/trailer/trailer.component';
-import { EmailDirective } from './sign-up/validators/email.directive';
+import {SafeUrlPipe} from './shared/pipes/safe-url.pipe';
+import {TrailerComponent} from './shared/trailer/trailer.component';
+import {EmailDirective} from './sign-up/validators/email.directive';
 import {PasswordModule} from "primeng/password";
 import {DividerModule} from "primeng/divider";
-import { HasUpperCaseDirective } from './sign-up/validators/has-upper-case.directive';
-import { HasLowerCaseDirective } from './sign-up/validators/has-lower-case.directive';
-import { HasNumericDirective } from './sign-up/validators/has-numeric.directive';
+import {HasUpperCaseDirective} from './sign-up/validators/has-upper-case.directive';
+import {HasLowerCaseDirective} from './sign-up/validators/has-lower-case.directive';
+import {HasNumericDirective} from './sign-up/validators/has-numeric.directive';
+import {MessagesModule} from "primeng/messages";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {ProgressSpinnerModule} from "primeng/progressspinner";
+import {ToastModule} from "primeng/toast";
+import {MessageService} from "primeng/api";
 
 const routes: Route[] = [
   {path: '', component: PosterComponent, pathMatch: 'full'},
@@ -88,6 +93,7 @@ const oktaAuth = new OktaAuth(environment.okta);
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     CarouselModule,
     HttpClientModule,
     RouterModule.forRoot(routes),
@@ -96,10 +102,14 @@ const oktaAuth = new OktaAuth(environment.okta);
     FormsModule,
     PasswordModule,
     DividerModule,
+    MessagesModule,
+    ProgressSpinnerModule,
+    ToastModule,
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: ConvertDateInterceptorService, multi: true},
+    MessageService,
     OktaAuthGuard
   ],
   bootstrap: [AppComponent]
