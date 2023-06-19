@@ -1,57 +1,74 @@
 <div class="row mt-3">
-  <div class="col-xxl-auto" *ngIf="(comments$?.status | async) === Status.LOADING">
+  <div class="col-xxl-auto" *ngIf="(commentResponse$?.status | async) === Status.LOADING">
     <p-progressSpinner styleClass="h-3rem"></p-progressSpinner>
     <span class="text-white fs-4">Loading comments...</span>
   </div>
 
 
-  <ng-container *ngIf="comments$.data | async as comments">
-    <p-messages *ngIf="!(isAuthenticated$ | async)" [(value)]="authenticatedInfoMessage" [enableService]="false"
-                [closable]="false">
-    </p-messages>
-    <p-messages *ngIf="!comments.length" [(value)]="noCommentsInfoMessage" [enableService]="false"
-                [closable]="false">
-    </p-messages>
-    <p-fieldset *ngFor="let comment of comments" class="mt-2">
-      <ng-template pTemplate="header">
-        <div class="align-items-center text-danger">
-          <span class="font-bold text-lg ms-2">{{comment.username}}</span>
-          <span class="ms-2">
+  <ng-container *ngIf="commentResponse$.data | async as page">
+    <div class="row" *ngIf="!(isAuthenticated$ | async)">
+      <div class="col-xxl-12">
+        <p-messages [(value)]="authenticatedInfoMessage" [enableService]="false"
+                    [closable]="false">
+        </p-messages>
+      </div>
+    </div>
+    <div class="row" *ngIf="page.empty">
+      <div class="col-xxl-12">
+        <p-messages [(value)]="noCommentsInfoMessage" [enableService]="false"
+                    [closable]="false">
+        </p-messages>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xxl-12">
+        <p-fieldset *ngFor="let comment of page.content" class="mt-2">
+          <ng-template pTemplate="header">
+            <div class="align-items-center text-danger">
+              <span class="font-bold text-lg ms-2">{{comment.username}}</span>
+              <span class="ms-2">
             <i *ngFor="let _ of [].constructor(comment.mark)" class="bi bi-star-fill"></i>
             <i *ngFor="let _ of [].constructor(10 - comment.mark)" class="bi bi-star"></i>
           </span>
-          <span class="ms-2">{{comment.mark}} / 10</span>
-        </div>
-      </ng-template>
-      <div class="row text-white">
-        <div class="col-xxl-12">
-          {{comment.review}}
-        </div>
+              <span class="ms-2">{{comment.mark}} / 10</span>
+            </div>
+          </ng-template>
+          <div class="row text-white">
+            <div class="col-xxl-12">
+              {{comment.review}}
+            </div>
+          </div>
+          <div class="row d-flex justify-content-between ms-2 mt-2">
+            <button class="col-xxl-auto bg-transparent text-white border border-1 border-secondary rounded-3 px-2 py-2">
+              <i class="bi bi-arrow-90deg-left"></i>
+              <span class="ms-2">Respond</span>
+            </button>
+            <div class="col-xxl-auto text-white fs-5">
+              <button class="bg-transparent border-0 text-white" [disabled]="!(isAuthenticated$ | async)"
+                      (click)="reactOnComment(comment, ReactionType.DISLIKE)">
+                <i class="bi bi-hand-thumbs-down{{currentUserReacted(comment, ReactionType.DISLIKE)}}"></i>
+              </button>
+              <span class="mx-2">{{getCommentRating(comment)}}</span>
+              <button class="bg-transparent border-0 text-white" [disabled]="!(isAuthenticated$ | async)"
+                      (click)="reactOnComment(comment, ReactionType.LIKE)">
+                <i class="bi bi-hand-thumbs-up{{currentUserReacted(comment, ReactionType.LIKE)}}"></i>
+              </button>
+            </div>
+          </div>
+        </p-fieldset>
       </div>
-      <div class="row d-flex justify-content-between ms-2 mt-2">
-        <button class="col-xxl-auto bg-transparent text-white border border-1 border-secondary rounded-3 px-2 py-2">
-          <i class="bi bi-arrow-90deg-left"></i>
-          <span class="ms-2">Respond</span>
-        </button>
-        <div class="col-xxl-auto text-white fs-5">
-          <button class="bg-transparent border-0 text-white" [disabled]="!(isAuthenticated$ | async)"
-                  (click)="reactOnComment(comment, ReactionType.DISLIKE)">
-            <i class="bi bi-hand-thumbs-down{{currentUserReacted(comment, ReactionType.DISLIKE)}}"></i>
-          </button>
-          <span class="mx-2">{{getCommentRating(comment)}}</span>
-          <button class="bg-transparent border-0 text-white" [disabled]="!(isAuthenticated$ | async)"
-                  (click)="reactOnComment(comment, ReactionType.LIKE)">
-            <i class="bi bi-hand-thumbs-up{{currentUserReacted(comment, ReactionType.LIKE)}}"></i>
-          </button>
-        </div>
+    </div>
+    <div class="row mt-2 justify-content-center">
+      <div class="col-xxl-auto">
+        <p-paginator
+          (onPageChange)="onPageChange($event)"
+          [first]="first"
+          [rows]="rows"
+          [totalRecords]="page.totalElements"
+          [rowsPerPageOptions]="[3, 5, 10]">
+        </p-paginator>
       </div>
-    </p-fieldset>
-    <p-paginator
-      (onPageChange)="onPageChange($event)"
-      [first]="first"
-      [rows]="rows"
-      [totalRecords]="comments.length"
-      [rowsPerPageOptions]="[3, 5, 10]">
-    </p-paginator>
+    </div>
   </ng-container>
 </div>

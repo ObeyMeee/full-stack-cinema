@@ -7,3 +7,28 @@
   background: #191a22;
   border: #333333 solid 1px;
 }
+
+:host ::ng-deep .p-paginator {
+  background: black;
+}
+
+:host ::ng-deep .p-paginator-element {
+  font-size: 150%;
+  color: white;
+  border: white solid 1px;
+}
+
+:host ::ng-deep .p-paginator-rpp-options,
+:host ::ng-deep .p-dropdown-items {
+  background: black;
+  color: white;
+}
+
+:host ::ng-deep .p-dropdown-label {
+  color: white;
+}
+
+:host ::ng-deep .p-dropdown-items {
+  margin: 0;
+  padding: 0
+}

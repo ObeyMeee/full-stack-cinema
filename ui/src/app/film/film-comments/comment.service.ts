@@ -13,9 +13,10 @@ export class CommentService extends BaseService {
     super();
   }
 
-  getByFilmId(filmId: string) {
+  getByFilmId(filmId: string, page: number, size: number) {
     const status = new ReplaySubject<Status>();
-    const request = this.http.get<Comment[]>(`${this.baseUrl}films/${filmId}/comments`)
+    const url = `${this.baseUrl}films/${filmId}/comments`;
+    const request = this.http.get<CommentResponse>(url, {params: {page, size}})
       .pipe(
         catchError(err => {
           status.next(Status.ERROR);
@@ -30,4 +31,18 @@ export class CommentService extends BaseService {
 
     return {data, status};
   }
+}
+
+export interface CommentResponse {
+  content: Comment[];
+  empty: boolean;
+  first: boolean;
+  last: boolean;
+  number: number;
+  numberOfElements: number;
+  pageable: any;
+  size: number;
+  sort: any;
+  totalElements: number;
+  totalPages: number;
 }

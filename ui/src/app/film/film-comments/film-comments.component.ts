@@ -9,7 +9,7 @@ import {Pending} from "../../shared/pending.interface";
 import {Comment} from "../model/comment.model";
 import {ReactionType} from "../model/reaction-type";
 import {ReactionService} from "./reaction-service";
-import {CommentService} from "./comment.service";
+import {CommentResponse, CommentService} from "./comment.service";
 import OktaAuth, {UserClaims} from "@okta/okta-auth-js";
 
 @Component({
@@ -18,14 +18,14 @@ import OktaAuth, {UserClaims} from "@okta/okta-auth-js";
   styleUrls: ['./film-comments.component.css']
 })
 export class FilmCommentsComponent implements OnInit, AfterContentChecked {
-  comments$!: Pending<Comment[]>;
+  commentResponse$!: Pending<CommentResponse>;
   isAuthenticated$!: Observable<boolean>;
   authenticatedInfoMessage!: Message[];
   noCommentsInfoMessage!: Message[];
   user!: UserClaims;
 
-  first: number = 0;
-  rows: number = 10;
+  first = 0;
+  rows = 3;
 
   protected readonly Status = Status;
   protected readonly ReactionType = ReactionType;
@@ -49,7 +49,7 @@ export class FilmCommentsComponent implements OnInit, AfterContentChecked {
     ];
 
     const id = this.getFilmId();
-    this.comments$ = this.commentService.getByFilmId(id);
+    this.commentResponse$ = this.commentService.getByFilmId(id, this.first , this.rows);
     this.isAuthenticated$ = this.oktaStateService.authState$.pipe(
       filter(authState => !!authState),
       map(authState => authState.isAuthenticated ?? false)
@@ -87,6 +87,8 @@ export class FilmCommentsComponent implements OnInit, AfterContentChecked {
   onPageChange(event: PageEvent) {
     this.first = event.first;
     this.rows = event.rows;
+    const id = this.getFilmId();
+    this.commentResponse$ = this.commentService.getByFilmId(id, event.page , event.rows);
   }
 
   getCommentRating(comment: Comment) {
