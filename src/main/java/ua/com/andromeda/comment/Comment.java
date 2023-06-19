@@ -2,12 +2,14 @@ package ua.com.andromeda.comment;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import ua.com.andromeda.film.Film;
 import ua.com.andromeda.reaction.Reaction;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,10 +22,14 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    private double mark;
+
+    @NotNull(message = "Mark is required")
+    private Double mark;
 
     @Column(columnDefinition = "TEXT")
     private String review;
+
+    @NotNull(message = "Username is required")
     private String username;
 
     @OneToMany(
@@ -31,7 +37,7 @@ public class Comment {
             mappedBy = "comment",
             cascade = CascadeType.ALL
     )
-    private List<Reaction> reactions;
+    private List<Reaction> reactions = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "film_id", nullable = false)

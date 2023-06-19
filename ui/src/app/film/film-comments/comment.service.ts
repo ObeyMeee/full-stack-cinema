@@ -31,6 +31,11 @@ export class CommentService extends BaseService {
 
     return {data, status};
   }
+
+  save(comment: Comment, filmId: string) {
+    const url = `${this.baseUrl}films/${filmId}/comments`;
+    return this.http.post<Comment>(url, comment)
+  }
 }
 
 export interface CommentResponse {

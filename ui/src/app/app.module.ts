@@ -49,6 +49,9 @@ import {FilmInfoComponent} from './film/film-info/film-info.component';
 import {FilmCommentsComponent} from './film/film-comments/film-comments.component';
 import {MessageModule} from "primeng/message";
 import {PaginatorModule} from "primeng/paginator";
+import {InputTextareaModule} from "primeng/inputtextarea";
+import {ButtonModule} from "primeng/button";
+import {DialogModule} from "primeng/dialog";
 
 const routes: Route[] = [
   {path: '', component: PosterComponent, pathMatch: 'full'},
@@ -106,25 +109,28 @@ const oktaAuth = new OktaAuth(environment.okta);
     FilmInfoComponent,
     FilmCommentsComponent
   ],
-    imports: [
-        BrowserModule,
-        BrowserAnimationsModule,
-        CarouselModule,
-        HttpClientModule,
-        RouterModule.forRoot(routes),
-        OktaAuthModule.forRoot({oktaAuth}),
-        TooltipModule,
-        FormsModule,
-        PasswordModule,
-        DividerModule,
-        MessagesModule,
-        ProgressSpinnerModule,
-        ToastModule,
-        FieldsetModule,
-        RatingModule,
-        MessageModule,
-        PaginatorModule,
-    ],
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    CarouselModule,
+    HttpClientModule,
+    RouterModule.forRoot(routes),
+    OktaAuthModule.forRoot({oktaAuth}),
+    TooltipModule,
+    FormsModule,
+    PasswordModule,
+    DividerModule,
+    MessagesModule,
+    ProgressSpinnerModule,
+    ToastModule,
+    FieldsetModule,
+    RatingModule,
+    MessageModule,
+    PaginatorModule,
+    InputTextareaModule,
+    ButtonModule,
+    DialogModule,
+  ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: ConvertDateInterceptorService, multi: true},

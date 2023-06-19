@@ -15,6 +15,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import ua.com.andromeda.comment.CommentNotFoundException;
 import ua.com.andromeda.exception.ErrorResponse;
+import ua.com.andromeda.film.FilmNotFoundException;
 import ua.com.andromeda.user.UserAlreadyExistsException;
 
 import java.util.Collections;
@@ -22,16 +23,8 @@ import java.util.List;
 
 @RestControllerAdvice
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
-
-    @ExceptionHandler({UserAlreadyExistsException.class})
-    protected ResponseEntity<Object> handleConflict(UserAlreadyExistsException ex, WebRequest request) {
-        List<String> messages = getSingletonListMessage(ex);
-        ErrorResponse errorResponse = new ErrorResponse(messages, request.getDescription(false));
-        return handleExceptionInternal(ex, errorResponse, new HttpHeaders(), HttpStatus.CONFLICT, request);
-    }
-
-    @ExceptionHandler({CommentNotFoundException.class})
-    protected ResponseEntity<Object> handleConflict(CommentNotFoundException ex, WebRequest request) {
+    @ExceptionHandler({FilmNotFoundException.class, CommentNotFoundException.class, UserAlreadyExistsException.class})
+    protected ResponseEntity<Object> handleConflict(RuntimeException ex, WebRequest request) {
         List<String> messages = getSingletonListMessage(ex);
         ErrorResponse errorResponse = new ErrorResponse(messages, request.getDescription(false));
         return handleExceptionInternal(ex, errorResponse, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
@@ -40,7 +33,6 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     private List<String> getSingletonListMessage(Throwable ex) {
         return Collections.singletonList(ex.getMessage());
     }
-
 
     @ExceptionHandler({ConstraintViolationException.class})
     protected ResponseEntity<Object> handleConflict(ConstraintViolationException ex, WebRequest request) {

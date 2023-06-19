@@ -32,3 +32,13 @@
   margin: 0;
   padding: 0
 }
+
+:host ::ng-deep .p-dialog-header,
+:host ::ng-deep .p-dialog-footer,
+:host ::ng-deep .p-dialog-content {
+  background: #191a22;
+}
+
+:host ::ng-deep .p-dialog-content {
+  padding-bottom: 0;
+}

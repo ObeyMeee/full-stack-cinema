@@ -1,7 +1,7 @@
-import {AfterContentChecked, ChangeDetectorRef, Component, Inject, OnInit} from '@angular/core';
+import {AfterContentChecked, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {FilmService} from "../film.service";
 import {ActivatedRoute} from "@angular/router";
-import {filter, map, Observable} from "rxjs";
+import {map, Observable, take} from "rxjs";
 import {OKTA_AUTH, OktaAuthStateService} from "@okta/okta-angular";
 import {Message} from "primeng/api";
 import {Status} from "../../shared/status.enum";
@@ -23,6 +23,8 @@ export class FilmCommentsComponent implements OnInit, AfterContentChecked {
   authenticatedInfoMessage!: Message[];
   noCommentsInfoMessage!: Message[];
   user!: UserClaims;
+  leftComment = new Comment();
+  visibleLeftCommentDialog = false;
 
   first = 0;
   rows = 3;
@@ -49,12 +51,15 @@ export class FilmCommentsComponent implements OnInit, AfterContentChecked {
     ];
 
     const id = this.getFilmId();
-    this.commentResponse$ = this.commentService.getByFilmId(id, this.first , this.rows);
+    this.commentResponse$ = this.commentService.getByFilmId(id, this.first, this.rows);
     this.isAuthenticated$ = this.oktaStateService.authState$.pipe(
-      filter(authState => !!authState),
-      map(authState => authState.isAuthenticated ?? false)
+      map(authState => !!authState.isAuthenticated)
     );
-    this.user = await this.oktaAuth.getUser();
+    this.isAuthenticated$.pipe(take(1)).subscribe(async isAuthenticated => {
+        if (isAuthenticated)
+          this.user = await this.oktaAuth.getUser();
+      }
+    )
   }
 
   private getFilmId() {
@@ -88,7 +93,7 @@ export class FilmCommentsComponent implements OnInit, AfterContentChecked {
     this.first = event.first;
     this.rows = event.rows;
     const id = this.getFilmId();
-    this.commentResponse$ = this.commentService.getByFilmId(id, event.page , event.rows);
+    this.commentResponse$ = this.commentService.getByFilmId(id, event.page, event.rows);
   }
 
   getCommentRating(comment: Comment) {
@@ -101,6 +106,16 @@ export class FilmCommentsComponent implements OnInit, AfterContentChecked {
     return comment.reactions
       .filter(reaction => reaction.type === type)
       .length;
+  }
+
+  toggleLeaveCommentDialog() {
+    this.visibleLeftCommentDialog = !this.visibleLeftCommentDialog;
+  }
+
+  onSendComment() {
+    this.toggleLeaveCommentDialog();
+    const filmId = this.getFilmId();
+    this.commentService.save(this.leftComment, filmId).subscribe(console.log);
   }
 }
 

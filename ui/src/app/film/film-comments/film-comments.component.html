@@ -6,11 +6,53 @@
 
 
   <ng-container *ngIf="commentResponse$.data | async as page">
-    <div class="row" *ngIf="!(isAuthenticated$ | async)">
-      <div class="col-xxl-12">
+    <div class="row align-items-center">
+      <div class="col-auto" *ngIf="!(isAuthenticated$ | async)">
         <p-messages [(value)]="authenticatedInfoMessage" [enableService]="false"
                     [closable]="false">
         </p-messages>
+      </div>
+      <div class="col-auto">
+        <p-button icon="pi pi-comment"
+                  label="Leave comment"
+                  styleClass="p-button-outlined p-button-danger"
+                  [disabled]="!(isAuthenticated$ | async)!"
+                  (click)="toggleLeaveCommentDialog()">
+        </p-button>
+        <p-dialog [(visible)]="visibleLeftCommentDialog"
+                  [modal]="true"
+                  [style]="{ width: '50vw' }"
+                  [draggable]="false"
+                  [resizable]="false">
+          <ng-template pTemplate="header">
+            <span class="fs-3 font-bold text-white">Rate this film!</span>
+          </ng-template>
+          <form class="row" #leaveCommentForm="ngForm" (ngSubmit)="onSendComment()">
+            <div class="col-12">
+              <p-rating [(ngModel)]="leftComment.mark" name="mark"
+                        [iconOnStyle]="{color: 'var(--primary-red)'}"
+                        [cancel]="false"
+                        [stars]="10"
+                        required>
+              </p-rating>
+            </div>
+            <textarea class="col-12 bg-dark text-white mt-2"
+                      rows="5"
+                      name="review"
+                      [(ngModel)]="leftComment.review">
+            </textarea>
+            <div class="row mt-2 justify-content-end">
+              <div class="col-auto p-0">
+                <p-button icon="pi pi-send"
+                          label="Send"
+                          type="submit"
+                          styleClass="p-button-text text-danger"
+                          [disabled]="!leaveCommentForm.valid">
+                </p-button>
+              </div>
+            </div>
+          </form>
+        </p-dialog>
       </div>
     </div>
     <div class="row" *ngIf="page.empty">
@@ -22,41 +64,44 @@
     </div>
 
     <div class="row">
-      <div class="col-xxl-12">
-        <p-fieldset *ngFor="let comment of page.content" class="mt-2">
-          <ng-template pTemplate="header">
-            <div class="align-items-center text-danger">
-              <span class="font-bold text-lg ms-2">{{comment.username}}</span>
-              <span class="ms-2">
+      <div class="row mt-2" *ngFor="let comment of page.content">
+        <div class="col-xxl-12">
+          <p-fieldset>
+            <ng-template pTemplate="header">
+              <div class="align-items-center text-danger">
+                <span class="font-bold text-lg ms-2">{{comment.username}}</span>
+                <span class="ms-2">
             <i *ngFor="let _ of [].constructor(comment.mark)" class="bi bi-star-fill"></i>
             <i *ngFor="let _ of [].constructor(10 - comment.mark)" class="bi bi-star"></i>
           </span>
-              <span class="ms-2">{{comment.mark}} / 10</span>
+                <span class="ms-2">{{comment.mark}} / 10</span>
+              </div>
+            </ng-template>
+            <div class="row text-white">
+              <div class="col-xxl-12">
+                {{comment.review}}
+              </div>
             </div>
-          </ng-template>
-          <div class="row text-white">
-            <div class="col-xxl-12">
-              {{comment.review}}
-            </div>
-          </div>
-          <div class="row d-flex justify-content-between ms-2 mt-2">
-            <button class="col-xxl-auto bg-transparent text-white border border-1 border-secondary rounded-3 px-2 py-2">
-              <i class="bi bi-arrow-90deg-left"></i>
-              <span class="ms-2">Respond</span>
-            </button>
-            <div class="col-xxl-auto text-white fs-5">
-              <button class="bg-transparent border-0 text-white" [disabled]="!(isAuthenticated$ | async)"
-                      (click)="reactOnComment(comment, ReactionType.DISLIKE)">
-                <i class="bi bi-hand-thumbs-down{{currentUserReacted(comment, ReactionType.DISLIKE)}}"></i>
+            <div class="row d-flex justify-content-between ms-2 mt-2">
+              <button
+                class="col-xxl-auto bg-transparent text-white border border-1 border-secondary rounded-3 px-2 py-2">
+                <i class="bi bi-arrow-90deg-left"></i>
+                <span class="ms-2">Respond</span>
               </button>
-              <span class="mx-2">{{getCommentRating(comment)}}</span>
-              <button class="bg-transparent border-0 text-white" [disabled]="!(isAuthenticated$ | async)"
-                      (click)="reactOnComment(comment, ReactionType.LIKE)">
-                <i class="bi bi-hand-thumbs-up{{currentUserReacted(comment, ReactionType.LIKE)}}"></i>
-              </button>
+              <div class="col-xxl-auto text-white fs-5">
+                <button class="bg-transparent border-0 text-white" [disabled]="!(isAuthenticated$ | async)"
+                        (click)="reactOnComment(comment, ReactionType.DISLIKE)">
+                  <i class="bi bi-hand-thumbs-down{{currentUserReacted(comment, ReactionType.DISLIKE)}}"></i>
+                </button>
+                <span class="mx-2">{{getCommentRating(comment)}}</span>
+                <button class="bg-transparent border-0 text-white" [disabled]="!(isAuthenticated$ | async)"
+                        (click)="reactOnComment(comment, ReactionType.LIKE)">
+                  <i class="bi bi-hand-thumbs-up{{currentUserReacted(comment, ReactionType.LIKE)}}"></i>
+                </button>
+              </div>
             </div>
-          </div>
-        </p-fieldset>
+          </p-fieldset>
+        </div>
       </div>
     </div>
     <div class="row mt-2 justify-content-center">
