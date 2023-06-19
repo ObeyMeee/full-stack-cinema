@@ -1,0 +1,115 @@
+<div class="row">
+  <div class="col-xxl-8 text-white" *ngIf="film$ | async as film">
+    <h1>{{film.title}}</h1>
+    <div class="row row-cols-2">
+      <div>Age:</div>
+      <div>16+</div>
+    </div>
+    <div class="row row-cols-2">
+      <div>Year:</div>
+      <div>{{film.productionYear}}</div>
+    </div>
+    <div class="row row-cols-2">
+      <div>Director:</div>
+      <div>{{film.director}}</div>
+    </div>
+
+    <div class="row row-cols-2">
+      <div>Rental period:</div>
+      <div>20.04.2022-23.01.2023</div>
+    </div>
+    <div class="row row-cols-2">
+      <div>Genre:</div>
+      <div>
+        <ng-container *ngFor="let genre of film.genres; let last=last">
+          <a class="text-decoration-none text-white cl-primary-hover" href="#">{{genre.name}}</a>
+          <span *ngIf="!last">, &nbsp;</span>
+        </ng-container>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">Duration:</div>
+      <div class="col">{{film.duration}}</div>
+    </div>
+    <div class="row">
+      <div class="col">Country:</div>
+      <div class="col">
+        <ng-container *ngFor="let country of film.countries; let last=last">
+          <span>{{country.name}}</span>
+          <span *ngIf="!last">, &nbsp;</span>
+        </ng-container>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">Actors:</div>
+      <div class="col">
+        <ng-container *ngFor="let actor of film.actors; let last=last">
+          <span>{{actor.fullName}}</span>
+          <span *ngIf="!last">, &nbsp;</span>
+        </ng-container>
+      </div>
+    </div>
+    <div class="row mt-4">
+      <div class="col-xxl-12">
+        {{film.description}}
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xxl-4" *ngIf="sessions">
+    <div class="row select-day-container p-4 rounded-top">
+      <span class="fs-4 text-white">Schedule of sessions</span>
+      <div appDropdown [element]="daySelect"
+           role="button"
+           class="row text-white pe-auto bg-gray bg-primary-hover rounded-top m-0 p-0">
+        <span class="col-auto me-auto p-2">{{selectedDate | date:'EEE, MM/dd'}}</span>
+        <div class="col-auto d-flex align-items-center">
+          <ng-container [ngSwitch]="getDateType(selectedDate)">
+              <span class="fs-small">
+                <ng-container *ngSwitchCase="'today'">Today</ng-container>
+                <ng-container *ngSwitchCase="'tomorrow'">Tomorrow</ng-container>
+              </span>
+          </ng-container>
+          <i class="ms-1 bi bi-chevron-down"></i>
+        </div>
+      </div>
+      <div #daySelect class="row row-cols-xxl-1 text-center bg-gray m-0 p-0 rounded-bottom invisible">
+        <div *ngFor="let date of mapStartAtDates()">
+          <ng-template [ngIf]="isTodayOrFuture(date)">
+            <ng-container [ngSwitch]="getDateType(date)">
+              <div (click)="onSelectDate(date)"
+                   role="button"
+                   class="row-cols-6 border-top border-bottom border-secondary border-1 border-secondary border-opacity-50
+              cl-primary select-date pe-auto m-0 p-3 text-gray cl-white-hover">
+                  <span [ngClass]="{
+                            'text-white': isSameDay(date, selectedDate)
+                          }">
+                    <ng-container *ngSwitchCase="'today'">Today</ng-container>
+                    <ng-container *ngSwitchCase="'tomorrow'">Tomorrow</ng-container>
+                    <ng-container *ngSwitchDefault>{{date | date:'EEE, MM/dd'}}</ng-container>
+                  </span>
+              </div>
+            </ng-container>
+          </ng-template>
+        </div>
+        <span class="text-white">Further schedule is not formed yet. See our news :-)</span>
+      </div>
+    </div>
+    <div class="row row-cols-xxl-3 session-dates rounded-bottom">
+      <ng-template [ngForOf]="sessions" let-session ngFor>
+        <a *ngIf="isSameDay(session.startAt, selectedDate)"
+           [routerLink]="['../sessions', session.id]"
+           class="cl-white-hover col-xxl-2 fs-5 text-decoration-none m-2"
+           [ngClass]="{
+            'pe-none': isSessionWithinPastThirtyMinutes(session),
+            'text-secondary': isSessionWithinPastThirtyMinutes(session),
+            'cl-primary': !isSessionWithinPastThirtyMinutes(session)
+           }"
+           pTooltip="From {{session.minPrice}} UAH"
+           tooltipPosition="bottom">
+          {{session.startAt | date: 'HH:mm'}}
+        </a>
+      </ng-template>
+    </div>
+  </div>
+</div>

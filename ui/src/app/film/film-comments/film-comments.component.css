@@ -1,0 +1,9 @@
+:host ::ng-deep .p-fieldset {
+  background: #191a22;
+  border: #333333 solid 1px;
+}
+
+:host ::ng-deep .p-fieldset-legend {
+  background: #191a22;
+  border: #333333 solid 1px;
+}

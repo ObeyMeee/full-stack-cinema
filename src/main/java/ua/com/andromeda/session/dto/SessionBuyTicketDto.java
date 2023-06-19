@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ua.com.andromeda.hall.Hall;
-import ua.com.andromeda.ticket.TicketDto;
+import ua.com.andromeda.ticket.dto.TicketDto;
 
 import java.time.LocalDateTime;
 import java.util.List;

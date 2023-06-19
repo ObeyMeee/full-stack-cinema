@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ua.com.andromeda.session.dto.SessionBuyTicketDto;
 import ua.com.andromeda.session.dto.SessionDto;
-import ua.com.andromeda.ticket.TicketDto;
 import ua.com.andromeda.ticket.TicketRepository;
+import ua.com.andromeda.ticket.dto.TicketDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,12 +17,6 @@ public class SessionService {
     private final SessionRepository sessionRepository;
     private final TicketRepository ticketRepository;
 
-    public List<SessionDto> getSessionByFilmId(UUID filmId) {
-        return sessionRepository.findAllByFilmId(filmId)
-                .map(SessionDto::new)
-                .toList();
-    }
-
     public Optional<SessionBuyTicketDto> findById(UUID id) {
         Optional<SessionBuyTicketDto> optionalSessionDto = sessionRepository.findSessionBuyTicketDtoById(id);
         optionalSessionDto.ifPresent(session -> {
@@ -30,5 +24,11 @@ public class SessionService {
             session.setBoughtTickets(boughtTickets);
         });
         return optionalSessionDto;
+    }
+
+    public List<SessionDto> findAllByFilmId(String filmId) {
+        return sessionRepository.findAllByFilmId(UUID.fromString(filmId))
+                .map(SessionDto::new)
+                .toList();
     }
 }

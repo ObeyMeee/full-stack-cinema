@@ -5,11 +5,9 @@ import com.okta.sdk.resource.user.UserBuilder;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
 
 @Service
 @RequiredArgsConstructor
-@Validated
 public class UserService {
     private final Client oktaClient;
 

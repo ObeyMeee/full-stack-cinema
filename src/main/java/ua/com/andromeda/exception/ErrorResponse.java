@@ -1,4 +1,4 @@
-package ua.com.andromeda.exception.handler;
+package ua.com.andromeda.exception;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

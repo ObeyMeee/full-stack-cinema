@@ -25,5 +25,6 @@ public class Actor {
 
     @ManyToMany(mappedBy = "actors")
     @JsonIgnore
+    @ToString.Exclude
     private List<Film> films;
 }

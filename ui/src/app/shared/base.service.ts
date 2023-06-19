@@ -1,5 +1,5 @@
 import {environment} from "../../environments/environment.development";
 
-export class Service {
+export class BaseService {
   readonly baseUrl = environment.apiUrl;
 }

@@ -8,6 +8,9 @@ import ua.com.andromeda.common.PdfCreator;
 import ua.com.andromeda.common.QRCodeGenerator;
 import ua.com.andromeda.session.Session;
 import ua.com.andromeda.session.SessionRepository;
+import ua.com.andromeda.ticket.dto.PurchaseDto;
+import ua.com.andromeda.ticket.dto.TicketDto;
+import ua.com.andromeda.ticket.dto.TicketProfileDto;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;

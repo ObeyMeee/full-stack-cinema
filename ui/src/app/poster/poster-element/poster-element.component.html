@@ -9,7 +9,7 @@
        class="position-absolute poster-content row text-white invisible top-0 start-0">
 
     <div class="col m-xxl-2">
-      <a [routerLink]="['/films', poster.filmId]"
+      <a [routerLink]="['/films', poster.filmId, 'info']"
          appHover
          class="text-decoration-none text-white"
          classToRemove="bg-dark"
@@ -86,7 +86,7 @@
     </div>
   </div>
   <div class="film-title position-absolute row-cols-xxl-12 gy-xxl-5 text-center">
-    <a [routerLink]="['/films', poster.filmId]"
+    <a [routerLink]="['/films', poster.filmId, 'info']"
        class="fs-4 fw-bold text-white text-decoration-none title">
       {{poster.title}}
     </a>

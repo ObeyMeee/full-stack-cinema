@@ -1,30 +1,28 @@
 import {Injectable} from "@angular/core";
-import {BaseService} from "../shared/base.service";
+import {BaseService} from "../../shared/base.service";
 import {HttpClient} from "@angular/common/http";
-import {User} from "../shared/user.model";
-import {catchError, defer, ReplaySubject, retry, tap} from "rxjs";
-import {Status} from "../shared/status.enum";
+import {catchError, defer, ReplaySubject, tap} from "rxjs";
+import {Status} from "../../shared/status.enum";
+import {Comment} from "../model/comment.model";
 
 @Injectable({
   providedIn: 'root'
 })
-export class SignUpService extends BaseService {
+export class CommentService extends BaseService {
   constructor(private http: HttpClient) {
     super();
   }
 
-  register(user: User) {
+  getByFilmId(filmId: string) {
     const status = new ReplaySubject<Status>();
-    const request = this.http.post<void>(`${this.baseUrl}users/new`, user)
+    const request = this.http.get<Comment[]>(`${this.baseUrl}films/${filmId}/comments`)
       .pipe(
-        retry(1),
         catchError(err => {
           status.next(Status.ERROR);
           throw err;
         }),
         tap(() => status.next(Status.SUCCESS))
       );
-
     const data = defer(() => {
       status.next(Status.LOADING);
       return request;

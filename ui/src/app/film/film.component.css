@@ -1,37 +1,12 @@
 .poster {
-  max-width: 250px;
-  max-height: 370px;
+  width: 300px;
 }
 
 .trailer-btn {
   background: #676f70;
-  width: 250px;
+  width: 300px;
 }
 
 .bg-primary-hover:hover {
   background: var(--primary-red);
-}
-
-.select-day-container {
-  background: linear-gradient(#222023, #19171a);
-}
-
-.session-dates {
-  background: linear-gradient(#393939, #342e33);
-}
-
-.bg-gray {
-  background: #333333
-}
-
-.fs-small {
-  font-size: 12px;
-}
-
-.text-gray {
-  color: #676f70;
-}
-
-.top-20px {
-  top: 20px;
 }

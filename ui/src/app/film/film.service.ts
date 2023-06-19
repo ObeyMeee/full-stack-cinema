@@ -1,18 +1,18 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {Film} from "./models/film.model";
+import {Film} from "./model/film.model";
 import {SessionDto} from "../poster/dto/session.dto";
-import {Service} from "../shared/base.service";
+import {BaseService} from "../shared/base.service";
 
 @Injectable({
   providedIn: 'root'
 })
-export class FilmService extends Service {
+export class FilmService extends BaseService {
   constructor(private http: HttpClient) {
     super();
   }
 
-  getFilm(id: string) {
+  getById(id: string) {
     return this.http.get<Film>(`${this.baseUrl}films/${id}`);
   }
 

@@ -2,12 +2,12 @@ import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {SessionBuyTicketDto} from "./session-buy-ticket.dto";
 import {Ticket} from "./models/ticket.model";
-import {Service} from "../shared/base.service";
+import {BaseService} from "../shared/base.service";
 
 @Injectable({
   providedIn: 'root'
 })
-export class HallService extends Service {
+export class HallService extends BaseService {
   constructor(private http: HttpClient) {
     super();
   }

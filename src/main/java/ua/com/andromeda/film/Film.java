@@ -31,10 +31,12 @@ public class Film {
     private String description;
     private String director;
     private int duration;
+
     @Column(name = "production_year")
     private int productionYear;
 
     @ManyToMany(
+            fetch = FetchType.EAGER,
             cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
     @JoinTable(
@@ -49,6 +51,7 @@ public class Film {
     private Media media;
 
     @ManyToMany(
+            fetch = FetchType.EAGER,
             cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
     @JoinTable(
@@ -59,6 +62,7 @@ public class Film {
     private List<Actor> actors;
 
     @ManyToMany(
+            fetch = FetchType.EAGER,
             cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
     @JoinTable(

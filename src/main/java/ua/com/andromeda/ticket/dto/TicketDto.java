@@ -1,4 +1,4 @@
-package ua.com.andromeda.ticket;
+package ua.com.andromeda.ticket.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

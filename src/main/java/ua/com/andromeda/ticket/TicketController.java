@@ -3,6 +3,8 @@ package ua.com.andromeda.ticket;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ua.com.andromeda.ticket.dto.PurchaseDto;
+import ua.com.andromeda.ticket.dto.TicketProfileDto;
 
 import java.security.Principal;
 import java.util.List;

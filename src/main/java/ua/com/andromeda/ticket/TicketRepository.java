@@ -3,6 +3,8 @@ package ua.com.andromeda.ticket;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.stereotype.Repository;
+import ua.com.andromeda.ticket.dto.TicketDto;
+import ua.com.andromeda.ticket.dto.TicketProfileDto;
 
 import java.util.List;
 import java.util.UUID;
@@ -10,7 +12,7 @@ import java.util.UUID;
 @Repository
 public interface TicketRepository extends ListCrudRepository<Ticket, UUID> {
     @Query("""
-            select new ua.com.andromeda.ticket.TicketDto(t.row, t.seat)
+            select new ua.com.andromeda.ticket.dto.TicketDto(t.row, t.seat)
             from Ticket t
             where t.session.id = :sessionId
             """
@@ -18,8 +20,8 @@ public interface TicketRepository extends ListCrudRepository<Ticket, UUID> {
     List<TicketDto> findBySessionId(UUID sessionId);
 
     @Query("""
-                select new ua.com.andromeda.ticket.TicketProfileDto(
-                    new ua.com.andromeda.ticket.TicketDto(t.id, t.row, t.seat, t.price),
+                select new ua.com.andromeda.ticket.dto.TicketProfileDto(
+                    new ua.com.andromeda.ticket.dto.TicketDto(t.id, t.row, t.seat, t.price),
                     t.boughtAt,
                     s.startAt,
                     f.title,

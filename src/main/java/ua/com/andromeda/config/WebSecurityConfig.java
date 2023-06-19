@@ -19,8 +19,9 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests()
-                .requestMatchers(HttpMethod.GET, "/films", "/films/{id}", "/films/{id}/sessions").permitAll()
-                .requestMatchers(HttpMethod.GET, "/sessions", "/sessions/{id}").permitAll()
+                .requestMatchers(HttpMethod.GET, "/films", "/films/{id}").permitAll()
+                .requestMatchers(HttpMethod.GET, "/films/{id}/sessions", "/sessions/{id}").permitAll()
+                .requestMatchers(HttpMethod.GET, "/films/{id}/comments").permitAll()
                 .requestMatchers(HttpMethod.POST, "/users/new").permitAll()
                 .anyRequest().authenticated();
         http.oauth2ResourceServer().jwt();

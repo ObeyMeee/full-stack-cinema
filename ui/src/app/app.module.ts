@@ -43,19 +43,32 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {ProgressSpinnerModule} from "primeng/progressspinner";
 import {ToastModule} from "primeng/toast";
 import {MessageService} from "primeng/api";
+import {FieldsetModule} from "primeng/fieldset";
+import {RatingModule} from "primeng/rating";
+import {FilmInfoComponent} from './film/film-info/film-info.component';
+import {FilmCommentsComponent} from './film/film-comments/film-comments.component';
+import {MessageModule} from "primeng/message";
+import {PaginatorModule} from "primeng/paginator";
 
 const routes: Route[] = [
   {path: '', component: PosterComponent, pathMatch: 'full'},
   {
     path: 'user',
     children: [
-      {path: 'profile', component: ProfileComponent,},
+      {path: 'profile', component: ProfileComponent},
       {path: 'tickets', component: OperationsContainerComponent},
     ],
     canActivate: [OktaAuthGuard],
     component: UserComponent
   },
-  {path: 'films/:id', component: FilmComponent},
+  {
+    path: 'films/:id',
+    children: [
+      {path: 'info', component: FilmInfoComponent},
+      {path: 'comments', component: FilmCommentsComponent}
+    ],
+    component: FilmComponent
+  },
   {path: 'films/:id/sessions/:sessionId', component: HallComponent},
   {path: 'login', component: LoginComponent},
   {path: 'login/callback', component: OktaCallbackComponent},
@@ -90,22 +103,28 @@ const oktaAuth = new OktaAuth(environment.okta);
     HasUpperCaseDirective,
     HasLowerCaseDirective,
     HasNumericDirective,
+    FilmInfoComponent,
+    FilmCommentsComponent
   ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    CarouselModule,
-    HttpClientModule,
-    RouterModule.forRoot(routes),
-    OktaAuthModule.forRoot({oktaAuth}),
-    TooltipModule,
-    FormsModule,
-    PasswordModule,
-    DividerModule,
-    MessagesModule,
-    ProgressSpinnerModule,
-    ToastModule,
-  ],
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        CarouselModule,
+        HttpClientModule,
+        RouterModule.forRoot(routes),
+        OktaAuthModule.forRoot({oktaAuth}),
+        TooltipModule,
+        FormsModule,
+        PasswordModule,
+        DividerModule,
+        MessagesModule,
+        ProgressSpinnerModule,
+        ToastModule,
+        FieldsetModule,
+        RatingModule,
+        MessageModule,
+        PaginatorModule,
+    ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: ConvertDateInterceptorService, multi: true},

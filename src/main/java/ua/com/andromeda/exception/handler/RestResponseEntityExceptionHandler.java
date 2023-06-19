@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import ua.com.andromeda.comment.CommentNotFoundException;
+import ua.com.andromeda.exception.ErrorResponse;
 import ua.com.andromeda.user.UserAlreadyExistsException;
 
 import java.util.Collections;
@@ -23,10 +25,22 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
     @ExceptionHandler({UserAlreadyExistsException.class})
     protected ResponseEntity<Object> handleConflict(UserAlreadyExistsException ex, WebRequest request) {
-        List<String> messages = Collections.singletonList(ex.getMessage());
+        List<String> messages = getSingletonListMessage(ex);
         ErrorResponse errorResponse = new ErrorResponse(messages, request.getDescription(false));
         return handleExceptionInternal(ex, errorResponse, new HttpHeaders(), HttpStatus.CONFLICT, request);
     }
+
+    @ExceptionHandler({CommentNotFoundException.class})
+    protected ResponseEntity<Object> handleConflict(CommentNotFoundException ex, WebRequest request) {
+        List<String> messages = getSingletonListMessage(ex);
+        ErrorResponse errorResponse = new ErrorResponse(messages, request.getDescription(false));
+        return handleExceptionInternal(ex, errorResponse, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+    }
+
+    private List<String> getSingletonListMessage(Throwable ex) {
+        return Collections.singletonList(ex.getMessage());
+    }
+
 
     @ExceptionHandler({ConstraintViolationException.class})
     protected ResponseEntity<Object> handleConflict(ConstraintViolationException ex, WebRequest request) {
@@ -52,8 +66,9 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
     @ExceptionHandler({Exception.class})
     protected ResponseEntity<Object> handleConflict(Exception ex, WebRequest request) {
-        String message = "Unknown error occurred";
-        System.out.println(ex.getMessage());
-        return handleExceptionInternal(ex, message, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
+        ex.printStackTrace();
+        List<String> messages = getSingletonListMessage(ex);
+        ErrorResponse errorResponse = new ErrorResponse(messages, request.getDescription(false));
+        return handleExceptionInternal(ex, errorResponse, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
     }
 }

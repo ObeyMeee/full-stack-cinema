@@ -24,5 +24,6 @@ public class Genre {
 
     @ManyToMany(mappedBy = "genres")
     @JsonIgnore
+    @ToString.Exclude
     private List<Film> films;
 }
