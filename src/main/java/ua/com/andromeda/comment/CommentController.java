@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,6 +26,7 @@ public class CommentController {
                                         @RequestBody Comment comment,
                                         Principal principal) {
         comment.setUsername(principal.getName());
+        comment.setWroteAt(LocalDateTime.now());
         return ResponseEntity.ok(commentService.save(comment, filmId));
     }
 }

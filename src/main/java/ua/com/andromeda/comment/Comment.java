@@ -9,6 +9,7 @@ import lombok.ToString;
 import ua.com.andromeda.film.Film;
 import ua.com.andromeda.reaction.Reaction;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -38,6 +39,9 @@ public class Comment {
             cascade = CascadeType.ALL
     )
     private List<Reaction> reactions = new ArrayList<>();
+
+    @NotNull
+    private LocalDateTime wroteAt;
 
     @ManyToOne
     @JoinColumn(name = "film_id", nullable = false)

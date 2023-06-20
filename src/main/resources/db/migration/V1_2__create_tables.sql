@@ -56,7 +56,8 @@ create table comments
         primary key,
     mark     double precision not null,
     review   text,
-    username varchar(255),
+    username varchar(255)     not null,
+    wrote_at timestamp(6)     not null,
     film_id  uuid             not null
         constraint fkpiw1eyj5u8hwd162g9kgj3vuc
             references films

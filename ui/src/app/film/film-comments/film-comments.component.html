@@ -68,14 +68,20 @@
         <div class="col-xxl-12">
           <p-fieldset>
             <ng-template pTemplate="header">
-              <div class="align-items-center text-danger">
-                <span class="font-bold text-lg ms-2">{{comment.username}}</span>
-                <span class="ms-2">
-            <i *ngFor="let _ of [].constructor(comment.mark)" class="bi bi-star-fill"></i>
-            <i *ngFor="let _ of [].constructor(10 - comment.mark)" class="bi bi-star"></i>
-          </span>
-                <span class="ms-2">{{comment.mark}} / 10</span>
+              <div class="row text-danger">
+                <div class="col-xxl-auto">
+                  <span class="font-bold text-lg">{{comment.username}}</span>
+                  <span class="ms-2">
+                  <i *ngFor="let _ of [].constructor(comment.mark)" class="bi bi-star-fill"></i>
+                  <i *ngFor="let _ of [].constructor(10 - comment.mark)" class="bi bi-star"></i>
+                </span>
+                  <span class="ms-2">{{comment.mark}} / 10</span>
+                </div>
               </div>
+              <div class="row row-cols-1">
+                <div class="text-white fs-6">{{comment.wroteAt | date: 'MM/dd/yy hh:mm'}}</div>
+              </div>
+
             </ng-template>
             <div class="row text-white">
               <div class="col-xxl-12">

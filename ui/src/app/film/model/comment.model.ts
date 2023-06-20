@@ -5,5 +5,6 @@ export class Comment {
   mark!: number;
   review!: string;
   username!: string;
+  wroteAt!: Date;
   reactions!: Reaction[];
 }
