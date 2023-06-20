@@ -1,4 +1,4 @@
-<header class="navbar navbar-expand-xxl navbar-nav-scroll navbar-dark bg-dark d-flex">
+<header class="navbar navbar-expand-xxl fs-4 navbar-dark bg-dark d-flex">
   <div>
     <button class="navbar-toggler p-2 bd-highlight" type="button">
       <i class="fa-solid fa-bars"></i>
@@ -12,7 +12,7 @@
   <div id="navbarNav">
     <ul class="navbar-nav">
       <li class="nav-item">
-        <a class="nav-link" href="#">Schedule</a>
+        <a class="nav-link text-white" href="#">Schedule</a>
       </li>
     </ul>
   </div>
@@ -29,11 +29,11 @@
         </a>
       </li>
       <li class="nav-item">
-        <a routerLink="register" class="nav-link">Sign up</a>
+        <a routerLink="register" class="nav-link text-white">Sign up</a>
       </li>
       <li class="nav-item">
         <a *ngIf="!(isAuthenticated$ | async)"
-           class="nav-link bg-transparent border-0"
+           class="nav-link bg-transparent text-white"
            routerLink="login">
           Log in
         </a>
