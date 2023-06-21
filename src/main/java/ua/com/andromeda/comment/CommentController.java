@@ -2,6 +2,7 @@ package ua.com.andromeda.comment;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,10 +17,13 @@ public class CommentController {
     @GetMapping("/films/{filmId}/comments")
     public ResponseEntity<Page<Comment>> findAllByFilmId(@PathVariable String filmId,
                                                          @RequestParam int page,
-                                                         @RequestParam int size) {
-        Page<Comment> comments = commentService.findAllByFilmId(filmId, page, size);
+                                                         @RequestParam int size,
+                                                         @RequestParam CommentSort sort,
+                                                         @RequestParam Sort.Direction direction) {
+        Page<Comment> comments = commentService.findAllByFilmId(filmId, page, size, sort, direction);
         return ResponseEntity.ok(comments);
     }
+
 
     @PostMapping("/films/{filmId}/comments")
     public ResponseEntity<Comment> save(@PathVariable String filmId,
@@ -29,4 +33,5 @@ public class CommentController {
         comment.setWroteAt(LocalDateTime.now());
         return ResponseEntity.ok(commentService.save(comment, filmId));
     }
+
 }

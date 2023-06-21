@@ -8,7 +8,8 @@
   border: #333333 solid 1px;
 }
 
-:host ::ng-deep .p-paginator {
+:host ::ng-deep .p-paginator,
+:host ::ng-deep .p-dropdown {
   background: black;
 }
 
@@ -19,12 +20,10 @@
 }
 
 :host ::ng-deep .p-paginator-rpp-options,
+:host ::ng-deep .p-dropdown-label,
+:host ::ng-deep .p-dropdown-trigger,
 :host ::ng-deep .p-dropdown-items {
   background: black;
-  color: white;
-}
-
-:host ::ng-deep .p-dropdown-label {
   color: white;
 }
 
@@ -42,3 +41,4 @@
 :host ::ng-deep .p-dialog-content {
   padding-bottom: 0;
 }
+

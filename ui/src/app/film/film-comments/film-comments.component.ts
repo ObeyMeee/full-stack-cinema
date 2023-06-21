@@ -1,4 +1,4 @@
-import {AfterContentChecked, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit} from '@angular/core';
+import {AfterContentChecked, ChangeDetectorRef, Component, Inject, OnInit} from '@angular/core';
 import {FilmService} from "../film.service";
 import {ActivatedRoute} from "@angular/router";
 import {map, Observable, take} from "rxjs";
@@ -9,8 +9,11 @@ import {Pending} from "../../shared/pending.interface";
 import {Comment} from "../model/comment.model";
 import {ReactionType} from "../model/reaction-type";
 import {ReactionService} from "./reaction-service";
-import {CommentResponse, CommentService} from "./comment.service";
+import {CommentService} from "./comment.service";
 import OktaAuth, {UserClaims} from "@okta/okta-auth-js";
+import {SortType} from "./sort-type.enum";
+import {CommentResponse} from "./comment-response.interface";
+import {PageEvent} from "./page-event.interface";
 
 @Component({
   selector: 'app-film-comments',
@@ -25,9 +28,10 @@ export class FilmCommentsComponent implements OnInit, AfterContentChecked {
   user!: UserClaims;
   leftComment = new Comment();
   visibleLeftCommentDialog = false;
-
   first = 0;
   rows = 3;
+
+  sortType = SortType.RECENT;
 
   protected readonly Status = Status;
   protected readonly ReactionType = ReactionType;
@@ -93,7 +97,7 @@ export class FilmCommentsComponent implements OnInit, AfterContentChecked {
     this.first = event.first;
     this.rows = event.rows;
     const id = this.getFilmId();
-    this.commentResponse$ = this.commentService.getByFilmId(id, event.page, event.rows);
+    this.commentResponse$ = this.commentService.getByFilmId(id, event.page, event.rows, this.sortType);
   }
 
   getCommentRating(comment: Comment) {
@@ -117,11 +121,13 @@ export class FilmCommentsComponent implements OnInit, AfterContentChecked {
     const filmId = this.getFilmId();
     this.commentService.save(this.leftComment, filmId).subscribe(console.log);
   }
-}
 
-interface PageEvent {
-  first: number;
-  rows: number;
-  page: number;
-  pageCount: number;
+  getSortOptions() {
+    // return Object.values(SortType).map(type => type[0] + type.slice(1).toLowerCase());
+    return Object.values(SortType);
+  }
+
+  changeSorting($event: SortType) {
+    this.commentResponse$ = this.commentService.getByFilmId(this.getFilmId(), 0, 3, $event);
+  }
 }

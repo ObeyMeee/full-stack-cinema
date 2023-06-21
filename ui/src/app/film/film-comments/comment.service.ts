@@ -4,6 +4,9 @@ import {HttpClient} from "@angular/common/http";
 import {catchError, defer, ReplaySubject, tap} from "rxjs";
 import {Status} from "../../shared/status.enum";
 import {Comment} from "../model/comment.model";
+import {SortType} from "./sort-type.enum";
+import {CommentResponse} from "./comment-response.interface";
+import {SortDirection} from "../../shared/sort-direction.enum";
 
 @Injectable({
   providedIn: 'root'
@@ -13,10 +16,11 @@ export class CommentService extends BaseService {
     super();
   }
 
-  getByFilmId(filmId: string, page: number, size: number) {
+  getByFilmId(filmId: string, page: number, size: number, sort = SortType.RECENT, direction = SortDirection.DESC) {
+    console.log(sort)
     const status = new ReplaySubject<Status>();
     const url = `${this.baseUrl}films/${filmId}/comments`;
-    const request = this.http.get<CommentResponse>(url, {params: {page, size}})
+    const request = this.http.get<CommentResponse>(url, {params: {page, size, sort, direction}})
       .pipe(
         catchError(err => {
           status.next(Status.ERROR);
@@ -36,18 +40,4 @@ export class CommentService extends BaseService {
     const url = `${this.baseUrl}films/${filmId}/comments`;
     return this.http.post<Comment>(url, comment)
   }
-}
-
-export interface CommentResponse {
-  content: Comment[];
-  empty: boolean;
-  first: boolean;
-  last: boolean;
-  number: number;
-  numberOfElements: number;
-  pageable: any;
-  size: number;
-  sort: any;
-  totalElements: number;
-  totalPages: number;
 }
