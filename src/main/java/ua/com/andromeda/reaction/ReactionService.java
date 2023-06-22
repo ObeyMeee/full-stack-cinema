@@ -4,9 +4,10 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ua.com.andromeda.comment.Comment;
-import ua.com.andromeda.comment.CommentNotFoundException;
 import ua.com.andromeda.comment.CommentRepository;
-import ua.com.andromeda.common.UserNotAuthenticatedException;
+import ua.com.andromeda.comment.exception.CommentNotFoundException;
+import ua.com.andromeda.reaction.exception.ReactionNotFoundException;
+import ua.com.andromeda.user.exception.UserNotAuthenticatedException;
 
 import java.security.Principal;
 import java.util.UUID;
@@ -53,7 +54,10 @@ public class ReactionService {
         checkPrincipal(principal);
         Comment comment = getComment(commentId);
         String username = principal.getName();
-        return reactionRepository.findByUsernameAndComment(username, comment)
-                .orElseThrow(() -> new ReactionNotFoundException("Cannot find reaction of comment with id=" + "'" + commentId + "'" + " by user"));
+        return reactionRepository.findByUsernameAndComment(username, comment).orElseThrow(() -> {
+                    String message = "Cannot find reaction of comment with id=" + "'" + commentId + "'" + " by user " + username;
+                    return new ReactionNotFoundException(message);
+                }
+        );
     }
 }

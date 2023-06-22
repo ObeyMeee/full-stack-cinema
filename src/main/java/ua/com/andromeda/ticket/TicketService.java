@@ -7,6 +7,7 @@ import ua.com.andromeda.common.EmailSender;
 import ua.com.andromeda.common.PdfCreator;
 import ua.com.andromeda.common.QRCodeGenerator;
 import ua.com.andromeda.session.Session;
+import ua.com.andromeda.session.exception.SessionNotFoundException;
 import ua.com.andromeda.session.SessionRepository;
 import ua.com.andromeda.ticket.dto.PurchaseDto;
 import ua.com.andromeda.ticket.dto.TicketDto;
@@ -28,18 +29,21 @@ public class TicketService {
     private final PdfCreator pdfCreator;
     private final QRCodeGenerator qrCodeGenerator;
 
+    public List<TicketProfileDto> findAllByUsername(String username) {
+        return ticketRepository.findByUsername(username);
+    }
 
     @SneakyThrows
     public void save(PurchaseDto purchaseDto, String username) {
         UUID sessionId = UUID.fromString(purchaseDto.getSessionId());
-        Session session = sessionRepository.findById(sessionId).get();
+        Session session = sessionRepository.findById(sessionId)
+                .orElseThrow(() -> new SessionNotFoundException(sessionId));
         List<Ticket> tickets = purchaseDto.getTickets().stream()
                 .map(ticketDto -> getTicket(username, session, ticketDto))
                 .toList();
         ticketRepository.saveAll(tickets);
         List<ByteArrayOutputStream> qrCodesBytesArray = qrCodeGenerator.generateQRCodesBytesArray(tickets, 110, 110);
-        String fileName = pdfCreator.createTicketsFile(tickets, qrCodesBytesArray);
-        File file = new File(fileName);
+        File file = createFile(tickets, qrCodesBytesArray);
         emailSender.sendTicketsEmail(username, tickets, file);
         Files.deleteIfExists(file.toPath());
     }
@@ -55,7 +59,8 @@ public class TicketService {
         return ticket;
     }
 
-    public List<TicketProfileDto> findAllByUsername(String username) {
-        return ticketRepository.findByUsername(username);
+    private File createFile(List<Ticket> tickets, List<ByteArrayOutputStream> qrCodesBytesArray) {
+        String fileName = pdfCreator.createTicketsFile(tickets, qrCodesBytesArray);
+        return new File(fileName);
     }
 }

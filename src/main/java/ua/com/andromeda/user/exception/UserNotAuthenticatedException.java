@@ -1,4 +1,4 @@
-package ua.com.andromeda.common;
+package ua.com.andromeda.user.exception;
 
 import org.springframework.security.core.AuthenticationException;
 

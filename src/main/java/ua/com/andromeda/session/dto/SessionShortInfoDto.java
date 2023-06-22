@@ -13,12 +13,12 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SessionDto {
+public class SessionShortInfoDto {
     private UUID id;
     private LocalDateTime startAt;
     private int minPrice;
 
-    public SessionDto(Session session) {
+    public SessionShortInfoDto(Session session) {
         this.id = session.getId();
         this.startAt = session.getStartAt();
         this.minPrice = session.getHall().getRows().get(0).getPrice();

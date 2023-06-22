@@ -11,9 +11,6 @@ import java.util.UUID;
 
 @Repository
 public interface SessionRepository extends ListCrudRepository<Session, UUID> {
-
-    Streamable<Session> findAllByEnabledEquals(boolean enabled);
-
     Streamable<Session> findAllByFilmId(UUID filmId);
 
     @Query("""

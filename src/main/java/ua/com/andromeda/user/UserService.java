@@ -5,6 +5,7 @@ import com.okta.sdk.resource.user.UserBuilder;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ua.com.andromeda.user.exception.UserAlreadyExistsException;
 
 @Service
 @RequiredArgsConstructor

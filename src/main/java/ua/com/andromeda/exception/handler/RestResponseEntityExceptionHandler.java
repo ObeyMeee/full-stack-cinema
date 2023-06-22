@@ -13,17 +13,16 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import ua.com.andromeda.comment.CommentNotFoundException;
 import ua.com.andromeda.exception.ErrorResponse;
-import ua.com.andromeda.film.FilmNotFoundException;
-import ua.com.andromeda.user.UserAlreadyExistsException;
+import ua.com.andromeda.exception.NotFoundException;
+import ua.com.andromeda.user.exception.UserAlreadyExistsException;
 
 import java.util.Collections;
 import java.util.List;
 
 @RestControllerAdvice
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
-    @ExceptionHandler({FilmNotFoundException.class, CommentNotFoundException.class, UserAlreadyExistsException.class})
+    @ExceptionHandler({NotFoundException.class, UserAlreadyExistsException.class})
     protected ResponseEntity<Object> handleConflict(RuntimeException ex, WebRequest request) {
         List<String> messages = getSingletonListMessage(ex);
         ErrorResponse errorResponse = new ErrorResponse(messages, request.getDescription(false));

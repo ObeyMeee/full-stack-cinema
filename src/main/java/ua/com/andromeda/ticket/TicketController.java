@@ -23,6 +23,6 @@ public class TicketController {
     @PostMapping
     public ResponseEntity<Void> purchase(@RequestBody PurchaseDto purchaseDto, Principal principal) {
         ticketService.save(purchaseDto, principal.getName());
-        return ResponseEntity.ok().contentLength(0).build();
+        return ResponseEntity.noContent().build();
     }
 }

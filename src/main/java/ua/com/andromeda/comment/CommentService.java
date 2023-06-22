@@ -8,8 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ua.com.andromeda.film.Film;
-import ua.com.andromeda.film.FilmNotFoundException;
 import ua.com.andromeda.film.FilmRepository;
+import ua.com.andromeda.film.exception.FilmNotFoundException;
 
 import java.util.UUID;
 
@@ -33,8 +33,8 @@ public class CommentService {
     }
 
     public Comment save(@Valid Comment comment, String filmId) {
-        UUID id = UUID.fromString(filmId);
-        Film film = filmRepository.findById(id).orElseThrow(() -> new FilmNotFoundException(id));
+        UUID uuid = UUID.fromString(filmId);
+        Film film = filmRepository.findById(uuid).orElseThrow(() -> new FilmNotFoundException(uuid));
         comment.setFilm(film);
         return commentRepository.save(comment);
     }

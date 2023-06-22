@@ -1,4 +1,4 @@
-package ua.com.andromeda.comment;
+package ua.com.andromeda.comment.dto;
 
 import lombok.Builder;
 import lombok.Getter;

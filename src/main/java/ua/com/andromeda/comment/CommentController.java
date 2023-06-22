@@ -24,7 +24,6 @@ public class CommentController {
         return ResponseEntity.ok(comments);
     }
 
-
     @PostMapping("/films/{filmId}/comments")
     public ResponseEntity<Comment> save(@PathVariable String filmId,
                                         @RequestBody Comment comment,
@@ -33,5 +32,4 @@ public class CommentController {
         comment.setWroteAt(LocalDateTime.now());
         return ResponseEntity.ok(commentService.save(comment, filmId));
     }
-
 }
