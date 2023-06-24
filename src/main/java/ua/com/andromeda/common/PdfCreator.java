@@ -23,8 +23,8 @@ import ua.com.andromeda.session.Session;
 import ua.com.andromeda.ticket.Ticket;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -32,98 +32,131 @@ import java.util.UUID;
 
 @Component
 public class PdfCreator {
+    private static final String LOGO_RESOURCE_PATH = "static/logo.png";
+    private static final String FONT_PATH = "Papyrus.ttf";
+    private static final int TITLE_FONT_SIZE = 26;
+    private static final int VALUE_FONT_SIZE = 20;
+    private static final int QR_CODE_HEIGHT = 110;
+    private static final int TABLE_COLUMNS = 3;
+    private static final float LABEL_CONTAINER_RELATIVE_POSITION_Y = -15;
+    private static final int LABEL_CONTAINER_PADDING_HORIZONTAL = 10;
+    private static final String LABEL_CONTAINER_BACKGROUND_COLOR = "#FFF";
+    private static final float FULL_CONTAINER_MARGIN_TOP = 20;
+    private static final int FULL_CONTAINER_PADDING_HORIZONTAL = 20;
+    private static final float TABLE_MARGIN_LEFT = 25;
+
     @SneakyThrows
-    public String createTicketsFile(List<Ticket> tickets, List<ByteArrayOutputStream> qrCodesBytesArray) {
+    public File createTicketsFile(List<Ticket> tickets, List<ByteArrayOutputStream> qrCodesBytesArray) {
         String fileId = UUID.randomUUID().toString();
         String fileName = "tickets-" + fileId + ".pdf";
         PdfDocument pdfDocument = new PdfDocument(new PdfWriter(fileName));
-
-        // Create a document
         Document document = new Document(pdfDocument);
-        Cell firstColumn = new Cell().setBorder(Border.NO_BORDER);
-        ImageData logoData = ImageDataFactory.create(getLogoFromResource());
-        Image logo = new Image(logoData);
-        firstColumn.add(logo);
+        Cell sessionInfoColumn = getSessionInfo(tickets);
+        Cell ticketsInfoColumn = getAllTicketsInfo(tickets, qrCodesBytesArray);
+        Table container = new Table(2)
+                .addCell(sessionInfoColumn)
+                .setWidth(UnitValue.createPercentValue(110))
+                .addCell(ticketsInfoColumn);
+        document.add(container).close();
+        return new File(fileName);
+    }
+
+    private Cell getSessionInfo(List<Ticket> tickets) throws IOException {
         Session session = tickets.get(0).getSession();
         LocalDateTime startAt = session.getStartAt();
-        Paragraph title = new Paragraph(session.getFilm().getTitle());
-        PdfFont font = PdfFontFactory.createFont("Papyrus.ttf");
-        title.setFont(font);
-        title.setFontSize(26);
-        firstColumn.add(title);
 
-        // Create a nested element structure for the date paragraph
+        Image logo = getImage(getLogoFromResource());
+        Paragraph title = getTitle(session.getFilm().getTitle());
         Paragraph dateParagraph = getParagraph("Date", startAt.format(DateTimeFormatter.ISO_DATE));
-        Paragraph timeParagraph = getParagraph("Time", startAt.format(DateTimeFormatter.ISO_LOCAL_TIME));
+        Paragraph timeParagraph = getParagraph("Time", startAt.format(DateTimeFormatter.ofPattern("HH:mm")));
         Paragraph hallParagraph = getParagraph("Hall", "Hall №" + session.getHall().getNumber());
-        firstColumn.add(dateParagraph)
+        return new Cell()
+                .setBorder(Border.NO_BORDER)
+                .add(logo)
+                .add(title)
+                .add(dateParagraph)
                 .add(timeParagraph)
                 .add(hallParagraph)
                 .setBorderRight(new SolidBorder(WebColors.getRGBColor("#A09696"), 1));
-        // Add content to the second column
-        Cell secondColumn = new Cell().setBorder(Border.NO_BORDER);
-        // Add a list of tickets (assuming you have a list of Ticket objects)
-        Table table = new Table(3); // Table with 3 columns
-        Border noBorder = Border.NO_BORDER;
-        table.setWidth(UnitValue.createPercentValue(100));
+    }
+
+    private Paragraph getTitle(String title) throws IOException {
+        PdfFont papyrusFont = PdfFontFactory.createFont(FONT_PATH);
+        return new Paragraph(title)
+                .setFont(papyrusFont)
+                .setFontSize(TITLE_FONT_SIZE);
+    }
+
+    private Paragraph getParagraph(String label, String content) {
+        TextAlignment center = TextAlignment.CENTER;
+        Paragraph labelSpan = new Paragraph(label)
+                .setTextAlignment(center)
+                .setMultipliedLeading(Leading.FIXED)
+                .setBold()
+                .setPaddingLeft(LABEL_CONTAINER_PADDING_HORIZONTAL)
+                .setPaddingRight(LABEL_CONTAINER_PADDING_HORIZONTAL)
+                .setBackgroundColor(WebColors.getRGBColor(LABEL_CONTAINER_BACKGROUND_COLOR))
+                .setRelativePosition(0, LABEL_CONTAINER_RELATIVE_POSITION_Y, 0, 0);
+        Paragraph labelContainer = new Paragraph().add(labelSpan);
+        Paragraph valueParagraph = new Paragraph(content)
+                .setTextAlignment(center)
+                .setRelativePosition(0, LABEL_CONTAINER_RELATIVE_POSITION_Y, 0, 0)
+                .setFontSize(VALUE_FONT_SIZE);
+        Div fullContainer = new Div()
+                .setBorder(new SolidBorder(WebColors.getRGBColor("#A09696"), 2, 0.5f))
+                .setBorderRadius(new BorderRadius(10))
+                .setMarginTop(FULL_CONTAINER_MARGIN_TOP)
+                .setPaddingLeft(FULL_CONTAINER_PADDING_HORIZONTAL)
+                .setPaddingRight(FULL_CONTAINER_PADDING_HORIZONTAL)
+                .add(labelContainer)
+                .add(valueParagraph);
+
+        return new Paragraph().add(fullContainer);
+    }
+
+    private Cell getAllTicketsInfo(List<Ticket> tickets, List<ByteArrayOutputStream> qrCodesBytesArray) {
+        Table table = new Table(TABLE_COLUMNS)
+                .setWidth(UnitValue.createPercentValue(100))
+                .setMarginLeft(TABLE_MARGIN_LEFT);
 
         for (int i = 0; i < tickets.size(); i++) {
-            Cell rowCell = new Cell();
-            rowCell.add(getParagraph("Row", String.valueOf(tickets.get(i).getRow()))).setBorder(noBorder);
-            Cell seatCell = new Cell();
-            seatCell.add(getParagraph("Seat", String.valueOf(tickets.get(i).getSeat()))).setBorder(noBorder);
-            Cell qrCodeCell = new Cell();
-            Image qrCode = new Image(ImageDataFactory.create(qrCodesBytesArray.get(i).toByteArray()));
-            qrCode.setHeight(110);
-            qrCodeCell.add(qrCode).setBorder(noBorder);
+            Ticket ticket = tickets.get(i);
+            Cell rowCell = getCellWithNoBorder("Row", ticket.getRow());
+            Cell seatCell = getCellWithNoBorder("Seat", ticket.getSeat());
+            Image qrCode = getImage(qrCodesBytesArray.get(i).toByteArray()).setHeight(QR_CODE_HEIGHT);
+            Cell qrCodeCell = getCellWithNoBorder(qrCode);
 
-            table.setMarginLeft(25)
-                    .addCell(rowCell)
+            table.addCell(rowCell)
                     .addCell(seatCell)
                     .addCell(qrCodeCell);
         }
-
-        secondColumn.add(table);
-
-        Table container = new Table(2)
-                .addCell(firstColumn).setWidth(UnitValue.createPercentValue(110))
-                .addCell(secondColumn);
-
-        document.add(container)
-                .close();
-        return fileName;
+        return getCellWithNoBorder(table);
     }
 
-    private static Paragraph getParagraph(String label, String content) {
-        Div dateContainer = new Div()
-                .setBorder(new SolidBorder(WebColors.getRGBColor("#A09696"), 2, 0.5f))
-                .setBorderRadius(new BorderRadius(10))
-                .setMarginTop(20)
-                .setPaddingLeft(20)
-                .setPaddingRight(20);
-        Paragraph dateLabel = new Paragraph(label)
-                .setTextAlignment(TextAlignment.CENTER)
-                .setMultipliedLeading(Leading.FIXED)
-                .setBold()
-                .setPaddingLeft(10)
-                .setPaddingRight(10)
-                .setBackgroundColor(WebColors.getRGBColor("#FFF"))
-                .setRelativePosition(0, -15, 0, 0);
-        Div labelContainer = new Div();
-        labelContainer.add(dateLabel);
-        Paragraph labelDateParagraph = new Paragraph().add(dateLabel);
-        Paragraph dateValueParagraph = new Paragraph(content)
-                .setTextAlignment(TextAlignment.CENTER)
-                .setRelativePosition(0, -15, 0, 0)
-                .setFontSize(20);
-        dateContainer.add(labelDateParagraph)
-                .add(dateValueParagraph);
-
-        return new Paragraph().add(dateContainer);
+    private Cell getCellWithNoBorder(String key, int value) {
+        return getCellWithNoBorder(getParagraph(key, String.valueOf(value)));
     }
 
-    private URL getLogoFromResource() throws IOException {
-        Resource resource = new ClassPathResource("static/logo.png");
-        return resource.getFile().toURI().toURL();
+    private Cell getCellWithNoBorder(BlockElement<? extends IElement> element) {
+        return new Cell()
+                .add(element)
+                .setBorder(Border.NO_BORDER);
+    }
+
+    private Cell getCellWithNoBorder(Image element) {
+        return new Cell()
+                .add(element)
+                .setBorder(Border.NO_BORDER);
+    }
+
+
+    private Image getImage(byte[] content) {
+        ImageData imageData = ImageDataFactory.create(content);
+        return new Image(imageData);
+    }
+
+    private byte[] getLogoFromResource() throws IOException {
+        Resource resource = new ClassPathResource(LOGO_RESOURCE_PATH);
+        return resource.getContentAsByteArray();
     }
 }

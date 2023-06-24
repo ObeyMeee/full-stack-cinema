@@ -37,10 +37,9 @@ public class EmailSender {
         helper.setSubject("Your tickets of " + title);
         Map<String, Object> map = getVariables(to, tickets, title);
         String htmlContent = prepareHtml(map);
-        Resource resource = new ClassPathResource("static/logo.png");
-        System.out.println(resource.getFile());
+        Resource logo = new ClassPathResource("static/logo.png");
         helper.setText(htmlContent, true);
-        helper.addInline("logo", resource);
+        helper.addInline("logo", logo);
         helper.addAttachment("tickets.pdf", fileToAttach);
         sender.send(message);
     }

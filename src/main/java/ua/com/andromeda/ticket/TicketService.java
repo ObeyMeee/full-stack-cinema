@@ -43,7 +43,7 @@ public class TicketService {
                 .toList();
         ticketRepository.saveAll(tickets);
         List<ByteArrayOutputStream> qrCodesBytesArray = qrCodeGenerator.generateQRCodesBytesArray(tickets, 110, 110);
-        File file = createFile(tickets, qrCodesBytesArray);
+        File file = pdfCreator.createTicketsFile(tickets, qrCodesBytesArray);
         emailSender.sendTicketsEmail(username, tickets, file);
         Files.deleteIfExists(file.toPath());
     }
@@ -57,10 +57,5 @@ public class TicketService {
         ticket.setUsername(username);
         ticket.setBoughtAt(LocalDateTime.now());
         return ticket;
-    }
-
-    private File createFile(List<Ticket> tickets, List<ByteArrayOutputStream> qrCodesBytesArray) {
-        String fileName = pdfCreator.createTicketsFile(tickets, qrCodesBytesArray);
-        return new File(fileName);
     }
 }

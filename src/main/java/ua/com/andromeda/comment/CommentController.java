@@ -11,10 +11,11 @@ import java.time.LocalDateTime;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/films/{filmId}/comments")
 public class CommentController {
     private final CommentService commentService;
 
-    @GetMapping("/films/{filmId}/comments")
+    @GetMapping
     public ResponseEntity<Page<Comment>> findAllByFilmId(@PathVariable String filmId,
                                                          @RequestParam int page,
                                                          @RequestParam int size,
@@ -24,7 +25,7 @@ public class CommentController {
         return ResponseEntity.ok(comments);
     }
 
-    @PostMapping("/films/{filmId}/comments")
+    @PostMapping
     public ResponseEntity<Comment> save(@PathVariable String filmId,
                                         @RequestBody Comment comment,
                                         Principal principal) {
