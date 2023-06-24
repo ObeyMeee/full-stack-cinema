@@ -2,6 +2,7 @@ package ua.com.andromeda.reaction;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -18,6 +19,7 @@ public class Reaction {
     private String username;
 
     @Enumerated(EnumType.STRING)
+    @NotNull
     private ReactionType type;
 
     @ManyToOne

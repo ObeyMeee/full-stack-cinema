@@ -9,7 +9,6 @@ import ua.com.andromeda.session.dto.SessionBuyTicketDto;
 import ua.com.andromeda.session.dto.SessionShortInfoDto;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,8 +17,8 @@ public class SessionController {
 
     @GetMapping("sessions/{id}")
     public ResponseEntity<SessionBuyTicketDto> findById(@PathVariable String id) {
-        SessionBuyTicketDto session = sessionService.findById(UUID.fromString(id));
-        return ResponseEntity.ok(session);
+        SessionBuyTicketDto sessionBuyTicketDto = sessionService.findById(id);
+        return ResponseEntity.ok(sessionBuyTicketDto);
     }
 
     @GetMapping("films/{filmId}/sessions")

@@ -1,6 +1,7 @@
 package ua.com.andromeda.reaction;
 
 import jakarta.transaction.Transactional;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ua.com.andromeda.comment.Comment;
@@ -18,7 +19,7 @@ public class ReactionService {
     private final ReactionRepository reactionRepository;
     private final CommentRepository commentRepository;
 
-    public void save(ReactionType reactionType, Principal principal, String commentId) {
+    public void save(@NotNull ReactionType reactionType, Principal principal, @NotNull String commentId) {
         checkPrincipal(principal);
         Comment comment = getComment(commentId);
         Reaction reaction = new Reaction(principal.getName(), reactionType, comment);
@@ -37,14 +38,14 @@ public class ReactionService {
     }
 
     @Transactional
-    public void delete(Principal principal, String commentId) {
+    public void delete(Principal principal, @NotNull String commentId) {
         checkPrincipal(principal);
         Comment comment = getComment(commentId);
         comment.getReactions().removeIf(reaction -> reaction.getUsername().equals(principal.getName()));
         reactionRepository.deleteByUsernameAndCommentId(principal.getName(), UUID.fromString(commentId));
     }
 
-    public void update(ReactionType reactionType, Principal principal, String commentId) {
+    public void update(@NotNull ReactionType reactionType, Principal principal, @NotNull String commentId) {
         Reaction reaction = getReaction(principal, commentId);
         reaction.setType(reactionType);
         reactionRepository.save(reaction);

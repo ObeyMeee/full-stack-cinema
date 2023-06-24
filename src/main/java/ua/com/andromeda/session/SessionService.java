@@ -1,5 +1,6 @@
 package ua.com.andromeda.session;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ua.com.andromeda.session.dto.SessionBuyTicketDto;
@@ -17,10 +18,11 @@ public class SessionService {
     private final SessionRepository sessionRepository;
     private final TicketRepository ticketRepository;
 
-    public SessionBuyTicketDto findById(UUID id) {
-        SessionBuyTicketDto sessionBuyTicketDto = sessionRepository.findSessionBuyTicketDtoById(id)
-                .orElseThrow(() -> new SessionNotFoundException(id));
-        List<TicketDto> boughtTickets = ticketRepository.findBySessionId(id);
+    public SessionBuyTicketDto findById(@NotNull String id) {
+        UUID uuid = UUID.fromString(id);
+        SessionBuyTicketDto sessionBuyTicketDto = sessionRepository.findSessionBuyTicketDtoById(uuid)
+                .orElseThrow(() -> new SessionNotFoundException(uuid));
+        List<TicketDto> boughtTickets = ticketRepository.findBySessionId(uuid);
         sessionBuyTicketDto.setBoughtTickets(boughtTickets);
         return sessionBuyTicketDto;
     }

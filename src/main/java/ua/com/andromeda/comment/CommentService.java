@@ -1,6 +1,7 @@
 package ua.com.andromeda.comment;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,7 +20,11 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final FilmRepository filmRepository;
 
-    public Page<Comment> findAllByFilmId(String filmId, int page, int size, CommentSort sort, Sort.Direction direction) {
+    public Page<Comment> findAllByFilmId(@NotNull String filmId,
+                                         int page,
+                                         int size,
+                                         @NotNull CommentSort sort,
+                                         @NotNull Sort.Direction direction) {
         UUID id = UUID.fromString(filmId);
         Pageable pageable = PageRequest.of(page, size);
         if (sort.equals(CommentSort.RECENT)) {
@@ -32,7 +37,7 @@ public class CommentService {
         return commentRepository.findCommentsOrderByReactionsDifferenceDesc(id, pageable);
     }
 
-    public Comment save(@Valid Comment comment, String filmId) {
+    public Comment save(@Valid Comment comment, @NotNull String filmId) {
         UUID uuid = UUID.fromString(filmId);
         Film film = filmRepository.findById(uuid).orElseThrow(() -> new FilmNotFoundException(uuid));
         comment.setFilm(film);
