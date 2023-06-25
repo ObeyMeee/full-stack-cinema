@@ -52,6 +52,7 @@ import {PaginatorModule} from "primeng/paginator";
 import {InputTextareaModule} from "primeng/inputtextarea";
 import {ButtonModule} from "primeng/button";
 import {DialogModule} from "primeng/dialog";
+import {NgOptimizedImage} from "@angular/common";
 
 const routes: Route[] = [
   {path: '', component: PosterComponent, pathMatch: 'full'},
@@ -130,6 +131,7 @@ const oktaAuth = new OktaAuth(environment.okta);
     InputTextareaModule,
     ButtonModule,
     DialogModule,
+    NgOptimizedImage,
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true},

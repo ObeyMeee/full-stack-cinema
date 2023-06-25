@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {OKTA_AUTH} from "@okta/okta-angular";
-import OktaAuth, {CustomUserClaims, UserClaims} from "@okta/okta-auth-js";
+import OktaAuth, {UserClaims} from "@okta/okta-auth-js";
 
 @Component({
   selector: 'app-profile',
@@ -8,7 +8,7 @@ import OktaAuth, {CustomUserClaims, UserClaims} from "@okta/okta-auth-js";
   styleUrls: ['./user.component.css']
 })
 export class UserComponent implements OnInit {
-  user!: UserClaims<CustomUserClaims>;
+  user!: UserClaims;
 
   constructor(@Inject(OKTA_AUTH) private oktaAuth: OktaAuth) {
   }
