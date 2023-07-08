@@ -1,4 +1,4 @@
-import {SafeUrlPipe} from './safe-url.pipe';
+import { SafeUrlPipe } from './safe-url.pipe';
 
 describe('SafePipe', () => {
   it('create an instance', () => {

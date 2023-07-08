@@ -6,6 +6,6 @@ export const environment = {
     issuer: 'https://dev-65177433.okta.com/oauth2/default',
     redirectUri: window.location.origin + '/login/callback',
     scopes: ['openid', 'profile', 'email'],
-    pkce: true
-  }
+    pkce: true,
+  },
 };

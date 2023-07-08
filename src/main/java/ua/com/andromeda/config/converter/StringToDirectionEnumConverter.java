@@ -1,9 +1,9 @@
-package ua.com.andromeda.config;
+package ua.com.andromeda.config.converter;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.domain.Sort;
 
-public class StringToirectionEnumConverter implements Converter<String, Sort.Direction> {
+public class StringToDirectionEnumConverter implements Converter<String, Sort.Direction> {
     @Override
     public Sort.Direction convert(String source) {
         try {

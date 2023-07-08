@@ -1,7 +1,7 @@
-import {Ticket} from "../../hall/models/ticket.model";
+import { Ticket } from '../../hall/models/ticket.model';
 
 export class TicketDto {
-  ticket!: Ticket
+  ticket!: Ticket;
   sessionId!: string;
   sessionStartAt!: Date;
   boughtAt!: Date;

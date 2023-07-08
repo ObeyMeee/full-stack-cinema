@@ -1,4 +1,4 @@
-import {HasNumericDirective} from './has-numeric.directive';
+import { HasNumericDirective } from './has-numeric.directive';
 
 describe('HasNumericDirective', () => {
   it('should create an instance', () => {

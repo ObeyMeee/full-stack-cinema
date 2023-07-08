@@ -1,4 +1,4 @@
-import {ReactionType} from "./reaction-type";
+import { ReactionType } from './reaction-type';
 
 export class Reaction {
   id!: number;

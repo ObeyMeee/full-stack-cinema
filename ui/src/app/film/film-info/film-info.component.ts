@@ -1,15 +1,22 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {differenceInMinutes, isFuture, isPast, isSameDay, isToday, isTomorrow} from "date-fns";
-import {firstValueFrom, Observable} from "rxjs";
-import {Film} from "../model/film.model";
-import {FilmService} from "../film.service";
-import {ActivatedRoute} from "@angular/router";
-import {SessionDto} from "../../poster/dto/session.dto";
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+  differenceInMinutes,
+  isFuture,
+  isPast,
+  isSameDay,
+  isToday,
+  isTomorrow,
+} from 'date-fns';
+import { firstValueFrom, Observable } from 'rxjs';
+import { Film } from '../model/film.model';
+import { FilmService } from '../film.service';
+import { ActivatedRoute } from '@angular/router';
+import { SessionDto } from '../../poster/dto/session.dto';
 
 @Component({
   selector: 'app-film-info',
   templateUrl: './film-info.component.html',
-  styleUrls: ['./film-info.component.css']
+  styleUrls: ['./film-info.component.css'],
 })
 export class FilmInfoComponent implements OnInit {
   film$!: Observable<Film>;
@@ -19,9 +26,10 @@ export class FilmInfoComponent implements OnInit {
   @ViewChild('daySelect') daySelectElementRef!: ElementRef;
   protected readonly isSameDay = isSameDay;
 
-  constructor(private filmService: FilmService,
-              private route: ActivatedRoute) {
-  }
+  constructor(
+    private filmService: FilmService,
+    private route: ActivatedRoute,
+  ) {}
 
   async ngOnInit() {
     const id = this.route.parent?.snapshot.params['id'];
@@ -30,7 +38,8 @@ export class FilmInfoComponent implements OnInit {
   }
 
   mapStartAtDates() {
-    return this.sessions.map(session => session.startAt)
+    return this.sessions
+      .map((session) => session.startAt)
       .sort((a, b) => a.getTime() - b.getTime());
   }
 
@@ -47,7 +56,9 @@ export class FilmInfoComponent implements OnInit {
 
   onSelectDate(date: Date) {
     this.selectedDate = date;
-    (<HTMLElement>this.daySelectElementRef.nativeElement).classList.add('invisible');
+    (<HTMLElement>this.daySelectElementRef.nativeElement).classList.add(
+      'invisible',
+    );
   }
 
   isSessionWithinPastThirtyMinutes(session: SessionDto) {
@@ -55,6 +66,9 @@ export class FilmInfoComponent implements OnInit {
     const SECONDS_PER_MINUTE = 60;
     const minutes = 30;
     const THIRTY_MINUTES = SECONDS_PER_MINUTE * minutes;
-    return isPast(session.startAt) && differenceInMinutes(now, session.startAt) < THIRTY_MINUTES;
+    return (
+      isPast(session.startAt) &&
+      differenceInMinutes(now, session.startAt) < THIRTY_MINUTES
+    );
   }
 }

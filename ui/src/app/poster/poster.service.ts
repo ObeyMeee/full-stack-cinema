@@ -1,10 +1,10 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {PosterDto} from "./dto/poster.dto";
-import {BaseService} from "../shared/base.service";
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { PosterDto } from './dto/poster.dto';
+import { BaseService } from '../shared/base.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PosterService extends BaseService {
   constructor(private http: HttpClient) {

@@ -1,4 +1,4 @@
-import {EmailDirective} from './email.directive';
+import { EmailDirective } from './email.directive';
 
 describe('EmailDirective', () => {
   it('should create an instance', () => {

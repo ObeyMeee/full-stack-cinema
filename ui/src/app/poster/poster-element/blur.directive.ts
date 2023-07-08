@@ -1,12 +1,10 @@
-import {Directive, ElementRef, HostListener} from '@angular/core';
+import { Directive, ElementRef, HostListener } from '@angular/core';
 
 @Directive({
-  selector: '[appBlur]'
+  selector: '[appBlur]',
 })
 export class BlurDirective {
-
-  constructor(private elementRef: ElementRef) {
-  }
+  constructor(private elementRef: ElementRef) {}
 
   @HostListener('mouseenter') onMouseEnter() {
     const element: HTMLElement = this.elementRef.nativeElement;

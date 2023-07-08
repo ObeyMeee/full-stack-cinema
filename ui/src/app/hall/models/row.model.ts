@@ -1,4 +1,4 @@
-import {Seat} from "./seat.model";
+import { Seat } from './seat.model';
 
 export class Row {
   id!: string;

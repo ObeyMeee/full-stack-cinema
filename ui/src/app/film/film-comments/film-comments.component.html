@@ -33,13 +33,13 @@
   </form>
 </p-dialog>
 <div class="row mt-3">
-  <div class="col-xxl-auto" *ngIf="(commentResponse$?.status | async) === Status.LOADING">
+  <div class="col-xxl-auto" *ngIf="(commentsPage$?.status | async) === Status.LOADING">
     <p-progressSpinner styleClass="h-3rem"></p-progressSpinner>
     <span class="text-white fs-4">Loading comments...</span>
   </div>
 
 
-  <ng-container *ngIf="commentResponse$.data | async as page">
+  <ng-container *ngIf="commentsPage$.data | async as page">
     <div class="row align-items-center">
       <div class="col-auto" *ngIf="!(isAuthenticated$ | async)">
         <p-messages [(value)]="authenticatedInfoMessage" [enableService]="false"

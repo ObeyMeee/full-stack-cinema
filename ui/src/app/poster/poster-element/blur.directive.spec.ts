@@ -1,4 +1,4 @@
-import {BlurDirective} from './blur.directive';
+import { BlurDirective } from './blur.directive';
 
 describe('BlurDirective', () => {
   it('should create an instance', () => {

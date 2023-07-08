@@ -1,0 +1,33 @@
+:host ::ng-deep .p-paginator,
+:host ::ng-deep .p-dropdown {
+  background: black;
+}
+
+:host ::ng-deep .p-paginator-element {
+  font-size: 150%;
+  color: white;
+  border: white solid 1px;
+}
+
+:host ::ng-deep .p-paginator-rpp-options,
+:host ::ng-deep .p-dropdown-label,
+:host ::ng-deep .p-dropdown-trigger,
+:host ::ng-deep .p-dropdown-items {
+  background: black;
+  color: white;
+}
+
+:host ::ng-deep .p-dropdown-items {
+  margin: 0;
+  padding: 0
+}
+
+:host ::ng-deep .p-dialog-header,
+:host ::ng-deep .p-dialog-footer,
+:host ::ng-deep .p-dialog-content {
+  background: #191a22;
+}
+
+:host ::ng-deep .p-dialog-content {
+  padding-bottom: 0;
+}

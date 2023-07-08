@@ -1,3 +1,4 @@
 export enum SortType {
-  RECENT = 'RECENT', USEFUL = 'USEFUL'
+  RECENT = 'RECENT',
+  USEFUL = 'USEFUL',
 }

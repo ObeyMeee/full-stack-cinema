@@ -1,11 +1,11 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {Film} from "./model/film.model";
-import {SessionDto} from "../poster/dto/session.dto";
-import {BaseService} from "../shared/base.service";
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Film } from './model/film.model';
+import { SessionDto } from '../poster/dto/session.dto';
+import { BaseService } from '../shared/base.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FilmService extends BaseService {
   constructor(private http: HttpClient) {
@@ -17,6 +17,6 @@ export class FilmService extends BaseService {
   }
 
   getSessionsById(id: string) {
-    return this.http.get<SessionDto[]>(`${this.baseUrl}films/${id}/sessions`)
+    return this.http.get<SessionDto[]>(`${this.baseUrl}films/${id}/sessions`);
   }
 }

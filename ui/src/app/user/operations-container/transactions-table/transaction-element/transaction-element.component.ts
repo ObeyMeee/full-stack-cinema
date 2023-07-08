@@ -1,12 +1,12 @@
-import {Component, ElementRef, Input, ViewChild} from '@angular/core';
-import {FilmTransaction} from "../film-transaction.interface";
-import {TicketService} from "../../ticket-service";
-import {TicketDto} from "../../ticket.dto";
+import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { FilmTransaction } from '../film-transaction.interface';
+import { TicketService } from '../../ticket-service';
+import { TicketDto } from '../../ticket.dto';
 
 @Component({
   selector: 'app-transaction-element',
   templateUrl: './transaction-element.component.html',
-  styleUrls: ['./transaction-element.component.css']
+  styleUrls: ['./transaction-element.component.css'],
 })
 export class TransactionElementComponent {
   @Input() transaction!: FilmTransaction;
@@ -14,8 +14,7 @@ export class TransactionElementComponent {
   @ViewChild('rowElement') rowElement!: ElementRef;
   isDetailsShown = false;
 
-  constructor(private ticketService: TicketService) {
-  }
+  constructor(private ticketService: TicketService) {}
 
   onToggleDetails() {
     this.isDetailsShown = !this.isDetailsShown;

@@ -1,6 +1,6 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {TransactionsTableComponent} from './transactions-table.component';
+import { TransactionsTableComponent } from './transactions-table.component';
 
 describe('TransactionsTableComponent', () => {
   let component: TransactionsTableComponent;
@@ -8,9 +8,8 @@ describe('TransactionsTableComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TransactionsTableComponent]
-    })
-      .compileComponents();
+      declarations: [TransactionsTableComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(TransactionsTableComponent);
     component = fixture.componentInstance;

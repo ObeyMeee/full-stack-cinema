@@ -1,6 +1,6 @@
-import {TestBed} from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 
-import {ConvertDateInterceptorService} from './convert-date-interceptor.service';
+import { ConvertDateInterceptorService } from './convert-date-interceptor.service';
 
 describe('ConvertDateInterceptorService', () => {
   let service: ConvertDateInterceptorService;

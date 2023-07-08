@@ -1,4 +1,4 @@
-package ua.com.andromeda.config;
+package ua.com.andromeda.config.converter;
 
 import jakarta.validation.constraints.NotNull;
 import org.springframework.core.convert.converter.Converter;

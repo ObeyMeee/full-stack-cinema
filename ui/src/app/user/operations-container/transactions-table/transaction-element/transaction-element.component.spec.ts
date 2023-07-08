@@ -1,6 +1,6 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {TransactionElementComponent} from './transaction-element.component';
+import { TransactionElementComponent } from './transaction-element.component';
 
 describe('TransactionElementComponent', () => {
   let component: TransactionElementComponent;
@@ -8,9 +8,8 @@ describe('TransactionElementComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TransactionElementComponent]
-    })
-      .compileComponents();
+      declarations: [TransactionElementComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(TransactionElementComponent);
     component = fixture.componentInstance;

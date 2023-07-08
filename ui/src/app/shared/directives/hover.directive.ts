@@ -1,15 +1,14 @@
-import {Directive, ElementRef, HostListener, Input} from '@angular/core';
+import { Directive, ElementRef, HostListener, Input } from '@angular/core';
 
 @Directive({
-  selector: '[appHover]'
+  selector: '[appHover]',
 })
 export class HoverDirective {
   @Input() selector!: string;
   classToAdd = 'bg-cl-primary';
   @Input() classToRemove!: string;
 
-  constructor(private elementRef: ElementRef) {
-  }
+  constructor(private elementRef: ElementRef) {}
 
   @HostListener('mouseenter') onMouseEnter() {
     this.toggleClasses();
@@ -20,9 +19,10 @@ export class HoverDirective {
   }
 
   private toggleClasses() {
-    const element = (<HTMLElement>this.elementRef.nativeElement).querySelector(this.selector);
+    const element = (<HTMLElement>this.elementRef.nativeElement).querySelector(
+      this.selector,
+    );
     element?.classList.toggle(this.classToAdd);
     element?.classList.toggle(this.classToRemove);
   }
-
 }

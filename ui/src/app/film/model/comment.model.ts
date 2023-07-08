@@ -1,7 +1,7 @@
-import {Reaction} from "./reaction.model";
+import { Reaction } from './reaction.model';
 
 export class Comment {
-  id!: string
+  id!: string;
   mark!: number;
   review!: string;
   username!: string;

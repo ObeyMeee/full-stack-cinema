@@ -1,5 +1,5 @@
-import {Hall} from "./models/hall.model";
-import {Ticket} from "./models/ticket.model";
+import { Hall } from './models/hall.model';
+import { Ticket } from './models/ticket.model';
 
 export class SessionBuyTicketDto {
   title!: string;

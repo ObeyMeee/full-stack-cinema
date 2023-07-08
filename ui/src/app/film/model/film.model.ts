@@ -1,8 +1,7 @@
-import {Country} from "./country.model";
-import {Actor} from "./actor.model";
-import {Media} from "./media.model";
-import {Genre} from "./genre.model";
-
+import { Country } from './country.model';
+import { Actor } from './actor.model';
+import { Media } from './media.model';
+import { Genre } from './genre.model';
 
 export class Film {
   enabled!: boolean;

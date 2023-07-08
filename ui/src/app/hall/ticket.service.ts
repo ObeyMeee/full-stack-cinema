@@ -1,5 +1,5 @@
-import {Injectable} from "@angular/core";
-import {Ticket} from "./models/ticket.model";
+import { Injectable } from '@angular/core';
+import { Ticket } from './models/ticket.model';
 
 @Injectable()
 export class TicketService {
@@ -23,7 +23,8 @@ export class TicketService {
   }
 
   getTotalPrice() {
-    return this._tickets.map(ticket => ticket.price)
+    return this._tickets
+      .map((ticket) => ticket.price)
       .reduce((acc, price) => acc! + price!, 0);
   }
 }

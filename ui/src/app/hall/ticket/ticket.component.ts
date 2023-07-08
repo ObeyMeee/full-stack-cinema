@@ -1,17 +1,16 @@
-import {Component, Input} from '@angular/core';
-import {Ticket} from "../models/ticket.model";
-import {TicketService} from "../ticket.service";
+import { Component, Input } from '@angular/core';
+import { Ticket } from '../models/ticket.model';
+import { TicketService } from '../ticket.service';
 
 @Component({
   selector: 'app-ticket',
   templateUrl: './ticket.component.html',
-  styleUrls: ['./ticket.component.css']
+  styleUrls: ['./ticket.component.css'],
 })
 export class TicketComponent {
   @Input() ticket!: Ticket;
 
-  constructor(private ticketService: TicketService) {
-  }
+  constructor(private ticketService: TicketService) {}
 
   onRemove() {
     this.ticketService.remove(this.ticket);

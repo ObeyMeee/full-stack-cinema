@@ -1,6 +1,6 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {FilmCommentsComponent} from './film-comments.component';
+import { FilmCommentsComponent } from './film-comments.component';
 
 describe('FilmCommentsComponent', () => {
   let component: FilmCommentsComponent;
@@ -8,9 +8,8 @@ describe('FilmCommentsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ FilmCommentsComponent ]
-    })
-    .compileComponents();
+      declarations: [FilmCommentsComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(FilmCommentsComponent);
     component = fixture.componentInstance;

@@ -1,15 +1,31 @@
-import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {compareAsc, differenceInMinutes, isFuture, isPast, isSameDay, isToday, isTomorrow} from "date-fns";
-import {PosterDto} from "../dto/poster.dto";
-import {SessionDto} from "../dto/session.dto";
-import {PosterService} from "../poster.service";
-import {firstValueFrom} from "rxjs";
-import {FilmService} from "../../film/film.service";
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
+import {
+  compareAsc,
+  differenceInMinutes,
+  isFuture,
+  isPast,
+  isSameDay,
+  isToday,
+  isTomorrow,
+} from 'date-fns';
+import { PosterDto } from '../dto/poster.dto';
+import { SessionDto } from '../dto/session.dto';
+import { PosterService } from '../poster.service';
+import { firstValueFrom } from 'rxjs';
+import { FilmService } from '../../film/film.service';
 
 @Component({
   selector: 'app-poster-element',
   templateUrl: './poster-element.component.html',
-  styleUrls: ['./poster-element.component.css']
+  styleUrls: ['./poster-element.component.css'],
 })
 export class PosterElementComponent implements OnInit {
   @Input() poster!: PosterDto;
@@ -17,22 +33,25 @@ export class PosterElementComponent implements OnInit {
   selectDates!: Date[];
   selectedDate = new Date();
   sessions!: SessionDto[];
-  @Output() openTrailer = new EventEmitter<{ title: string, url: string }>();
+  @Output() openTrailer = new EventEmitter<{ title: string; url: string }>();
 
   protected readonly isSameDay = isSameDay;
 
-  constructor(private posterService: PosterService,
-              private filmService: FilmService) {
-  }
+  constructor(
+    private posterService: PosterService,
+    private filmService: FilmService,
+  ) {}
 
   async ngOnInit() {
-    this.sessions = await firstValueFrom(this.filmService.getSessionsById(this.poster.filmId));
+    this.sessions = await firstValueFrom(
+      this.filmService.getSessionsById(this.poster.filmId),
+    );
   }
-
 
   onShowSchedule() {
     this.daySelectElementRef.nativeElement.classList.toggle('invisible');
-    this.selectDates = this.sessions.map(session => session.startAt)
+    this.selectDates = this.sessions
+      .map((session) => session.startAt)
       .sort(compareAsc);
   }
 
@@ -49,7 +68,11 @@ export class PosterElementComponent implements OnInit {
   }
 
   onHideDaySelection($event: Event) {
-    if (!(<HTMLButtonElement>$event.target).classList.contains('show-schedule-list')) {
+    if (
+      !(<HTMLButtonElement>$event.target).classList.contains(
+        'show-schedule-list',
+      )
+    ) {
       this.hideDaySelection();
     }
   }
@@ -71,13 +94,16 @@ export class PosterElementComponent implements OnInit {
     const SECONDS_PER_MINUTE = 60;
     const minutes = 30;
     const THIRTY_MINUTES = SECONDS_PER_MINUTE * minutes;
-    return isPast(session.startAt) && differenceInMinutes(now, session.startAt) < THIRTY_MINUTES;
+    return (
+      isPast(session.startAt) &&
+      differenceInMinutes(now, session.startAt) < THIRTY_MINUTES
+    );
   }
 
   triggerOpenTrailerEvent() {
     this.openTrailer.emit({
       title: this.poster.title,
-      url: this.poster.media.trailer
+      url: this.poster.media.trailer,
     });
   }
 }
