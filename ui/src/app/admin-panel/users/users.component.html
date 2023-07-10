@@ -1,4 +1,12 @@
-<p-confirmDialog [closeOnEscape]="true" [style]="{width: '50vw'}"></p-confirmDialog>
+<p-confirmDialog #cd [closeOnEscape]="true" [style]="{width: '50vw'}">
+  <ng-template pTemplate="header">
+    <h3 class="text-white">Confirmation</h3>
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <p-button label="No" icon="pi pi-times" styleClass="p-button-secondary" (click)="cd.reject()"></p-button>
+    <p-button label="Yes" icon="pi pi-check" styleClass="p-button-danger" (click)="cd.accept()"></p-button>
+  </ng-template>
+</p-confirmDialog>
 <p-table *ngIf="usersPage$.data | async as usersPage"
          [value]="usersPage.content"
          [rows]="rows"
@@ -6,52 +14,47 @@
          styleClass="p-datatable-striped">
   <ng-template pTemplate="header">
     <tr>
-      <th pSortableColumn="status">
-        Status
-        <p-sortIcon field="status"></p-sortIcon>
-      </th>
-      <th pSortableColumn="profile.email">
-        Email
-        <p-sortIcon field="profile.email"></p-sortIcon>
-      </th>
-      <th pSortableColumn="profile.firstName">
-        First Name
-        <p-sortIcon field="profile.firstName"></p-sortIcon>
-      </th>
-      <th pSortableColumn="profile.lastName">
-        Last Name
-        <p-sortIcon field="profile.lastName"></p-sortIcon>
-      </th>
-      <th pSortableColumn="profile.mobilePhone">
-        Phone
-        <p-sortIcon field="profile.mobilePhone"></p-sortIcon>
-      </th>
-      <th pSortableColumn="created">
-        Created
-        <p-sortIcon field="created"></p-sortIcon>
-      </th>
+      <th>Email</th>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>Phone</th>
+      <th>Status</th>
+      <th>Created</th>
+      <th>Action</th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-user>
-    <tr>
-      <td [pEditableColumn]="user.status" pEditableColumnField="status">
-        <p-cellEditor>
-          <ng-template pTemplate="input">
-            form
-            <input pInputText type="text" [(ngModel)]="user.status"/>
-          </ng-template>
-          <ng-template pTemplate="output">
-            {{ user.status }}
-          </ng-template>
-        </p-cellEditor>
-      </td>
+    <tr class="bg-black text-white">
       <td>{{user.profile.email}}</td>
       <td>{{user.profile.firstName}}</td>
       <td>{{user.profile.lastName}}</td>
       <td>{{user.profile.mobilePhone}}</td>
+      <td [pEditableColumn]="user.status" pEditableColumnField="status">
+        <p-cellEditor>
+          <ng-template pTemplate="input">
+
+            <p-dropdown [options]="getAllUserStatuses()"
+                        [(ngModel)]="user.status"
+                        optionLabel="status"
+                        placeholder="Select a status">
+              <ng-template pTemplate="selectedItem">
+                <p-tag [severity]="getSeverityStatusTag(user.status)" [value]="user.status"></p-tag>
+              </ng-template>
+              <ng-template let-status pTemplate="item">
+                <p-tag [severity]="getSeverityStatusTag(status)" [value]="status"></p-tag>
+              </ng-template>
+            </p-dropdown>
+          </ng-template>
+          <ng-template pTemplate="output">
+            <p-tag [severity]="getSeverityStatusTag(user.status)" [value]="user.status"></p-tag>
+          </ng-template>
+        </p-cellEditor>
+      </td>
       <td>{{user.created | date:'medium'}}</td>
       <td>
-        <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger"
+        <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success"
+                (click)="edit(user)"></button>
+        <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger ms-2"
                 (click)="delete(user)"></button>
       </td>
     </tr>
@@ -66,3 +69,130 @@
              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} users"
              [rowsPerPageOptions]="[10, 25, 50]">
 </p-paginator>
+<p-dialog [(visible)]="editUserDialog" [style]="{ width: '450px' }" header="User details" [modal]="true"
+          styleClass="p-fluid">
+
+  <ng-template pTemplate="content">
+    <form>
+
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email"
+               [ngClass]="{
+                     'is-invalid': email.invalid && (email.touched || email.dirty),
+                     'border border-3 border-success': email.valid && (email.touched || email.dirty),
+                     'input-success': email.valid && (email.touched || email.dirty)
+                     }"
+               pInputText
+               name="email"
+               placeholder="email@example.com"
+               minlength="5"
+               maxlength="100"
+               appEmail
+               required
+               autofocus
+               [(ngModel)]="editedUser.profile.email"
+               #email="ngModel"/>
+        <small class="p-error" *ngIf="email.errors && (email.touched || email.dirty)">
+          <div *ngIf="email.errors?.['required']">
+            Email is required
+          </div>
+          <div *ngIf="email.errors?.['minlength'] || email.errors?.['maxlength']">
+            Email must be within the range from 5 to 100 characters long
+          </div>
+          <div *ngIf="email.errors?.['isNotValid']">
+            Email is not valid
+          </div>
+        </small>
+      </div>
+
+      <div class="field">
+        <label for="first-name">First name</label>
+        <input [ngClass]="{
+                      'is-invalid': firstName.invalid && (firstName.touched || firstName.dirty),
+                      'border border-3 border-success': firstName.valid && (firstName.touched || firstName.dirty),
+                      'input-success': firstName.valid && (firstName.touched || firstName.dirty)
+                     }"
+               pInputText
+               id="first-name"
+               name="firstName"
+               placeholder="John"
+               required
+               maxlength="50"
+               [(ngModel)]="editedUser.profile.firstName"
+               #firstName="ngModel"/>
+        <small class="p-error" *ngIf="firstName.errors && (firstName.touched || firstName.dirty)">
+          <div *ngIf="firstName.errors?.['required']">
+            First name is required
+          </div>
+          <div *ngIf="firstName.errors?.['maxlength']">
+            First name must be up to 50 characters long
+          </div>
+        </small>
+      </div>
+
+      <div class="field">
+        <label for="last-name">Last name</label>
+        <input [ngClass]="{
+              'is-invalid': lastName.invalid && (lastName.touched || lastName.dirty),
+              'border border-3 border-success': lastName.valid && (lastName.touched || lastName.dirty),
+              'input-success': lastName.valid && (lastName.touched || lastName.dirty)
+              }"
+               id="last-name"
+               name="lastName"
+               placeholder="Doe"
+               required
+               maxlength="50"
+               [(ngModel)]="editedUser.profile.lastName"
+               #lastName="ngModel"/>
+        <small class="p-error" *ngIf="lastName.errors && (lastName.touched || lastName.dirty)">
+          <div *ngIf="lastName.errors?.['required']">
+            Last name is required
+          </div>
+          <div *ngIf="lastName.errors?.['maxlength']">
+            Last name must be up to 50 characters long
+          </div>
+        </small>
+      </div>
+
+      <div class="field">
+        <label for="status">User status</label>
+        <p-dropdown [(ngModel)]="editedUser.status" inputId="status" name="status" [options]="getAllUserStatuses()">
+          <ng-template pTemplate="selectedItem">
+            <p-tag [value]="editedUser.status"
+                   [severity]="getSeverityStatusTag(editedUser.status)"></p-tag>
+          </ng-template>
+          <ng-template let-option pTemplate="item">
+            <p-tag [value]="option" [severity]="getSeverityStatusTag(option)"></p-tag>
+          </ng-template>
+        </p-dropdown>
+      </div>
+
+      <div class="field">
+        <label for="phone">Phone number</label>
+        <span class="p-input-icon-left">
+          <span>+380</span>
+          <input [ngClass]="{
+              'is-invalid': lastName.invalid && (lastName.touched || lastName.dirty),
+              'border border-3 border-success': lastName.valid && (lastName.touched || lastName.dirty),
+              'input-success': lastName.valid && (lastName.touched || lastName.dirty)
+              }"
+                 id="phone"
+                 name="phone"
+                 placeholder="(00) XXX XXXX"
+                 required
+                 [(ngModel)]="editedUser.profile.mobilePhone"
+                 [pKeyFilter]="'int'"
+                 #phoneNumber="ngModel"/>
+        </span>
+      </div>
+    </form>
+
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+    <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveUser()"></button>
+  </ng-template>
+
+</p-dialog>

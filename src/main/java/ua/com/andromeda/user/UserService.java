@@ -68,6 +68,10 @@ public class UserService {
                 .toList();
     }
 
+    public User update(User user) {
+        return oktaClient.partialUpdateUser(user, user.getId());
+    }
+
     public void delete(String id) {
         oktaClient.getUser(id).delete(true);
     }

@@ -63,6 +63,8 @@ import { RippleModule } from 'primeng/ripple';
 import { StyleClassModule } from 'primeng/styleclass';
 import { InputTextModule } from 'primeng/inputtext';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { TagModule } from 'primeng/tag';
+import { KeyFilterModule } from 'primeng/keyfilter';
 
 const routes: Route[] = [
   { path: '', component: PosterComponent, pathMatch: 'full' },
@@ -154,6 +156,8 @@ const oktaAuth = new OktaAuth(environment.okta);
     StyleClassModule,
     InputTextModule,
     ConfirmDialogModule,
+    TagModule,
+    KeyFilterModule,
   ],
   providers: [
     {

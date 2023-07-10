@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from './user.service';
 import { Pending } from '../../shared/pending/pending.interface';
 import { User } from './user.interface';
-import { Status } from '../../shared/pending/status.enum';
 import { Page } from '../../shared/pagination/page.interface';
 import { PageEvent } from '../../shared/pagination/page-event.interface';
 import { ConfirmationService } from 'primeng/api';
 import { ToastService } from '../../shared/toast.service';
+import { UserStatus } from '../../shared/user-status.enum';
 
 @Component({
   selector: 'app-users',
@@ -16,9 +16,10 @@ import { ToastService } from '../../shared/toast.service';
 })
 export class UsersComponent implements OnInit {
   usersPage$!: Pending<Page<User>>;
-  protected readonly Status = Status;
   first = 0;
   rows = 10;
+  editedUser!: User;
+  editUserDialog = false;
 
   constructor(
     private userService: UserService,
@@ -37,11 +38,11 @@ export class UsersComponent implements OnInit {
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.userService
-          .delete(user.id)
-          .data.subscribe(() =>
-            this.toastService.showToast(true, `User ${email}  deleted`, 'info'),
-          );
+        this.userService.delete(user.id).data.subscribe(() => {
+          const page = this.first / this.rows;
+          this.usersPage$ = this.userService.getAll(page, this.rows);
+          this.toastService.showToast(true, `User ${email}  deleted`, 'info');
+        });
       },
     });
   }
@@ -50,5 +51,42 @@ export class UsersComponent implements OnInit {
     this.first = $event.first;
     this.rows = $event.rows;
     this.usersPage$ = this.userService.getAll($event.page, $event.rows);
+  }
+
+  getSeverityStatusTag(status: string) {
+    switch (status) {
+      case UserStatus.ACTIVE:
+        return 'success';
+      case UserStatus.DEPROVISIONED:
+      case UserStatus.SUSPENDED:
+        return 'danger';
+      case UserStatus.STAGED:
+      case UserStatus.PROVISIONED:
+        return 'info';
+      default:
+        return 'warning';
+    }
+  }
+
+  getAllUserStatuses() {
+    return Object.values(UserStatus);
+  }
+
+  edit(user: User) {
+    this.editedUser = { ...user };
+    this.editUserDialog = true;
+  }
+
+  hideDialog() {
+    this.editUserDialog = false;
+  }
+
+  saveUser() {
+    this.editUserDialog = false;
+    this.toastService.showToast(
+      true,
+      "User's been successfully updated",
+      'success',
+    );
   }
 }

@@ -31,3 +31,16 @@
 :host ::ng-deep .p-dialog-content {
   padding-bottom: 0;
 }
+
+:host ::ng-deep .p-confirm-dialog-icon {
+  color: yellow;
+}
+
+:host ::ng-deep .p-confirm-dialog-message {
+  color: white;
+}
+
+:host ::ng-deep .p-datatable .p-datatable-thead > tr > th	{
+  background: black;
+  color: white;
+}
