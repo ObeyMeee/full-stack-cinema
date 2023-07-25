@@ -6,7 +6,7 @@ import { TicketDto } from '../../ticket.dto';
 @Component({
   selector: 'app-transaction-element',
   templateUrl: './transaction-element.component.html',
-  styleUrls: ['./transaction-element.component.css'],
+  styleUrls: ['./transaction-element.component.scss'],
 })
 export class TransactionElementComponent {
   @Input() transaction!: FilmTransaction;

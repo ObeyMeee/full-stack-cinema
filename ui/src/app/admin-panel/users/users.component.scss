@@ -12,7 +12,9 @@
 :host ::ng-deep .p-paginator-rpp-options,
 :host ::ng-deep .p-dropdown-label,
 :host ::ng-deep .p-dropdown-trigger,
-:host ::ng-deep .p-dropdown-items {
+:host ::ng-deep .p-dropdown-items,
+:host ::ng-deep .p-datatable .p-datatable-thead > tr > th,
+:host ::ng-deep .p-inputtext{
   background: black;
   color: white;
 }
@@ -20,6 +22,11 @@
 :host ::ng-deep .p-dropdown-items {
   margin: 0;
   padding: 0
+}
+
+:host ::ng-deep .p-dropdown-item.p-highlight {
+  background: #292929!important;
+  color: darkred!important;
 }
 
 :host ::ng-deep .p-dialog-header,
@@ -40,7 +47,10 @@
   color: white;
 }
 
-:host ::ng-deep .p-datatable .p-datatable-thead > tr > th	{
-  background: black;
-  color: white;
+.input-success:focus {
+  box-shadow: 0 0 3px 3px green;
+}
+
+.input-error:focus {
+  box-shadow: 0 0 3px 3px darkred;
 }

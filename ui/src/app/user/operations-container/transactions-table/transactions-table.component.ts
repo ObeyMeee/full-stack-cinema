@@ -14,7 +14,7 @@ import { compareDesc, isEqual } from 'date-fns';
 @Component({
   selector: 'app-transactions-table',
   templateUrl: './transactions-table.component.html',
-  styleUrls: ['./transactions-table.component.css'],
+  styleUrls: ['./transactions-table.component.scss'],
 })
 export class TransactionsTableComponent implements OnChanges, OnInit {
   @Input() sectionName!: string;

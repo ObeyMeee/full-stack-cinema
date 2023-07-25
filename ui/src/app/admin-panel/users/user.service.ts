@@ -30,4 +30,11 @@ export class UserService extends BaseService {
     const request = this.http.delete<void>(url);
     return this.requestStatusService.handleRequestWithStatus(request);
   }
+
+  update(user: User) {
+    const url = `${this.baseUrl}users`;
+    console.log(user);
+    const request = this.http.put<void>(url, { user });
+    return this.requestStatusService.handleRequestWithStatus(request);
+  }
 }

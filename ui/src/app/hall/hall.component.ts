@@ -18,7 +18,7 @@ import { ToastService } from '../shared/toast.service';
 @Component({
   selector: 'app-hall',
   templateUrl: './hall.component.html',
-  styleUrls: ['./hall.component.css'],
+  styleUrls: ['./hall.component.scss'],
   providers: [TicketService],
 })
 export class HallComponent implements OnInit {

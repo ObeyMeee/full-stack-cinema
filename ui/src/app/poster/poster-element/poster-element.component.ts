@@ -25,7 +25,7 @@ import { FilmService } from '../../film/film.service';
 @Component({
   selector: 'app-poster-element',
   templateUrl: './poster-element.component.html',
-  styleUrls: ['./poster-element.component.css'],
+  styleUrls: ['./poster-element.component.scss'],
 })
 export class PosterElementComponent implements OnInit {
   @Input() poster!: PosterDto;

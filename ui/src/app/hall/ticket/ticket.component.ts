@@ -5,7 +5,7 @@ import { TicketService } from '../ticket.service';
 @Component({
   selector: 'app-ticket',
   templateUrl: './ticket.component.html',
-  styleUrls: ['./ticket.component.css'],
+  styleUrls: ['./ticket.component.scss'],
 })
 export class TicketComponent {
   @Input() ticket!: Ticket;

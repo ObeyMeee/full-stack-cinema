@@ -16,7 +16,7 @@ import { SessionDto } from '../../poster/dto/session.dto';
 @Component({
   selector: 'app-film-info',
   templateUrl: './film-info.component.html',
-  styleUrls: ['./film-info.component.css'],
+  styleUrls: ['./film-info.component.scss'],
 })
 export class FilmInfoComponent implements OnInit {
   film$!: Observable<Film>;

@@ -10,7 +10,7 @@ import {
 @Component({
   selector: 'app-trailer',
   templateUrl: './trailer.component.html',
-  styleUrls: ['./trailer.component.css'],
+  styleUrls: ['./trailer.component.scss'],
 })
 export class TrailerComponent {
   @Input() title!: string;

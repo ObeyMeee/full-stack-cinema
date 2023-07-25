@@ -65,6 +65,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { TagModule } from 'primeng/tag';
 import { KeyFilterModule } from 'primeng/keyfilter';
+import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
 
 const routes: Route[] = [
   { path: '', component: PosterComponent, pathMatch: 'full' },
@@ -158,6 +159,7 @@ const oktaAuth = new OktaAuth(environment.okta);
     ConfirmDialogModule,
     TagModule,
     KeyFilterModule,
+    NgxIntlTelInputModule,
   ],
   providers: [
     {

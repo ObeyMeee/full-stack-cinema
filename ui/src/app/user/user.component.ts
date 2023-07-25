@@ -5,7 +5,7 @@ import OktaAuth, { UserClaims } from '@okta/okta-auth-js';
 @Component({
   selector: 'app-profile',
   templateUrl: './user.component.html',
-  styleUrls: ['./user.component.css'],
+  styleUrls: ['./user.component.scss'],
 })
 export class UserComponent implements OnInit {
   user!: UserClaims;

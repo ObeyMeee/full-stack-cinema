@@ -7,11 +7,16 @@ import { PageEvent } from '../../shared/pagination/page-event.interface';
 import { ConfirmationService } from 'primeng/api';
 import { ToastService } from '../../shared/toast.service';
 import { UserStatus } from '../../shared/user-status.enum';
+import {
+  CountryISO,
+  PhoneNumberFormat,
+  SearchCountryField,
+} from 'ngx-intl-tel-input';
 
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
-  styleUrls: ['./users.component.css'],
+  styleUrls: ['./users.component.scss'],
   providers: [UserService, ConfirmationService, ToastService],
 })
 export class UsersComponent implements OnInit {
@@ -20,6 +25,10 @@ export class UsersComponent implements OnInit {
   rows = 10;
   editedUser!: User;
   editUserDialog = false;
+
+  protected readonly SearchCountryField = SearchCountryField;
+  protected readonly PhoneNumberFormat = PhoneNumberFormat;
+  protected readonly CountryISO = CountryISO;
 
   constructor(
     private userService: UserService,
@@ -73,7 +82,7 @@ export class UsersComponent implements OnInit {
   }
 
   edit(user: User) {
-    this.editedUser = { ...user };
+    this.editedUser = structuredClone(user);
     this.editUserDialog = true;
   }
 
@@ -82,11 +91,13 @@ export class UsersComponent implements OnInit {
   }
 
   saveUser() {
-    this.editUserDialog = false;
-    this.toastService.showToast(
-      true,
-      "User's been successfully updated",
-      'success',
-    );
+    this.userService.update(this.editedUser).data.subscribe(() => {
+      this.hideDialog();
+      this.toastService.showToast(
+        true,
+        "User's been successfully updated",
+        'success',
+      );
+    });
   }
 }

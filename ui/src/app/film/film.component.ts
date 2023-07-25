@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'app-film',
   templateUrl: './film.component.html',
-  styleUrls: ['./film.component.css'],
+  styleUrls: ['./film.component.scss'],
 })
 export class FilmComponent implements OnInit {
   film$!: Observable<Film>;

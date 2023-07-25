@@ -24,7 +24,7 @@ import { Page } from '../../shared/pagination/page.interface';
 @Component({
   selector: 'app-film-comments',
   templateUrl: './film-comments.component.html',
-  styleUrls: ['./film-comments.component.css'],
+  styleUrls: ['./film-comments.component.scss'],
 })
 export class FilmCommentsComponent implements OnInit, AfterContentChecked {
   commentsPage$!: Pending<Page<Comment>>;
