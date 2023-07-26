@@ -1,42 +1,63 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~bootstrap-icons/font/bootstrap-icons.css";
+@import "bootstrap/dist/css/bootstrap.min.css";
 @import "primeicons/primeicons.css";
+@import "assets/theme";
 
 :root {
-  --primary-red: #ff001b;
-  --header-height: 60px;
+  --color-primary: #ff001b;
+  --color-primary-light: #ff3355;
+  --color-primary-dark: #cc0011 ;
+
+  --color-black: #0d0004;
+
+  --color-grey-light-1: #f2f2f2;
+  --color-grey-light-2: #d3d3d3;
+  --color-grey-light-3: #bbb;
+
+  --color-grey-dark-1: #555;
+  --color-grey-dark-2: #444;
+  --color-grey-dark-3: #222;
+
+  --header-height: 7rem;
+
+  --font-primary: Lato, sans-serif;
+  --zindex-main-content: 990;
 }
 
-.full-height {
-  height: calc(100vh - var(--header-height));
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
 }
 
-* {
-  font-family: Lato, sans-serif;
+html {
+  box-sizing: border-box;
+  font-size: 62.5% // 10px / 16px = 62.5% ==> 1rem = 10px
 }
 
 body {
-  background: black;
+  background: var(--color-black);
+  font-family: var(--font-primary);
+  font-weight: 300;
 }
 
 .cl-primary {
-  color: var(--primary-red);
+  color: var(--color-primary);
 }
 
 .cl-primary-hover:hover {
-  color: var(--primary-red);
+  color: var(--color-primary);
 }
 
 .bg-cl-primary {
-  background: var(--primary-red);
+  background: var(--color-primary);
 }
 
 .bg-primary-hover:hover {
-  background: var(--primary-red);
-}
-
-.cl-white-hover:hover {
-  color: white !important;
+  background: var(--color-primary);
 }
 
 ::-webkit-scrollbar {

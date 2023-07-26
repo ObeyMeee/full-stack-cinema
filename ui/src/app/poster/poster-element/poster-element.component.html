@@ -1,94 +1,62 @@
-<div (mouseleave)="hideDaySelection()" appBlur class="poster position-relative">
-  <div [ngStyle]="{
-               'background-image':'url(' + poster.media.image + ')',
-               'background-repeat': 'no-repeat',
-               'background-size': '370px calc(100vh - var(--header-height))'
-              }" class="bg-image full-height">
-  </div>
-  <div (click)="onHideDaySelection($event)"
-       class="position-absolute poster-content row text-white invisible top-0 start-0">
-
-    <div class="col m-xxl-2">
-      <a [routerLink]="['/films', poster.filmId, 'info']"
-         appHover
-         class="text-decoration-none text-white"
-         classToRemove="bg-dark"
-         selector="i">
-        <div class="row align-items-center">
-          <span class="col-xxl-4">
-            <i class="fa-solid fa-info fa-2x bg-dark px-3 py-2 rounded-2"></i>
-          </span>
-          <span class="col-xxl-8">More details of film</span>
-        </div>
-      </a>
-    </div>
-    <div class="col m-xxl-2">
-      <button (click)="triggerOpenTrailerEvent()"
-              appHover
-              class="border-0 bg-transparent text-white"
-              classToRemove="bg-dark"
-              selector="i">
-        <div class="row align-items-center">
-          <span class="col-xxl-4">
-            <i class="fa-solid fa-play fa-2x bg-dark px-3 py-2 rounded-2"></i>
-          </span>
-          <span class="col-xxl-8">Watch trailer</span>
-        </div>
-      </button>
-    </div>
-    <button (click)="onShowSchedule()"
-            class="cl-primary cl-white-hover gy-xxl-5 fs-3 text-center bg-transparent border border-0 show-schedule-list">
-      <ng-container [ngSwitch]="getDateType(selectedDate)">
-        <ng-template [ngIf]="isTodayOrFuture(selectedDate)">
-          <ng-container *ngSwitchCase="'today'">Today</ng-container>
-          <ng-container *ngSwitchCase="'tomorrow'">Tomorrow</ng-container>
-          <ng-container *ngSwitchDefault>{{selectedDate | date:'EEE, MM/dd'}}</ng-container>
-        </ng-template>
-      </ng-container>
-    </button>
-    <div #daySelect role="button"
-         class="row row-cols-xxl-1 text-center bg-dark position-absolute top-50 m-0 p-0 invisible">
-      <div (click)="onSelectDate(date)"
-           *ngFor="let date of selectDates"
-           class="border-top border-bottom border-secondary border-1 border-secondary border-opacity-50
-                  cl-primary select-date">
-        <ng-container [ngSwitch]="getDateType(date)">
-          <ng-template [ngIf]="isTodayOrFuture(date)">
-                  <span [ngClass]="{
-                            'text-white': isSameDay(date, selectedDate)
-                          }"
-                        class="cl-primary">
-                    <ng-container *ngSwitchCase="'today'">Today</ng-container>
-                    <ng-container *ngSwitchCase="'tomorrow'">Tomorrow</ng-container>
-                    <ng-container *ngSwitchDefault>{{date | date:'EEE, MM/dd'}}</ng-container>
-                  </span>
-          </ng-template>
-        </ng-container>
-      </div>
-      <span class="text-white">Further schedule is not formed yet. See our news :-)</span>
-    </div>
-    <span class="row-cols-xxl-12 text-center fs-4 gy-xxl-5">Schedule</span>
-    <div *ngIf="sessions" class="row d-flex justify-content-center gy-xxl-3">
-      <ng-template [ngForOf]="sessionsSorted()" let-session ngFor>
-        <a *ngIf="isSameDay(session.startAt, selectedDate)"
-           [routerLink]="['/films', poster.filmId, 'sessions', session.id]"
-           class="cl-white-hover col-xxl-2 fw-bold fs-5 text-decoration-none m-2"
-           [ngClass]="{
-            'pe-none': isSessionWithinPastThirtyMinutes(session),
-            'text-secondary': isSessionWithinPastThirtyMinutes(session),
-            'cl-primary': !isSessionWithinPastThirtyMinutes(session)
-           }"
-           pTooltip="From {{session.minPrice}} UAH"
-           tooltipPosition="bottom">
-          {{session.startAt | date: 'HH:mm'}}
-        </a>
-      </ng-template>
-    </div>
-  </div>
-  <div class="film-title position-absolute row-cols-xxl-12 gy-xxl-5 text-center">
-    <a [routerLink]="['/films', poster.filmId, 'info']"
-       class="fs-4 fw-bold text-white text-decoration-none title">
-      {{poster.title}}
+<div (click)="onHideDaySelection($event)" class="poster"
+     [ngStyle]="{'background-image':'url(' + poster.media.image + ')'}">
+  <div class="poster__details">
+    <a class="poster__details--info" [routerLink]="['/films', poster.filmId, 'info']">
+      <i class="fa-solid fa-info"></i>
+      <span>More details of film</span>
     </a>
   </div>
+  <div class="poster__details">
+    <button class="poster__details--trailer" (click)="triggerOpenTrailerEvent()">
+      <i class="fa-solid fa-play"></i>
+      <span>Watch trailer</span>
+    </button>
+  </div>
+  <button (click)="onShowSchedule()"
+          class="poster__day-selection">
+    <ng-container [ngSwitch]="getDateType(selectedDate)">
+      <ng-template [ngIf]="isTodayOrFuture(selectedDate)">
+        <ng-container *ngSwitchCase="'today'">Today</ng-container>
+        <ng-container *ngSwitchCase="'tomorrow'">Tomorrow</ng-container>
+        <ng-container *ngSwitchDefault>{{selectedDate | date:'EEE, MM/dd'}}</ng-container>
+      </ng-template>
+    </ng-container>
+  </button>
+  <ul [ngClass]="{'poster__dates-list': true, 'd-none': isDaySelectionHidden}">
+    <li (click)="onSelectDate(date)"
+        *ngFor="let date of selectDates"
+        class="poster__date-item">
+      <ng-container [ngSwitch]="getDateType(date)">
+        <ng-template [ngIf]="isTodayOrFuture(date)">
+          <button [ngClass]="{
+                            'text-white': isSameDay(date, selectedDate)
+                          }"
+                  class="poster__date-btn">
+            <ng-container *ngSwitchCase="'today'">Today</ng-container>
+            <ng-container *ngSwitchCase="'tomorrow'">Tomorrow</ng-container>
+            <ng-container *ngSwitchDefault>{{date | date:'EEE, MM/dd'}}</ng-container>
+          </button>
+        </ng-template>
+      </ng-container>
+    </li>
+    <p>Further schedule is not formed yet. See our news :-)</p>
+  </ul>
+  <p class="poster__schedule-text">Schedule</p>
+  <div *ngIf="sessions" class="poster__sessions">
+    <ng-template [ngForOf]="sessionsSorted()" let-session ngFor>
+      <a *ngIf="isSameDay(session.startAt, selectedDate)"
+         [routerLink]="['/films', poster.filmId, 'sessions', session.id]"
+         class="poster__session-link"
+         [ngClass]="{'pe-none text-secondary': isSessionWithinPastThirtyMinutes(session)}"
+         pTooltip="From {{session.minPrice}} UAH"
+         tooltipPosition="bottom"
+         tooltipStyleClass="tooltip"
+      >
+        {{session.startAt | date: 'HH:mm'}}
+      </a>
+    </ng-template>
+  </div>
+  <a class="poster__title" [routerLink]="['/films', poster.filmId, 'info']">
+    {{poster.title}}
+  </a>
 </div>

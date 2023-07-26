@@ -1,12 +1,4 @@
-import {
-  Component,
-  ElementRef,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-  ViewChild,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
   compareAsc,
   differenceInMinutes,
@@ -29,7 +21,7 @@ import { FilmService } from '../../film/film.service';
 })
 export class PosterElementComponent implements OnInit {
   @Input() poster!: PosterDto;
-  @ViewChild('daySelect') daySelectElementRef!: ElementRef;
+  isDaySelectionHidden = true;
   selectDates!: Date[];
   selectedDate = new Date();
   sessions!: SessionDto[];
@@ -46,10 +38,6 @@ export class PosterElementComponent implements OnInit {
     this.sessions = await firstValueFrom(
       this.filmService.getSessionsById(this.poster.filmId),
     );
-  }
-
-  onShowSchedule() {
-    this.daySelectElementRef.nativeElement.classList.toggle('invisible');
     this.selectDates = this.sessions
       .map((session) => session.startAt)
       .sort(compareAsc);
@@ -70,7 +58,7 @@ export class PosterElementComponent implements OnInit {
   onHideDaySelection($event: Event) {
     if (
       !(<HTMLButtonElement>$event.target).classList.contains(
-        'show-schedule-list',
+        'poster__dates-list',
       )
     ) {
       this.hideDaySelection();
@@ -78,7 +66,7 @@ export class PosterElementComponent implements OnInit {
   }
 
   hideDaySelection() {
-    this.daySelectElementRef.nativeElement.classList.add('invisible');
+    this.isDaySelectionHidden = true;
   }
 
   isTodayOrFuture(date: Date) {
@@ -105,5 +93,12 @@ export class PosterElementComponent implements OnInit {
       title: this.poster.title,
       url: this.poster.media.trailer,
     });
+  }
+
+  onShowSchedule() {
+    this.isDaySelectionHidden = false;
+    this.selectDates = this.sessions
+      .map((session) => session.startAt)
+      .sort(compareAsc);
   }
 }

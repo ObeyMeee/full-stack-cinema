@@ -6,7 +6,6 @@ import { HeaderComponent } from './header/header.component';
 import { CarouselModule } from 'primeng/carousel';
 import { PosterComponent } from './poster/poster.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { BlurDirective } from './poster/poster-element/blur.directive';
 import { Route, RouterModule } from '@angular/router';
 import { FilmComponent } from './film/film.component';
 import { HallComponent } from './hall/hall.component';
@@ -105,7 +104,6 @@ const oktaAuth = new OktaAuth(environment.okta);
     AppComponent,
     HeaderComponent,
     PosterComponent,
-    BlurDirective,
     FilmComponent,
     HallComponent,
     LoginComponent,
