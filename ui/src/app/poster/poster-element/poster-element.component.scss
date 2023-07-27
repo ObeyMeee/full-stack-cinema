@@ -41,9 +41,9 @@
   background-repeat: no-repeat;
   backdrop-filter: blur(6px) brightness(60%);
 
-  //& > *:not(:last-child) {
-  //  visibility: hidden;
-  //}
+  & > *:not(:last-child) {
+    visibility: hidden;
+  }
 
   &:hover *:not(:last-child) {
     visibility: visible;

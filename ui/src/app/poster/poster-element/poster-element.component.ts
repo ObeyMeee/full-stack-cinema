@@ -57,9 +57,7 @@ export class PosterElementComponent implements OnInit {
 
   onHideDaySelection($event: Event) {
     if (
-      !(<HTMLButtonElement>$event.target).classList.contains(
-        'poster__dates-list',
-      )
+      !(<HTMLElement>$event.target).classList.contains('poster__day-selection')
     ) {
       this.hideDaySelection();
     }
