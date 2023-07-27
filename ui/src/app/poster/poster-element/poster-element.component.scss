@@ -60,7 +60,7 @@
     top: 0;
   }
 
-  & > *:not(&__dates-list, &__title) {
+  & > *:not(&__dates-box, &__title) {
     position: relative;
     z-index: var(--zindex-main-content);
   }
@@ -103,6 +103,7 @@
     background-color: transparent;
     align-self: end;
     border-radius: 0;
+
     color: var(--color-primary);
     border-bottom: 1px dotted currentColor;
     transition: color .3s;
@@ -112,23 +113,25 @@
     }
   }
 
+  &__dates-box {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    right: 50%;
+
+    width: 80%;
+    background-color: var(--color-grey-dark-3);
+    border: 1px solid var(--color-grey-light-1);
+    border-radius: 7px;
+    padding: 1.5rem 1rem;
+    z-index: $zindex-dropdown;
+  }
 
   &__dates-list {
     display: grid;
     justify-items: center;
     list-style: none;
-    background-color: var(--color-grey-dark-3);
-    border: 1px solid var(--color-grey-light-1);
-    border-radius: 7px;
-    padding: 1.5rem 1rem;
-
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    right: 50%;
-    transform: translate(-50%, -50%);
-    width: 80%;
-    z-index: $zindex-dropdown;
+    padding: 0;
 
     li {
       width: 90%;

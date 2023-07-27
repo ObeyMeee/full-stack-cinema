@@ -24,6 +24,7 @@
     "@okta/okta-signin-widget": "^7.5.0",
     "@popperjs/core": "^2.11.6",
     "angular-oauth2-oidc": "^15.0.1",
+    "animate.css": "^4.1.1",
     "bootstrap": "^5.2.3",
     "bootstrap-icons": "^1.10.3",
     "date-fns": "^2.29.3",

@@ -13,11 +13,37 @@ import { SessionDto } from '../dto/session.dto';
 import { PosterService } from '../poster.service';
 import { firstValueFrom } from 'rxjs';
 import { FilmService } from '../../film/film.service';
+import {
+  animate,
+  state,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
 
 @Component({
   selector: 'app-poster-element',
   templateUrl: './poster-element.component.html',
   styleUrls: ['./poster-element.component.scss'],
+  animations: [
+    trigger('openClosed', [
+      state(
+        'open',
+        style({
+          opacity: 1,
+          transform: 'translate(-50%, -50%)',
+        }),
+      ),
+      state(
+        'closed',
+        style({
+          opacity: 0,
+          transform: 'translate(-50%, -65%)',
+        }),
+      ),
+      transition('open <=> closed', [animate('.4s ease-in-out')]),
+    ]),
+  ],
 })
 export class PosterElementComponent implements OnInit {
   @Input() poster!: PosterDto;

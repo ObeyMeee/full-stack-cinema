@@ -12,8 +12,7 @@
       <span>Watch trailer</span>
     </button>
   </div>
-  <button (click)="onShowSchedule()"
-          class="poster__day-selection">
+  <button (click)="onShowSchedule()" class="poster__day-selection">
     <ng-container [ngSwitch]="getDateType(selectedDate)">
       <ng-template [ngIf]="isTodayOrFuture(selectedDate)">
         <ng-container *ngSwitchCase="'today'">Today</ng-container>
@@ -22,25 +21,28 @@
       </ng-template>
     </ng-container>
   </button>
-  <ul [ngClass]="{'poster__dates-list': true, 'd-none': isDaySelectionHidden}">
-    <li (click)="onSelectDate(date)"
-        *ngFor="let date of selectDates"
-        class="poster__date-item">
-      <ng-container [ngSwitch]="getDateType(date)">
-        <ng-template [ngIf]="isTodayOrFuture(date)">
-          <button [ngClass]="{
+  <div [ngClass]="{'poster__dates-box': true, 'd-none': isDaySelectionHidden}"
+       [@openClosed]="isDaySelectionHidden ? 'closed' : 'open'">
+    <ul class="poster__dates-list">
+      <li (click)="onSelectDate(date)"
+          *ngFor="let date of selectDates"
+          class="poster__date-item">
+        <ng-container [ngSwitch]="getDateType(date)">
+          <ng-template [ngIf]="isTodayOrFuture(date)">
+            <button [ngClass]="{
                             'text-white': isSameDay(date, selectedDate)
                           }"
-                  class="poster__date-btn">
-            <ng-container *ngSwitchCase="'today'">Today</ng-container>
-            <ng-container *ngSwitchCase="'tomorrow'">Tomorrow</ng-container>
-            <ng-container *ngSwitchDefault>{{date | date:'EEE, MM/dd'}}</ng-container>
-          </button>
-        </ng-template>
-      </ng-container>
-    </li>
-    <p>Further schedule is not formed yet. See our news :-)</p>
-  </ul>
+                    class="poster__date-btn">
+              <ng-container *ngSwitchCase="'today'">Today</ng-container>
+              <ng-container *ngSwitchCase="'tomorrow'">Tomorrow</ng-container>
+              <ng-container *ngSwitchDefault>{{date | date:'EEE, MM/dd'}}</ng-container>
+            </button>
+          </ng-template>
+        </ng-container>
+      </li>
+      <p>Further schedule is not formed yet. See our news :-)</p>
+    </ul>
+  </div>
   <p class="poster__schedule-text">Schedule</p>
   <div *ngIf="sessions" class="poster__sessions">
     <ng-template [ngForOf]="sessionsSorted()" let-session ngFor>
@@ -56,7 +58,7 @@
       </a>
     </ng-template>
   </div>
-  <a class="poster__title" [routerLink]="['/films', poster.filmId, 'info']">
+  <a class="poster__title animate__animated animate__fadeInDown" [routerLink]="['/films', poster.filmId, 'info']">
     {{poster.title}}
   </a>
 </div>
