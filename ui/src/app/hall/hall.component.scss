@@ -1,43 +1,229 @@
-.w-250 {
-  width: 250px;
-  height: auto;
+//.w-250 {
+//  width: 250px;
+//  height: auto;
+//}
+//
+//.top-20px {
+//  top: 20px;
+//}
+//
+//i {
+//  font-size: 150%;
+//}
+//
+//.screen {
+//  width: 62.6rem;
+//}
+//
+//.seat {
+//  height: 28px;
+//  width: 20px;
+//  border-radius: 3px;
+//}
+//
+//.good-seat {
+//  border: 1px solid deepskyblue;
+//}
+//
+//.lux-seat {
+//  border: 1px solid var(--primary-red);
+//}
+//
+//.selected-good-seat {
+//  background-color: dodgerblue;
+//}
+//
+//.selected-lux-seat {
+//  background-color: red;
+//}
+//
+//.taken-seat {
+//  border: #333333;
+//  background-color: #676f70;
+//}
+
+%property {
+  grid-column: col-start 4 / span 4;
+  display: grid;
+  grid-column-gap: 3rem;
+
+  & > * {
+    font-size: 1.4rem;
+    border: 1px solid var(--color-primary);
+    border-radius: 5px;
+    padding: 1rem 2rem;
+    font-weight: 700;
+    transition: all .35s;
+  }
+
+  & > *:hover {
+    transform: scale(1.2);
+    border: 1px solid var(--color-grey-light-2);
+  }
 }
 
-.top-20px {
-  top: 20px;
+.hall {
+  padding: 5rem;
+  color: var(--color-grey-light-2);
+  display: grid;
+  grid-template-columns: repeat(12, [col-start] 1fr [col-end]);
+  grid-gap: 4rem;
+
+  &__shape {
+    grid-column: col-start 1 / span 3;
+    grid-row: 1 / span 3;
+  }
+
+  &__film-caption {
+  }
+
+  &__film-poster {
+    max-height: 25rem;
+    width: 100%;
+    display: block;
+  }
+
+  &__title {
+    grid-column: col-start 4 / span 5;
+  }
+
+  &__properties {
+    @extend %property;
+    grid-row: 2 / span 1;
+    grid-template-columns: repeat(2, max-content);
+  }
+
+  &__property {
+    &--dimension {
+    }
+
+    &--type {
+    }
+  }
+
+  &__info-box {
+    @extend %property;
+    grid-row: 3 / span 1;
+    grid-template-columns: repeat(3, max-content);
+  }
+
+  &__info {
+    display: grid;
+    grid-template-columns: repeat(2, max-content);
+    grid-column-gap: 2rem;
+    align-items: center;
+    justify-items: center;
+
+    &-location-text,
+    &-date-short,
+    &-time-text {
+      font-weight: 300;
+    }
+
+    p {
+      margin: 0;
+    }
+
+    &-icon {
+      grid-row: 1 / span 2;
+      font-size: 3rem;
+    }
+
+    &-location {
+
+      &-text {
+      }
+
+      &-city {
+      }
+    }
+
+    &__date {
+      &-short {
+      }
+
+      &-weekday {
+      }
+
+    }
+
+    &-time {
+      &-text {
+
+      }
+
+      &-value {
+      }
+    }
+  }
+
+  &__screen {
+    grid-column: col-start 1 / span 8
+  }
+
+  &__screen--icon {
+    fill: var(--color-primary);
+  }
+
+  &__screen--text {
+    grid-column: col-start 6 / span 1
+  }
+
+  &__price-list {
+    justify-self: center;
+    grid-column: col-start 5 / span 4;
+    display: flex;
+    justify-items: center;
+  }
+
+  &__seats-box {
+    grid-column: col-start 1 / span 7;
+  }
+
+  &__seat {
+    height: 4rem;
+    width: 3rem;
+    border-radius: 5px;
+  }
+
+  &__seat--good {
+    border: 1px solid dodgerblue;
+  }
+
+  &__seat--lux {
+    border: 1px solid var(--color-primary);
+  }
+
+  &__seat--taken {
+  }
+
+  &__seat-price {
+  }
 }
 
-i {
-  font-size: 150%;
-}
+.tickets-box {
 
-.screen {
-  width: 62.6rem;
-}
+  &__title {
+  }
 
-.seat {
-  height: 28px;
-  width: 20px;
-  border-radius: 3px;
-}
+  &__info {
+  }
 
-.good-seat {
-  border: 1px solid deepskyblue;
-}
+  &__list {
+  }
 
-.lux-seat {
-  border: 1px solid var(--primary-red);
-}
+  &__item {
+  }
 
-.selected-good-seat {
-  background-color: dodgerblue;
-}
+  &__total-text {
+  }
 
-.selected-lux-seat {
-  background-color: red;
-}
+  &__total-value {
+  }
 
-.taken-seat {
-  border: #333333;
-  background-color: #676f70;
+  &__alert {
+  }
+
+  &__purchase-btn {
+  }
 }

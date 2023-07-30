@@ -212,6 +212,7 @@
 
   &__title:link,
   &__title:visited {
+    display: inline-block;
     position: absolute;
     bottom: 9rem;
     transform: translateY(50%);

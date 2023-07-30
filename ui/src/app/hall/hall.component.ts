@@ -14,6 +14,7 @@ import { OKTA_AUTH, OktaAuthStateService } from '@okta/okta-angular';
 import OktaAuth from '@okta/okta-auth-js';
 import { TicketService } from './ticket.service';
 import { ToastService } from '../shared/toast.service';
+import { addMinutes } from 'date-fns';
 
 @Component({
   selector: 'app-hall',
@@ -27,6 +28,7 @@ export class HallComponent implements OnInit {
   tickets!: Ticket[];
   isAuthenticated: boolean | undefined;
 
+  protected addMinutes = addMinutes;
   @ViewChild('purchaseButton') purchaseButtonElementRef!: ElementRef;
 
   constructor(

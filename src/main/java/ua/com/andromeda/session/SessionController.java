@@ -17,13 +17,11 @@ public class SessionController {
 
     @GetMapping("sessions/{id}")
     public ResponseEntity<SessionBuyTicketDto> findById(@PathVariable String id) {
-        SessionBuyTicketDto sessionBuyTicketDto = sessionService.findById(id);
-        return ResponseEntity.ok(sessionBuyTicketDto);
+        return ResponseEntity.ok(sessionService.findById(id));
     }
 
     @GetMapping("films/{filmId}/sessions")
     public ResponseEntity<List<SessionShortInfoDto>> findAllByFilmId(@PathVariable String filmId) {
-        List<SessionShortInfoDto> sessions = sessionService.findAllByFilmId(filmId);
-        return ResponseEntity.ok(sessions);
+        return ResponseEntity.ok(sessionService.findAllByFilmId(filmId));
     }
 }

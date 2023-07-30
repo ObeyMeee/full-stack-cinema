@@ -17,6 +17,7 @@ public interface SessionRepository extends ListCrudRepository<Session, UUID> {
             select new ua.com.andromeda.session.dto.SessionBuyTicketDto(
                     s.film.title,
                     s.startAt,
+                    s.film.duration,
                     s.film.media.image,
                     s.hall
             )

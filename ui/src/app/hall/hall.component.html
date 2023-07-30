@@ -1,137 +1,94 @@
-<div *ngIf="session" class="row text-white m-3">
-  <div class="col-xxl-8">
-    <div class="row">
-      <div class="col-auto">
-        <img alt="{{session.title}}"
-             class="w-250"
-             src="{{session.image}}">
-      </div>
-      <div class="col-xxl-8 m-2">
-        <span class="row row-cols-xxl-12 h4">{{session.title}}</span>
-        <div class="row">
-          <div class="col-auto my-2">
-            <div class="row row-cols-xxl-auto text-center">
-              <div class="bg-dark border border-white border-1 rounded-3 me-3">2D</div>
-              <div class="bg-dark border border-white border-1 rounded-3">{{session.hall.type}}</div>
-            </div>
-          </div>
-        </div>
-        <div class="row my-2">
-          <div class="col-auto bg-dark border border-white border-1 rounded-3 me-3">
-            <div class="row">
-              <div class="col-auto mt-1">
-                <i class="bi bi-geo-alt-fill"></i>
-              </div>
-              <div class="col-auto border-start border-2 border-white">
-                <div>Hall {{session.hall.number}}</div>
-                <div>Kharkiv</div>
-              </div>
-            </div>
-          </div>
-          <div class="col-auto bg-dark border border-1 border-white rounded-3 me-3">
-            <div class="row">
-              <div class="col-auto mt-1">
-                <i class="bi bi-calendar3"></i>
-              </div>
-              <div class="col-auto border-start border-2 border-white">
-                <div>{{session.startAt | date: 'shortDate'}}</div>
-                <div>{{session.startAt | date: 'EEEE'}}</div>
-              </div>
-            </div>
-          </div>
-          <div
-            class="col-auto bg-dark border border-1 border-white rounded-3 d-flex justify-content-center align-items-center">
-            <div class="row">
-              <div class="col">
-                <i class="bi bi-clock"></i>
-              </div>
-              <div class="col border-start border-2 border-white p-1">
-                {{session.startAt | date: 'HH:mm'}}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+<section *ngIf="session" class="hall">
+  <figure class="hall__shape">
+    <figcaption class="hall__film-caption"></figcaption>
+    <img alt="{{session.title}}" class="hall__film-poster" src="{{session.image}}">
+  </figure>
+  <h1 class="hall__title heading-1">{{session.title}}</h1>
+
+  <div class="hall__properties">
+    <div class="hall__property hall__property--dimension">2D</div>
+    <div class="hall__property hall__property--type">{{session.hall.type}}</div>
+  </div>
+
+  <div class="hall__info-box">
+    <div class="hall__info hall__info-location">
+      <i class="hall__info-icon bi bi-geo-alt-fill"></i>
+      <p class="hall__info-location-text">Hall {{session.hall.number}}</p>
+      <p class="hall__info-location-city">Kharkiv</p>
     </div>
-    <div class="row mt-4 d-flex justify-content-center">
-      <div *ngIf="session.hall.type !== 'CHILL_OUT'" class="col-auto d-flex align-items-center  ">
-        <div class="seat good-seat d-inline-block"></div>
-        <span class="ms-2">{{session.hall.rows[0].type}} - {{session.hall.rows[0].price}} UAH</span>
-      </div>
-      <div class="col-auto d-flex align-items-center">
-        <div class="seat lux-seat d-inline-block"></div>
-        <span class="ms-2">{{session.hall.rows.at(-1)?.type}} - {{session.hall.rows.at(-1)?.price}} UAH</span>
-      </div>
+    <div class="hall__info hall__info-date">
+      <i class="hall__info-icon bi bi-calendar3"></i>
+      <p class="hall__info-date-short">{{session.startAt | date: 'shortDate'}}</p>
+      <p class="hall__info-date-weekday">{{session.startAt | date: 'EEEE'}}</p>
     </div>
-    <div class="row row-cols-xxl-auto mt-3 d-flex justify-content-center">
-      <div class="screen">
-        <svg fill="orangered" viewBox="0 0 806 21" xmlns="http://www.w3.org/2000/svg">
-          <path
-            d="M3.2,20l-2,0.2l-0.3-4l2-0.2C136.2,5.3,269.6,0,403,0s266.8,5.3,400.2,16l2,0.2l-0.3,4l-2-0.2 C669.5,9.3,536.3,4,403,4S136.4,9.3,3.2,20z"></path>
-        </svg>
-        <div class="text-center">ЕКРАН</div>
-      </div>
+    <div class="hall__info hall__info-time">
+      <i class="hall__info-icon bi bi-clock"></i>
+      <p class="hall__info-time-text">Time</p>
+      <p class="hall__info-time-value">{{session.startAt | date: 'HH:mm'}} &hyphen; {{addMinutes(session.startAt, session.duration) | date: 'HH:mm'}}</p>
     </div>
-    <div class="mt-4">
-      <div *ngFor="let row of session.hall.rows; last as lastRow"
-           class="row d-flex justify-content-center">
-        <div *ngFor="let seat of row.seats" class="col-auto p-2">
-          <button #btn
-                  (click)="onSelectSeat(btn)"
-                  [attr.data-price]="row.price"
-                  [attr.data-row]="row.number"
-                  [attr.data-seat]="seat.number"
-                  [attr.data-type]="row.type"
-                  class="bg-transparent border-0 p-0"
-                  type="button">
-            <div [ngClass]="{
-                 'lux-seat': !isSeatTaken(row.number, seat.number) && lastRow || session.hall.type === 'CHILL_OUT',
-                 'good-seat': !isSeatTaken(row.number, seat.number) && !lastRow && session.hall.type !== 'CHILL_OUT',
-                 'taken-seat': isSeatTaken(row.number, seat.number)
+  </div>
+
+  <div class="hall__price-list">
+    <ng-container *ngIf="session.hall.type !== 'CHILL_OUT'">
+      <div class="hall__seat hall__seat--good"></div>
+      <span class="hall__seat-price">{{session.hall.rows[0].type}} &hyphen; {{session.hall.rows[0].price}} UAH</span>
+    </ng-container>
+    <div class="hall__seat hall__seat--lux"></div>
+    <span class="hall__seat-price">{{session.hall.rows.at(-1)?.type}} &hyphen; {{session.hall.rows.at(-1)?.price}} UAH</span>
+  </div>
+
+  <svg class="hall__screen hall__screen--icon" viewBox="0 0 806 21" xmlns="http://www.w3.org/2000/svg">
+    <path
+      d="M3.2,20l-2,0.2l-0.3-4l2-0.2C136.2,5.3,269.6,0,403,0s266.8,5.3,400.2,16l2,0.2l-0.3,4l-2-0.2 C669.5,9.3,536.3,4,403,4S136.4,9.3,3.2,20z"></path>
+  </svg>
+  <p class="hall__screen hall__screen--text">ЕКРАН</p>
+
+  <div class="hall__seats-box">
+
+    <ng-container *ngFor="let row of session.hall.rows; last as lastRow">
+      <ng-container *ngFor="let seat of row.seats">
+        <button #btn
+                (click)="onSelectSeat(btn)"
+                [attr.data-price]="row.price"
+                [attr.data-row]="row.number"
+                [attr.data-seat]="seat.number"
+                [attr.data-type]="row.type"
+                class="hall__seat"
+                [ngClass]="{
+                 'hall__seat--lux': !isSeatTaken(row.number, seat.number) && lastRow || session.hall.type === 'CHILL_OUT',
+                 'hall__seat--good': !isSeatTaken(row.number, seat.number) && !lastRow && session.hall.type !== 'CHILL_OUT',
+                 'hall__seat--taken': isSeatTaken(row.number, seat.number)
                  }"
-                 class="seat text-white p-0 m-0"
-                 pTooltip="{{isSeatTaken(row.number, seat.number) ? 'This seat is taken' : row.number + ' Row, ' + seat.number + ' Seat\nPrice: ' + row.price  + ' UAH'}}"
-                 tooltipPosition="top">
-              <ng-container *ngIf="isSeatTaken(row.number, seat.number)">
-                x
-              </ng-container>
-            </div>
-          </button>
-        </div>
-      </div>
-    </div>
+                pTooltip="{{isSeatTaken(row.number, seat.number) ? 'This seat is taken' : row.number + ' Row, ' + seat.number + ' Seat\nPrice: ' + row.price  + ' UAH'}}"
+                tooltipPosition="top">
+          <ng-container *ngIf="isSeatTaken(row.number, seat.number)">
+            &times;
+          </ng-container>
+        </button>
+      </ng-container>
+    </ng-container>
   </div>
-  <div class="col-xxl-4 fs-5 p-2 full-height border border-1 border-dark rounded-4
-   d-flex flex-column position-sticky top-20px">
-    <div class="row mt-4 row-cols-xxl-auto fw-bold">
-      <div class="me-auto">Tickets</div>
-      <div class="text-white-50"> {{tickets.length}} tickets, {{getTotalPrice()}} UAH</div>
-    </div>
 
-    <div class="overflow-auto">
-      <app-ticket *ngFor="let ticket of tickets" [ticket]="ticket"></app-ticket>
-    </div>
+  <div class="tickets-box">
+    <p class="tickets-box__title">Tickets</p>
+    <p class="tickets-box__info"> {{tickets.length}} tickets, {{getTotalPrice()}} UAH</p>
 
-    <div class="row mt-auto border-1 border-top border-dark fs-4">
-      <div class="col-xxl-12 fw-bold d-flex my-2">
-        <div>Total price:</div>
-        <div class="ms-auto me-2">{{getTotalPrice()}} UAH</div>
-      </div>
-      <div class="col-xxl-12 alert alert-danger" *ngIf="!isAuthenticated">
-        <div class="row d-flex justify-content-center">
-          <span class="col-xxl-11">Please log in to buy tickets</span>
-        </div>
-      </div>
-      <div class="col-xxl-12">
-        <div class="row d-flex justify-content-center">
-          <button #purchaseButton
-                  (click)="onPurchaseTickets()"
-                  [disabled]="!isAuthenticated"
-                  class="col-xxl-11 btn btn-danger rounded-4">
-            Purchase
-          </button>
-        </div>
-      </div>
+    <ul class="tickets-box__list">
+      <li class="tickets-box__item" *ngFor="let ticket of tickets">
+        <app-ticket [ticket]="ticket"></app-ticket>
+      </li>
+    </ul>
+
+    <p class="tickets-box__total-text">Total price:</p>
+    <p class="tickets-box__total-value">{{getTotalPrice()}} UAH</p>
+    <div class="tickets-box__alert alert alert-danger" *ngIf="!isAuthenticated">
+      Please log in to buy tickets
     </div>
+    <button #purchaseButton
+            (click)="onPurchaseTickets()"
+            [disabled]="!isAuthenticated"
+            class="tickets-box__purchase-btn">
+      Purchase
+    </button>
   </div>
-</div>
+</section>

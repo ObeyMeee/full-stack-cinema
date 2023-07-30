@@ -1,11 +1,7 @@
-<div
-  [ngClass]="{'border-info': ticket.type === 'GOOD', 'border-danger': ticket.type === 'LUX'}"
-  class="row row-cols-xxl-auto m-3 p-3 border border-1 rounded-4 justify-content-between align-items-center">
-  <span class="p-0">{{ticket.row}} row</span>
-  <span class="p-0">{{ticket.seat}} seat</span>
-  <span class="p-0">{{ticket.type}}</span>
-  <span class="p-0">{{ticket.price}} UAH</span>
-  <button class="bg-transparent border-0 text-secondary p-0" (click)="onRemove()">
-    <i class="bi bi-x fs-2"></i>
-  </button>
+<div [class]="'ticket ticket--' + ticket.type?.toLowerCase()">
+  <p class="ticket__row">{{ticket.row}} row</p>
+  <p class="ticket__seat">{{ticket.seat}} seat</p>
+  <p class="ticket__type">{{ticket.type}}</p>
+  <p class="ticket__price">{{ticket.price}} UAH</p>
+  <p-button icon="pi pi-times" styleClass="p-button-rounded p-button-secondary p-button-text" (click)="onRemove()"></p-button>
 </div>

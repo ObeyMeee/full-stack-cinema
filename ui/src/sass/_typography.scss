@@ -1,0 +1,15 @@
+.heading-1 {
+  font-size: 2.7rem;
+  letter-spacing: 3px;
+  font-weight: 300;
+  text-transform: uppercase;
+  color: var(--color-grey-light-2);
+  transition: transform .4s;
+
+  &:hover {
+    transform: scale(1.1) skewX(10deg) skewY(-5deg);
+    background-image: linear-gradient(to right bottom, var(--color-primary-light), var(--color-primary-dark));
+    background-clip: text;
+    color: transparent;
+  }
+}
