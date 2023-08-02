@@ -1,59 +1,67 @@
-<section *ngIf="session" class="hall">
-  <figure class="hall__shape">
-    <figcaption class="hall__film-caption"></figcaption>
-    <img alt="{{session.title}}" class="hall__film-poster" src="{{session.image}}">
-  </figure>
-  <h1 class="hall__title heading-1">{{session.title}}</h1>
+<section *ngIf="session" class="hall-page">
+  <div class="hall">
+    <figure class="hall__shape">
+      <figcaption class="hall__film-caption"></figcaption>
+      <img alt="{{session.title}}" class="hall__film-poster" src="{{session.image}}">
+    </figure>
+    <div class="hall__movie-container">
+      <h1 class="hall__title heading-1">{{session.title}}</h1>
 
-  <div class="hall__properties">
-    <div class="hall__property hall__property--dimension">2D</div>
-    <div class="hall__property hall__property--type">{{session.hall.type}}</div>
-  </div>
+      <div class="hall__properties">
+        <div class="hall__property hall__property--dimension">2D</div>
+        <div class="hall__property hall__property--type">{{session.hall.type}}</div>
+      </div>
 
-  <div class="hall__info-box">
-    <div class="hall__info hall__info-location">
-      <i class="hall__info-icon bi bi-geo-alt-fill"></i>
-      <p class="hall__info-location-text">Hall {{session.hall.number}}</p>
-      <p class="hall__info-location-city">Kharkiv</p>
+      <div class="hall__info-box">
+        <div class="hall__info hall__info-location">
+          <i class="hall__info-icon bi bi-geo-alt-fill"></i>
+          <p class="hall__info-location-text">Hall {{session.hall.number}}</p>
+          <p class="hall__info-location-city">Kharkiv</p>
+        </div>
+        <div class="hall__info hall__info-date">
+          <i class="hall__info-icon bi bi-calendar3"></i>
+          <p class="hall__info-date-short">{{session.startAt | date: 'shortDate'}}</p>
+          <p class="hall__info-date-weekday">{{session.startAt | date: 'EEEE'}}</p>
+        </div>
+        <div class="hall__info hall__info-time">
+          <i class="hall__info-icon bi bi-clock"></i>
+          <p class="hall__info-time-text">Time</p>
+          <p class="hall__info-time-value">{{session.startAt | date: 'HH:mm'}}
+            &hyphen; {{addMinutes(session.startAt, session.duration) | date: 'HH:mm'}}</p>
+        </div>
+      </div>
     </div>
-    <div class="hall__info hall__info-date">
-      <i class="hall__info-icon bi bi-calendar3"></i>
-      <p class="hall__info-date-short">{{session.startAt | date: 'shortDate'}}</p>
-      <p class="hall__info-date-weekday">{{session.startAt | date: 'EEEE'}}</p>
+
+    <div class="hall__price-list">
+      <ng-container *ngIf="session.hall.type !== 'CHILL_OUT'">
+        <div class="hall__seat hall__seat--good"></div>
+        <span class="hall__seat-price">{{session.hall.rows[0].type}} &hyphen; {{session.hall.rows[0].price}}
+          UAH</span>
+      </ng-container>
+      <div class="hall__seat hall__seat--lux"></div>
+      <span class="hall__seat-price">{{session.hall.rows.at(-1)?.type}}
+        &hyphen; {{session.hall.rows.at(-1)?.price}}
+        UAH</span>
     </div>
-    <div class="hall__info hall__info-time">
-      <i class="hall__info-icon bi bi-clock"></i>
-      <p class="hall__info-time-text">Time</p>
-      <p class="hall__info-time-value">{{session.startAt | date: 'HH:mm'}} &hyphen; {{addMinutes(session.startAt, session.duration) | date: 'HH:mm'}}</p>
-    </div>
-  </div>
 
-  <div class="hall__price-list">
-    <ng-container *ngIf="session.hall.type !== 'CHILL_OUT'">
-      <div class="hall__seat hall__seat--good"></div>
-      <span class="hall__seat-price">{{session.hall.rows[0].type}} &hyphen; {{session.hall.rows[0].price}} UAH</span>
-    </ng-container>
-    <div class="hall__seat hall__seat--lux"></div>
-    <span class="hall__seat-price">{{session.hall.rows.at(-1)?.type}} &hyphen; {{session.hall.rows.at(-1)?.price}} UAH</span>
-  </div>
+    <svg class="hall__screen hall__screen--icon" viewBox="0 0 806 21" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M3.2,20l-2,0.2l-0.3-4l2-0.2C136.2,5.3,269.6,0,403,0s266.8,5.3,400.2,16l2,0.2l-0.3,4l-2-0.2 C669.5,9.3,536.3,4,403,4S136.4,9.3,3.2,20z"></path>
+    </svg>
+    <p class="hall__screen hall__screen--text">Екран</p>
 
-  <svg class="hall__screen hall__screen--icon" viewBox="0 0 806 21" xmlns="http://www.w3.org/2000/svg">
-    <path
-      d="M3.2,20l-2,0.2l-0.3-4l2-0.2C136.2,5.3,269.6,0,403,0s266.8,5.3,400.2,16l2,0.2l-0.3,4l-2-0.2 C669.5,9.3,536.3,4,403,4S136.4,9.3,3.2,20z"></path>
-  </svg>
-  <p class="hall__screen hall__screen--text">ЕКРАН</p>
-
-  <div class="hall__seats-box">
-
-    <ng-container *ngFor="let row of session.hall.rows; last as lastRow">
-      <ng-container *ngFor="let seat of row.seats">
+    <div class="hall__seats-box">
+      <div class="hall__row"
+           [ngClass]="{'hall__row--last' : lastRow}"
+           *ngFor="let row of session.hall.rows; last as lastRow">
         <button #btn
+                *ngFor="let seat of row.seats"
                 (click)="onSelectSeat(btn)"
                 [attr.data-price]="row.price"
                 [attr.data-row]="row.number"
                 [attr.data-seat]="seat.number"
                 [attr.data-type]="row.type"
-                class="hall__seat"
+                class="btn hall__seat"
                 [ngClass]="{
                  'hall__seat--lux': !isSeatTaken(row.number, seat.number) && lastRow || session.hall.type === 'CHILL_OUT',
                  'hall__seat--good': !isSeatTaken(row.number, seat.number) && !lastRow && session.hall.type !== 'CHILL_OUT',
@@ -65,30 +73,37 @@
             &times;
           </ng-container>
         </button>
-      </ng-container>
-    </ng-container>
-  </div>
-
-  <div class="tickets-box">
-    <p class="tickets-box__title">Tickets</p>
-    <p class="tickets-box__info"> {{tickets.length}} tickets, {{getTotalPrice()}} UAH</p>
-
-    <ul class="tickets-box__list">
-      <li class="tickets-box__item" *ngFor="let ticket of tickets">
-        <app-ticket [ticket]="ticket"></app-ticket>
-      </li>
-    </ul>
-
-    <p class="tickets-box__total-text">Total price:</p>
-    <p class="tickets-box__total-value">{{getTotalPrice()}} UAH</p>
-    <div class="tickets-box__alert alert alert-danger" *ngIf="!isAuthenticated">
-      Please log in to buy tickets
+      </div>
     </div>
-    <button #purchaseButton
-            (click)="onPurchaseTickets()"
-            [disabled]="!isAuthenticated"
-            class="tickets-box__purchase-btn">
-      Purchase
-    </button>
   </div>
+
+  <div class="aside-totals">
+    <div class="tickets-box">
+      <div class="tickets-box__header">
+        <p class="tickets-box__text">Tickets</p>
+        <p class="tickets-box__info"> {{tickets.length}} tickets, {{getTotalPrice()}} UAH</p>
+      </div>
+
+      <ul class="tickets-box__list">
+        <li class="tickets-box__item" *ngFor="let ticket of tickets">
+          <app-ticket [ticket]="ticket"></app-ticket>
+        </li>
+      </ul>
+
+      <div class="tickets-box__footer">
+        <p class="tickets-box__total-text">Total price:</p>
+        <p class="tickets-box__total-value">{{getTotalPrice()}} UAH</p>
+      </div>
+      <div class="tickets-box__alert alert alert-danger" *ngIf="!isAuthenticated">
+        Please log in to buy tickets
+      </div>
+      <button #purchaseButton
+              (click)="onPurchaseTickets()"
+              [disabled]="!isAuthenticated"
+              class="tickets-box__purchase-btn">
+        Purchase
+      </button>
+    </div>
+  </div>
+
 </section>

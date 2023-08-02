@@ -15,6 +15,7 @@ import OktaAuth from '@okta/okta-auth-js';
 import { TicketService } from './ticket.service';
 import { ToastService } from '../shared/toast.service';
 import { addMinutes } from 'date-fns';
+import { isEqual } from 'lodash';
 
 @Component({
   selector: 'app-hall',
@@ -103,15 +104,15 @@ export class HallComponent implements OnInit {
     const selectedSeat = +dataset['seat']!;
     if (this.isSeatTaken(selectedRow, selectedSeat)) return;
 
-    this.changeSeatIcon(btnSeat);
+    this.toggleSeatSelected(btnSeat);
     const ticket = new Ticket(
       selectedRow,
       selectedSeat,
       dataset['type'],
       +dataset['price']!,
     );
-    const foundedIndex = this.tickets.findIndex(
-      (value) => JSON.stringify(value) === JSON.stringify(ticket),
+    const foundedIndex = this.tickets.findIndex((value) =>
+      isEqual(value, ticket),
     );
     const isTicketSelected = foundedIndex !== -1;
     isTicketSelected
@@ -119,11 +120,10 @@ export class HallComponent implements OnInit {
       : this.ticketService.add(ticket);
   }
 
-  private changeSeatIcon(btnSeat: HTMLButtonElement) {
-    const seatDiv = btnSeat.querySelector('.seat');
-    const className = `selected-${
-      seatDiv!.classList.contains('good-seat') ? 'good' : 'lux'
-    }-seat`;
-    seatDiv!.classList.toggle(className);
+  private toggleSeatSelected(btnSeat: HTMLButtonElement) {
+    const seatType = btnSeat.classList.contains('hall__seat--good')
+      ? 'good'
+      : 'lux';
+    btnSeat.classList.toggle(`hall__seat--selected-${seatType}`);
   }
 }

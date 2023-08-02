@@ -35,10 +35,15 @@ public class TicketService {
 
     @SneakyThrows
     public void save(PurchaseDto purchaseDto, String username) {
+        List<TicketDto> ticketDtos = purchaseDto.getTickets();
+        if (ticketDtos.isEmpty()) {
+            throw new IllegalArgumentException("No tickets");
+        }
+
         UUID sessionId = UUID.fromString(purchaseDto.getSessionId());
         Session session = sessionRepository.findById(sessionId)
                 .orElseThrow(() -> new SessionNotFoundException(sessionId));
-        List<Ticket> tickets = purchaseDto.getTickets().stream()
+        List<Ticket> tickets = ticketDtos.stream()
                 .map(ticketDto -> getTicket(username, session, ticketDto))
                 .toList();
         ticketRepository.saveAll(tickets);

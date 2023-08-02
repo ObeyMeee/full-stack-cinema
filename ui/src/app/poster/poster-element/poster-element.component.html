@@ -7,12 +7,12 @@
     </a>
   </div>
   <div class="poster__details">
-    <button class="poster__details--trailer" (click)="triggerOpenTrailerEvent()">
+    <button class="btn poster__details-trailer" (click)="triggerOpenTrailerEvent()">
       <i class="fa-solid fa-play"></i>
       <span>Watch trailer</span>
     </button>
   </div>
-  <button (click)="onShowSchedule()" class="poster__day-selection">
+  <button (click)="onShowSchedule()" class="btn poster__day-selection">
     <ng-container [ngSwitch]="getDateType(selectedDate)">
       <ng-template [ngIf]="isTodayOrFuture(selectedDate)">
         <ng-container *ngSwitchCase="'today'">Today</ng-container>
@@ -32,7 +32,7 @@
             <button [ngClass]="{
                             'text-white': isSameDay(date, selectedDate)
                           }"
-                    class="poster__date-btn">
+                    class="btn poster__date-btn">
               <ng-container *ngSwitchCase="'today'">Today</ng-container>
               <ng-container *ngSwitchCase="'tomorrow'">Tomorrow</ng-container>
               <ng-container *ngSwitchDefault>{{date | date:'EEE, MM/dd'}}</ng-container>

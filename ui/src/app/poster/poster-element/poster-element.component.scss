@@ -6,6 +6,7 @@
   grid-template-columns: max-content 1fr;
   align-items: center;
   grid-column-gap: 1rem;
+  font-size: 1.8rem;
 
   i {
     background-color: var(--color-grey-dark-3);
@@ -18,10 +19,6 @@
       display: inline-block;
       margin-top: 5px;
     }
-  }
-
-  span {
-    font-size: 1.8rem;
   }
 }
 
@@ -87,22 +84,16 @@
       text-decoration: none;
     }
 
-    &--trailer {
+    &-trailer {
       @extend %details;
-      border: none;
+      color: #fff;
       height: 100%;
-      background-color: transparent;
-      border-radius: 0;
     }
   }
 
   &__day-selection {
     grid-column: 1 / -1;
-    display: block;
-    border: none;
-    background-color: transparent;
     align-self: end;
-    border-radius: 0;
 
     color: var(--color-primary);
     border-bottom: 1px dotted currentColor;
@@ -147,12 +138,8 @@
 
   &__date-btn {
     position: relative;
-    background: transparent;
 
-    display: block;
     margin: 0 auto;
-    border: none;
-    border-radius: 0;
     border-bottom: 1px solid var(--color-grey-light-1);
     width: 100%;
     padding: 1rem 2.5rem;

@@ -1,0 +1,21 @@
+@import "../../../custom-bootstrap";
+
+.ticket {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: $border-radius-xl;
+  padding: 2rem;
+
+  &--good {
+   border: 1px solid dodgerblue;
+  }
+
+  &--lux {
+    border: 1px solid var(--color-primary);
+  }
+
+  p {
+    margin: 0;
+  }
+}

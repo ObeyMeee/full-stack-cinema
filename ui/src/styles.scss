@@ -5,19 +5,4 @@
 @import "assets/theme";
 @import "sass/base";
 @import "sass/typography";
-
-.cl-primary {
-  color: var(--color-primary);
-}
-
-.cl-primary-hover:hover {
-  color: var(--color-primary);
-}
-
-.bg-cl-primary {
-  background: var(--color-primary);
-}
-
-.bg-primary-hover:hover {
-  background: var(--color-primary);
-}
+@import "sass/components";
