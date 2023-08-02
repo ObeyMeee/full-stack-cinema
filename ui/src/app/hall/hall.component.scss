@@ -80,13 +80,10 @@ $aside-totals-width: 30vw;
 
   &__screen {
     grid-column: 1 / -1;
-  }
-
-  &__screen--icon {
     fill: var(--color-primary);
   }
 
-  &__screen--text {
+  &__screen-text {
     grid-column: 1 / -1;
     transform: translateY(-3.5rem);
     text-transform: uppercase;
@@ -158,7 +155,7 @@ $aside-totals-width: 30vw;
 .tickets-box {
   display: grid;
   grid-template-rows: max-content 1fr;
-  grid-row-gap: 2rem;
+  grid-row-gap: 1.5rem;
   position: fixed;
   right: 2rem;
   top: calc(2rem + var(--header-height));
@@ -213,14 +210,19 @@ $aside-totals-width: 30vw;
     border-radius: 10rem;
     font-size: inherit;
     margin: 0 2rem 2rem 2rem;
+    height: 5rem;
     transition: all .2s;
 
-    &:hover {
+    &[disabled] {
+      filter: brightness(50%);
+    }
+
+    &:not([disabled]):hover {
       transform: translateY(-2px);
       box-shadow: 0 1rem 2rem rgba(#fff, .2);
     }
 
-    &:active {
+    &:not([disabled]):active {
       transform: translateY(-1px);
     }
   }

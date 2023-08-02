@@ -35,8 +35,7 @@
     <div class="hall__price-list">
       <ng-container *ngIf="session.hall.type !== 'CHILL_OUT'">
         <div class="hall__seat hall__seat--good"></div>
-        <span class="hall__seat-price">{{session.hall.rows[0].type}} &hyphen; {{session.hall.rows[0].price}}
-          UAH</span>
+        <span class="hall__seat-price">{{session.hall.rows[0].type}} &hyphen; {{session.hall.rows[0].price}}UAH</span>
       </ng-container>
       <div class="hall__seat hall__seat--lux"></div>
       <span class="hall__seat-price">{{session.hall.rows.at(-1)?.type}}
@@ -44,11 +43,11 @@
         UAH</span>
     </div>
 
-    <svg class="hall__screen hall__screen--icon" viewBox="0 0 806 21" xmlns="http://www.w3.org/2000/svg">
+    <svg class="hall__screen" viewBox="0 0 806 21" xmlns="http://www.w3.org/2000/svg">
       <path
         d="M3.2,20l-2,0.2l-0.3-4l2-0.2C136.2,5.3,269.6,0,403,0s266.8,5.3,400.2,16l2,0.2l-0.3,4l-2-0.2 C669.5,9.3,536.3,4,403,4S136.4,9.3,3.2,20z"></path>
     </svg>
-    <p class="hall__screen hall__screen--text">Екран</p>
+    <p class="hall__screen-text">Екран</p>
 
     <div class="hall__seats-box">
       <div class="hall__row"
@@ -68,6 +67,7 @@
                  'hall__seat--taken': isSeatTaken(row.number, seat.number)
                  }"
                 pTooltip="{{isSeatTaken(row.number, seat.number) ? 'This seat is taken' : row.number + ' Row, ' + seat.number + ' Seat\nPrice: ' + row.price  + ' UAH'}}"
+                tooltipStyleClass="tooltip"
                 tooltipPosition="top">
           <ng-container *ngIf="isSeatTaken(row.number, seat.number)">
             &times;

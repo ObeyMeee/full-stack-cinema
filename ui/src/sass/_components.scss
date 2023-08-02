@@ -5,3 +5,30 @@
   border-radius: 0;
   font-size: inherit;
 }
+
+@mixin tooltip($translateBlock, $translateArrow) {
+  transform: translateY($translateBlock);
+
+  & > .p-tooltip-arrow {
+    display: block;
+    transform: translateY($translateArrow) scale(2.5);
+  }
+
+  & > .p-tooltip-text {
+    background-color: var(--color-grey-dark-3);
+    padding: 1rem;
+    font-size: 1.4rem;
+    max-width: fit-content;
+  }
+}
+
+.p-tooltip {
+  &.p-tooltip-top {
+    @include tooltip(-9px, 4px);
+  }
+
+  &.p-tooltip-bottom {
+    @include tooltip(9px, -4px);
+  }
+}
+

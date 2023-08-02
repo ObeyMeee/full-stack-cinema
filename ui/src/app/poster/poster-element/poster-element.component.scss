@@ -17,7 +17,7 @@
 
     &::before {
       display: inline-block;
-      margin-top: 5px;
+      margin-top: 8px;
     }
   }
 }
@@ -81,12 +81,14 @@
     &--info:visited {
       @extend %details;
       color: var(--color-grey-light-1);
+      height: 100%;
       text-decoration: none;
     }
 
     &-trailer {
       @extend %details;
-      color: #fff;
+      color: var(--color-grey-light-1);
+      padding: 0;
       height: 100%;
     }
   }

@@ -52,7 +52,6 @@
          [ngClass]="{'pe-none text-secondary': isSessionWithinPastThirtyMinutes(session)}"
          pTooltip="From {{session.minPrice}} UAH"
          tooltipPosition="bottom"
-         tooltipStyleClass="tooltip"
       >
         {{session.startAt | date: 'HH:mm'}}
       </a>
