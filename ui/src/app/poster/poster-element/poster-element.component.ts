@@ -29,7 +29,7 @@ export class PosterElementComponent implements OnInit {
 
   onHideDaySelection($event: Event) {
     if (
-      !(<HTMLElement>$event.target).classList.contains('poster__day-selection')
+      !(<HTMLElement>$event.target).classList.contains('btn-selection-date')
     ) {
       this.hideDaySelection();
     }
@@ -59,5 +59,10 @@ export class PosterElementComponent implements OnInit {
       title: this.poster.title,
       url: this.poster.media.trailer,
     });
+  }
+
+  selectDate($event: Date) {
+    this.selectedDate = $event;
+    this.hideDaySelection();
   }
 }

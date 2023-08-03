@@ -1,5 +1,7 @@
-<div (click)="onHideDaySelection($event)" class="poster"
-     [ngStyle]="{'background-image':'url(' + poster.media.image + ')'}">
+<div class="poster"
+     [ngStyle]="{'background-image':'url(' + poster.media.image + ')'}"
+     (click)="onHideDaySelection($event)"
+     (mouseleave)="hideDaySelection()">
 
   <div class="poster__details">
     <a class="poster__details--info" [routerLink]="['/films', poster.filmId, 'info']">
@@ -16,7 +18,10 @@
   </div>
 
   <div class="poster__selection-date">
-    <app-date-dropdown [sessions]="sessions"></app-date-dropdown>
+    <app-date-dropdown [sessions]="sessions"
+                       [(isDaySelectionHidden)]="isDaySelectionHidden"
+                       (selectDate)="selectDate($event)">
+    </app-date-dropdown>
   </div>
 
   <p class="poster__schedule-text">Schedule</p>

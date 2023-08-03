@@ -65,6 +65,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { TagModule } from 'primeng/tag';
 import { KeyFilterModule } from 'primeng/keyfilter';
 import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
+import { DateDropdownComponent } from './shared/date-dropdown/date-dropdown.component';
 
 const routes: Route[] = [
   { path: '', component: PosterComponent, pathMatch: 'full' },
@@ -127,6 +128,7 @@ const oktaAuth = new OktaAuth(environment.okta);
     FilmCommentsComponent,
     AdminPanelComponent,
     UsersComponent,
+    DateDropdownComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { compareAsc, isFuture, isSameDay, isToday, isTomorrow } from 'date-fns';
 import { SessionDto } from '../../poster/dto/session.dto';
 import {
@@ -19,6 +19,7 @@ import {
         'open',
         style({
           opacity: 1,
+          height: '*',
           transform: 'translate(-50%, -50%)',
         }),
       ),
@@ -26,18 +27,30 @@ import {
         'closed',
         style({
           opacity: 0,
+          height: 0,
+          display: 'none',
           transform: 'translate(-50%, -65%)',
         }),
       ),
-      transition('open <=> closed', [animate('.4s ease-in-out')]),
+      transition('closed => open', [
+        style({ display: 'none' }),
+        animate('.5s ease-in-out'),
+      ]),
+      transition('open => closed', [
+        style({ display: 'block' }),
+        animate('.5s ease-in-out'),
+      ]),
     ]),
   ],
 })
 export class DateDropdownComponent {
-  isDaySelectionHidden = true;
   selectedDate = new Date();
-  selectDates!: Date[];
+  dates: Date[] = [];
+
   @Input('sessions') sessions!: SessionDto[];
+  @Input('isDaySelectionHidden') isDaySelectionHidden!: boolean;
+  @Output() selectDate = new EventEmitter<Date>();
+  @Output() isDaySelectionHiddenChange = new EventEmitter<boolean>();
 
   protected readonly isSameDay = isSameDay;
 
@@ -53,17 +66,16 @@ export class DateDropdownComponent {
   }
 
   onSelectDate(date: Date) {
-    this.hideDaySelection();
-    this.selectedDate = date;
-  }
-
-  hideDaySelection() {
     this.isDaySelectionHidden = true;
+    this.isDaySelectionHiddenChange.emit(this.isDaySelectionHidden);
+    this.selectedDate = date;
+    this.selectDate.next(date);
   }
 
   onShowSchedule() {
     this.isDaySelectionHidden = false;
-    this.selectDates = this.sessions
+    this.isDaySelectionHiddenChange.emit(this.isDaySelectionHidden);
+    this.dates = this.sessions
       .map((session) => session.startAt)
       .sort(compareAsc);
   }

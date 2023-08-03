@@ -25,14 +25,14 @@
     justify-items: center;
     list-style: none;
     padding: 0;
+  }
 
-    li {
-      width: 90%;
-    }
+  &__item {
+    width: 90%;
 
-    p {
+    &--message {
       margin-top: 2rem;
-      font-size: 1.4rem;
+      font-size: 1.5rem;
       text-align: center;
       color: #fff;
     }
