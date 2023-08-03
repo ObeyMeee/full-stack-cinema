@@ -1,0 +1,31 @@
+<button (click)="onShowSchedule()" class="btn btn-selection-date">
+  <ng-container [ngSwitch]="getDateType(selectedDate)">
+    <ng-template [ngIf]="isTodayOrFuture(selectedDate)">
+      <ng-container *ngSwitchCase="'today'">Today</ng-container>
+      <ng-container *ngSwitchCase="'tomorrow'">Tomorrow</ng-container>
+      <ng-container *ngSwitchDefault>{{selectedDate | date:'EEE, MM/dd'}}</ng-container>
+    </ng-template>
+  </ng-container>
+</button>
+<div [ngClass]="{'dates': true, 'd-none': isDaySelectionHidden}"
+     [@openClosed]="isDaySelectionHidden ? 'closed' : 'open'">
+  <ul class="dates__list">
+    <li (click)="onSelectDate(date)"
+        *ngFor="let date of selectDates"
+        class="dates__item">
+      <ng-container [ngSwitch]="getDateType(date)">
+        <ng-template [ngIf]="isTodayOrFuture(date)">
+          <button [ngClass]="{
+                            'text-white': isSameDay(date, selectedDate)
+                          }"
+                  class="btn dates__btn">
+            <ng-container *ngSwitchCase="'today'">Today</ng-container>
+            <ng-container *ngSwitchCase="'tomorrow'">Tomorrow</ng-container>
+            <ng-container *ngSwitchDefault>{{date | date:'EEE, MM/dd'}}</ng-container>
+          </button>
+        </ng-template>
+      </ng-container>
+    </li>
+    <p>Further schedule is not formed yet. See our news :-)</p>
+  </ul>
+</div>
