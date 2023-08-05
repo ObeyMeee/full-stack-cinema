@@ -1,9 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { compareAsc, differenceInMinutes, isPast, isSameDay } from 'date-fns';
+import { compareAsc, isSameDay } from 'date-fns';
 import { PosterDto } from '../dto/poster.dto';
 import { SessionDto } from '../dto/session.dto';
 import { firstValueFrom } from 'rxjs';
 import { FilmService } from '../../film/film.service';
+import { isSessionWithinPastThirtyMinutes } from '../../shared/session-utils';
 
 @Component({
   selector: 'app-poster-element',
@@ -18,13 +19,15 @@ export class PosterElementComponent implements OnInit {
   @Output() openTrailer = new EventEmitter<{ title: string; url: string }>();
 
   protected readonly isSameDay = isSameDay;
+  protected readonly isSessionWithinPastThirtyMinutes =
+    isSessionWithinPastThirtyMinutes;
 
   constructor(private filmService: FilmService) {}
 
   async ngOnInit() {
-    this.sessions = await firstValueFrom(
-      this.filmService.getSessionsById(this.poster.filmId),
-    );
+    this.sessions = (
+      await firstValueFrom(this.filmService.getSessionsById(this.poster.filmId))
+    ).sort((a, b) => compareAsc(a.startAt, b.startAt));
   }
 
   onHideDaySelection($event: Event) {
@@ -37,21 +40,6 @@ export class PosterElementComponent implements OnInit {
 
   hideDaySelection() {
     this.isDaySelectionHidden = true;
-  }
-
-  sessionsSorted() {
-    return this.sessions.sort((a, b) => compareAsc(a.startAt, b.startAt));
-  }
-
-  isSessionWithinPastThirtyMinutes(session: SessionDto) {
-    const now = new Date();
-    const SECONDS_PER_MINUTE = 60;
-    const minutes = 30;
-    const THIRTY_MINUTES = SECONDS_PER_MINUTE * minutes;
-    return (
-      isPast(session.startAt) &&
-      differenceInMinutes(now, session.startAt) < THIRTY_MINUTES
-    );
   }
 
   triggerOpenTrailerEvent() {

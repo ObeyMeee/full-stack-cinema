@@ -26,7 +26,7 @@
 
   <p class="poster__schedule-text">Schedule</p>
   <div *ngIf="sessions" class="poster__sessions">
-    <ng-template [ngForOf]="sessionsSorted()" let-session ngFor>
+    <ng-template [ngForOf]="sessions" let-session ngFor>
       <a *ngIf="isSameDay(session.startAt, selectedDate)"
          [routerLink]="['/films', poster.filmId, 'sessions', session.id]"
          class="poster__session-link"

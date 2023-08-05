@@ -1,12 +1,19 @@
-<button (click)="onShowSchedule()" class="btn btn-selection-date">
-  <ng-container [ngSwitch]="getDateType(selectedDate)">
-    <ng-template [ngIf]="isTodayOrFuture(selectedDate)">
-      <ng-container *ngSwitchCase="'today'">Today</ng-container>
-      <ng-container *ngSwitchCase="'tomorrow'">Tomorrow</ng-container>
-      <ng-container *ngSwitchDefault>{{selectedDate | date:'EEE, MM/dd'}}</ng-container>
-    </ng-template>
-  </ng-container>
+<button (click)="onShowSchedule()"
+        class="btn btn-selection-date"
+        pTooltip="Click to select date of showtimes"
+        tooltipPosition="bottom">
+  <div class="selected-date">
+    <ng-container [ngSwitch]="getDateType(selectedDate)">
+      <ng-template [ngIf]="isTodayOrFuture(selectedDate)">
+        <ng-container *ngSwitchCase="'today'">Today</ng-container>
+        <ng-container *ngSwitchCase="'tomorrow'">Tomorrow</ng-container>
+        <ng-container *ngSwitchDefault>{{selectedDate | date:'EEE, MM/dd'}}</ng-container>
+      </ng-template>
+    </ng-container>
+  </div>
+  <ng-content></ng-content>
 </button>
+
 <div class="dates" [@openClosed]="isDaySelectionHidden ? 'closed' : 'open'">
   <ul class="dates__list">
     <li *ngFor="let date of dates"

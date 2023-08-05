@@ -1,27 +1,108 @@
-.select-day-container {
-  background: linear-gradient(#222023, #19171a);
-}
+@import "../../../custom-bootstrap";
 
-.session-dates {
-  background: linear-gradient(#393939, #342e33);
-}
+$aside-schedule-width: 22vw;
 
-.bg-gray {
-  background: #333333
-}
+.info {
+  display: grid;
+  grid-template-columns: auto $aside-schedule-width;
+  grid-column-gap: 2rem;
 
-.fs-small {
-  font-size: 12px;
-}
+  .film-details {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    grid-column-gap: 10rem;
+    grid-row-gap: 1rem;
+    font-size: 1.6rem;
 
-.text-gray {
-  color: #676f70;
-}
+    &__title {
+      grid-column: 1 / -1;
+    }
 
-.top-20px {
-  top: 20px;
-}
+    &__text {
+      color: var(--color-grey-light-1);
+    }
 
-.bg-primary-hover:hover {
-  background: var(--primary-red);
+    &__value {
+      color: var(--color-grey-dark-1);
+      font-weight: 700;
+    }
+
+    &__genre {
+      text-decoration: none;
+      color: currentColor;
+    }
+
+    &__description {
+      grid-column: 1 / -1;
+      color: var(--color-grey-light-1);
+    }
+  }
+
+  .aside-schedule-box {
+    position: fixed;
+    top: calc(var(--header-height) + 7.5rem);
+    right: 5rem;
+    width: $aside-schedule-width;
+    box-shadow: 0 1rem 2rem rgba(#444444ff, .2);
+
+    .date-selection-box {
+      background-color: var(--color-grey-dark-2);
+      border-top-left-radius: $border-radius-lg;
+      border-top-right-radius: $border-radius-lg;
+      padding: 2rem;
+
+      p {
+        font-size: 1.8rem;
+        color: var(--color-grey-light-1);
+      }
+
+      :host ::ng-deep & .btn-selection-date {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: var(--color-grey-dark-1);
+        color: #fff;
+        width: 90%;
+        border-radius: $border-radius-lg;
+        font-size: 1.5rem;
+        padding: .5rem 2rem;
+        transition: all .4s;
+      }
+
+      :host ::ng-deep & .btn-selection-date:hover {
+        transform: scale(1.1);
+        background-color: var(--color-primary);
+      }
+    }
+
+    .showtimes-box {
+      height: 50vh;
+      background-color: var(--color-grey-dark-3);
+      border-bottom-left-radius: $border-radius-lg;
+      border-bottom-right-radius: $border-radius-lg;
+
+      &__content {
+        display: flex;
+        flex-wrap: wrap;
+      }
+    }
+
+    .showtime__link:link,
+    .showtime__link:visited {
+      display: inline-block;
+      text-decoration: none;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--color-primary);
+      padding: 1.5rem;
+      transition: all .4s;
+    }
+
+    .showtime__link:hover,
+    .showtime__link:active {
+      color: var(--color-grey-light-1);
+      transform: scale(1.1);
+    }
+
+  }
 }

@@ -1,12 +1,70 @@
-.poster {
-  width: 300px;
-}
+@import "../../custom-bootstrap";
 
-.trailer-btn {
-  background: #676f70;
-  width: 300px;
-}
+.section-film-info {
+  display: grid;
+  position: relative;
+  grid-template-columns: 15vw auto;
+  grid-column-gap: 4rem;
+  padding: 2rem 5rem;
 
-.bg-primary-hover:hover {
-  background: var(--primary-red);
+  .media {
+    display: grid;
+    grid-row-gap: 2rem;
+    justify-content: center;
+
+    &__poster {
+      max-width: 100%;
+      height: auto;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    &__trailer-btn {
+      color: var(--color-grey-light-1);
+      font-size: 1.6rem;
+      border: 1px solid var(--color-primary);
+      background-color: var(--color-grey-dark-3);
+      border-radius: $border-radius-lg;
+
+
+      span {
+        margin-left: 1.5rem;
+      }
+    }
+  }
+  .other {
+    .nav {
+      justify-content: center;
+
+      &__list {
+        display: flex;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      &__link:link,
+      &__link:visited {
+        display: inline-block;
+        text-decoration: none;
+        color: #fff;
+        font-size: 1.6rem;
+        text-transform: uppercase;
+        font-weight: 200;
+        letter-spacing: 4px;
+        border: 1px solid var(--color-primary);
+        padding: 1rem 3.5rem;
+        transition: all .4s;
+      }
+
+      &__link:hover,
+      &__link:active {
+        background-color: rgba(255, 0, 27, .2);
+      }
+
+      &__link--active {
+        background-color: var(--color-primary);
+      }
+    }
+  }
 }

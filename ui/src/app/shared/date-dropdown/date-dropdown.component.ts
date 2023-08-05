@@ -47,8 +47,8 @@ export class DateDropdownComponent {
   selectedDate = new Date();
   dates: Date[] = [];
 
-  @Input('sessions') sessions!: SessionDto[];
-  @Input('isDaySelectionHidden') isDaySelectionHidden!: boolean;
+  @Input() sessions!: SessionDto[];
+  @Input() isDaySelectionHidden!: boolean;
   @Output() selectDate = new EventEmitter<Date>();
   @Output() isDaySelectionHiddenChange = new EventEmitter<boolean>();
 

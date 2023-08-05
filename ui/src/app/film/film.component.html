@@ -5,36 +5,26 @@
                [url]="film.media.trailer">
   </app-trailer>
 </ng-container>
-<div class="row justify-content-center mt-2">
-  <a class="col-xxl-2 py-2 text-center text-white text-decoration-none border border-1 border-danger"
-     [routerLink]="['info']"
-     routerLinkActive="bg-cl-primary">
-    Info
-  </a>
-  <a class="col-xxl-2 py-2 text-center text-white text-decoration-none border border-1 border-danger border-start-0"
-     [routerLink]="['comments']"
-     routerLinkActive="bg-cl-primary">
-    Comments
-  </a>
-</div>
 
-<div *ngIf="film$ | async as film" class="row mt-2">
-  <div class="col-xxl-3">
-    <div class="row">
-      <div class="col-xxl-12 d-flex justify-content-around">
-        <img alt="{{film.title}}" class="poster" src="{{film.media.image}}">
-      </div>
-      <div class="col-xxl-12 d-flex justify-content-around">
-        <button
-          class="trailer-btn bg-primary-hover border-0 text-decoration-none rounded-3 fw-bold text-white mt-3 d-flex justify-content-center"
-          (click)="toggleTrailer()">
-          <i class="bi bi-play-fill fs-4 me-2 my-2"></i>
-          <span class="align-self-center fs-5">Watch trailer</span>
-        </button>
-      </div>
-    </div>
+<section *ngIf="film$ | async as film" class="section-film-info">
+  <div class="media">
+    <img alt="{{film.title}}" class="media__poster" src="{{film.media.image}}">
+    <button class="btn media__trailer-btn" (click)="toggleTrailer()">
+      <i class="bi bi-play-fill"></i>
+      <span>Watch trailer</span>
+    </button>
   </div>
-  <div class="col-xxl-9">
+  <div class="other">
+    <nav class="nav">
+      <ul class="nav__list">
+        <li class="nav__item">
+          <a [routerLink]="['info']" routerLinkActive="nav__link--active" class="nav__link">Info</a>
+        </li>
+        <li class="nav__item">
+          <a [routerLink]="['comments']" routerLinkActive="nav__link--active" class="nav__link">Comments</a>
+        </li>
+      </ul>
+    </nav>
     <router-outlet></router-outlet>
   </div>
-</div>
+</section>
