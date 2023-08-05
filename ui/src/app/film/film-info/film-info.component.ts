@@ -30,8 +30,10 @@ export class FilmInfoComponent implements OnInit {
 
   async ngOnInit() {
     const id = this.route.parent?.snapshot.params['id'];
-    this.film$ = this.filmService.getById(id);
-    this.sessions = await firstValueFrom(this.filmService.getSessionsById(id));
+    this.film$ = this.filmService.getById(id).data;
+    this.sessions = await firstValueFrom(
+      this.filmService.getSessionsById(id).data,
+    );
   }
 
   selectDate($event: Date) {

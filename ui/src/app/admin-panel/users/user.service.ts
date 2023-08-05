@@ -9,9 +9,9 @@ import { RequestStatusService } from '../../shared/pending/request-status.servic
 export class UserService extends BaseService {
   constructor(
     private http: HttpClient,
-    private requestStatusService: RequestStatusService,
+    requestStatusService: RequestStatusService,
   ) {
-    super();
+    super(requestStatusService);
   }
 
   getAll(page: number = 0, size: number = 10) {
@@ -22,19 +22,20 @@ export class UserService extends BaseService {
         size,
       },
     });
-    return this.requestStatusService.handleRequestWithStatus(request);
+    return this.requestStatusService.handleRequestWithStatus<Page<User>>(
+      request,
+    );
   }
 
   delete(id: string) {
     const url = `${this.baseUrl}users/${id}`;
     const request = this.http.delete<void>(url);
-    return this.requestStatusService.handleRequestWithStatus(request);
+    return this.requestStatusService.handleRequestWithStatus<void>(request);
   }
 
   update(user: User) {
     const url = `${this.baseUrl}users`;
-    console.log(user);
     const request = this.http.put<void>(url, { user });
-    return this.requestStatusService.handleRequestWithStatus(request);
+    return this.requestStatusService.handleRequestWithStatus<void>(request);
   }
 }

@@ -105,14 +105,16 @@ export class FilmCommentsComponent implements OnInit, AfterContentChecked {
     );
     if (reaction) {
       if (reaction.type === reactionType) {
-        this.reactionService.delete(filmId, comment.id).subscribe();
+        this.reactionService.delete(filmId, comment.id).data.subscribe();
       } else {
         this.reactionService
           .update(filmId, comment.id, reactionType)
-          .subscribe();
+          .data.subscribe();
       }
     } else {
-      this.reactionService.save(filmId, comment.id, reactionType).subscribe();
+      this.reactionService
+        .save(filmId, comment.id, reactionType)
+        .data.subscribe();
     }
   }
 
@@ -146,11 +148,12 @@ export class FilmCommentsComponent implements OnInit, AfterContentChecked {
   onSendComment() {
     this.toggleLeaveCommentDialog();
     const filmId = this.getFilmId();
-    this.commentService.save(this.leftComment, filmId).subscribe(console.log);
+    this.commentService
+      .save(this.leftComment, filmId)
+      .data.subscribe(console.log);
   }
 
   getSortOptions() {
-    // return Object.values(SortType).map(type => type[0] + type.slice(1).toLowerCase());
     return Object.values(SortType);
   }
 

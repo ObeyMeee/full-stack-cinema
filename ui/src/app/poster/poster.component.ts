@@ -46,7 +46,7 @@ export class PosterComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.posters$ = this.posterService.getPoster();
+    this.posters$ = this.posterService.getPoster().data;
   }
 
   toggleTrailer() {

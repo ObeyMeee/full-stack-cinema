@@ -4,6 +4,7 @@ import { TicketDto } from './ticket.dto';
 import { BaseService } from '../../shared/base.service';
 import { isFuture } from 'date-fns';
 import { map, Observable } from 'rxjs';
+import { RequestStatusService } from '../../shared/pending/request-status.service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,8 +12,12 @@ import { map, Observable } from 'rxjs';
 export class TicketService extends BaseService {
   private _ticketDtos$: Observable<TicketDto[]> | undefined;
 
-  constructor(private http: HttpClient) {
-    super();
+  // todo
+  constructor(
+    private http: HttpClient,
+    requestStatusService: RequestStatusService,
+  ) {
+    super(requestStatusService);
   }
 
   getAll(): Observable<TicketDto[]> {

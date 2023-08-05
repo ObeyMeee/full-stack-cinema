@@ -26,7 +26,9 @@ export class PosterElementComponent implements OnInit {
 
   async ngOnInit() {
     this.sessions = (
-      await firstValueFrom(this.filmService.getSessionsById(this.poster.filmId))
+      await firstValueFrom(
+        this.filmService.getSessionsById(this.poster.filmId).data,
+      )
     ).sort((a, b) => compareAsc(a.startAt, b.startAt));
   }
 

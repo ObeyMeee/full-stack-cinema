@@ -146,8 +146,26 @@ $aside-totals-width: 30vw;
     }
 
     &--taken {
+      position: relative;
       background-color: var(--color-grey-dark-2);
       border: 1px solid var(--color-grey-dark-3);
+      overflow: hidden;
+
+      &::before,
+      &::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(50deg);
+        width: 4rem;
+        height: 1px;
+        background-color: #fff;
+      }
+
+      &::after {
+        transform: translate(-50%, -50%) rotate(-50deg);
+      }
     }
   }
 }

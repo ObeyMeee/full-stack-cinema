@@ -69,9 +69,7 @@
                 pTooltip="{{isSeatTaken(row.number, seat.number) ? 'This seat is taken' : row.number + ' Row, ' + seat.number + ' Seat\nPrice: ' + row.price  + ' UAH'}}"
                 tooltipStyleClass="tooltip"
                 tooltipPosition="top">
-          <ng-container *ngIf="isSeatTaken(row.number, seat.number)">
-            &times;
-          </ng-container>
+          &nbsp;
         </button>
       </div>
     </div>

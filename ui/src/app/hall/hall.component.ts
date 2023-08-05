@@ -47,7 +47,7 @@ export class HallComponent implements OnInit {
     const params = await firstValueFrom(this.route.params);
     this.sessionId = params['sessionId'];
     this.session = await firstValueFrom(
-      this.hallService.getSession(this.sessionId),
+      this.hallService.getSession(this.sessionId).data,
     );
     this.isAuthenticated = (
       await firstValueFrom(this.oktaStateService.authState$)
@@ -67,10 +67,12 @@ export class HallComponent implements OnInit {
   async onPurchaseTickets() {
     this.purchaseButtonElementRef.nativeElement.disabled = true;
     this.isAuthenticated &&
-      this.hallService.purchaseTickets(this.tickets, this.sessionId).subscribe({
-        next: (value) => this.handleSuccess(),
-        error: this.handleError,
-      });
+      this.hallService
+        .purchaseTickets(this.tickets, this.sessionId)
+        .data.subscribe({
+          next: (value) => this.handleSuccess(),
+          error: this.handleError,
+        });
   }
 
   private handleSuccess() {

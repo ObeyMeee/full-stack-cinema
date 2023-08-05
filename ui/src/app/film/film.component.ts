@@ -20,7 +20,7 @@ export class FilmComponent implements OnInit {
 
   async ngOnInit() {
     const id = this.route.snapshot.params['id'];
-    this.film$ = this.filmService.getById(id);
+    this.film$ = this.filmService.getById(id).data;
   }
 
   toggleTrailer() {
