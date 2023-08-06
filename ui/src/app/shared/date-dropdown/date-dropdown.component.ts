@@ -33,8 +33,8 @@ import {
         }),
       ),
       transition('closed => open', [
-        style({ display: 'none' }),
         animate('.5s ease-in-out'),
+        style({ display: 'none' }),
       ]),
       transition('open => closed', [
         style({ display: 'block' }),
@@ -73,7 +73,7 @@ export class DateDropdownComponent {
   }
 
   onShowSchedule() {
-    this.isDaySelectionHidden = false;
+    this.isDaySelectionHidden = !this.isDaySelectionHidden;
     this.isDaySelectionHiddenChange.emit(this.isDaySelectionHidden);
     this.dates = this.sessions
       .map((session) => session.startAt)

@@ -1,6 +1,41 @@
 @import "../../../custom-bootstrap";
 
-$aside-schedule-width: 22vw;
+$aside-schedule-width: 25vw;
+
+
+:host ::ng-deep {
+  .aside-schedule-box .date-selection-box .container {
+    & .btn-selection-date {
+      display: flex;
+      position: relative;
+      justify-content: space-between;
+      align-items: center;
+      background-color: var(--color-grey-dark-1);
+      color: #fff;
+      border-bottom: 0;
+      width: 90%;
+      border-radius: $border-radius-lg;
+      font-size: 1.5rem;
+      padding: .5rem 2rem;
+      transition: all .4s;
+
+      &:hover {
+        transform: scale(1.1);
+        background-color: var(--color-primary);
+      }
+    }
+
+    & .dates {
+      width: 85%;
+      color: #fff;
+      background-color: var(--color-grey-dark-1);
+      border: none;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+  }
+}
+
 
 .info {
   display: grid;
@@ -35,12 +70,15 @@ $aside-schedule-width: 22vw;
     &__description {
       grid-column: 1 / -1;
       color: var(--color-grey-light-1);
+      font-size: 1.8rem;
+      margin-top: 4rem;
+    }
     }
   }
 
   .aside-schedule-box {
     position: fixed;
-    top: calc(var(--header-height) + 7.5rem);
+    top: calc(var(--header-height) + 3rem);
     right: 5rem;
     width: $aside-schedule-width;
     box-shadow: 0 1rem 2rem rgba(#444444ff, .2);
@@ -55,28 +93,10 @@ $aside-schedule-width: 22vw;
         font-size: 1.8rem;
         color: var(--color-grey-light-1);
       }
-
-      :host ::ng-deep & .btn-selection-date {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background-color: var(--color-grey-dark-1);
-        color: #fff;
-        width: 90%;
-        border-radius: $border-radius-lg;
-        font-size: 1.5rem;
-        padding: .5rem 2rem;
-        transition: all .4s;
-      }
-
-      :host ::ng-deep & .btn-selection-date:hover {
-        transform: scale(1.1);
-        background-color: var(--color-primary);
-      }
     }
 
     .showtimes-box {
-      height: 50vh;
+      height: 60vh;
       background-color: var(--color-grey-dark-3);
       border-bottom-left-radius: $border-radius-lg;
       border-bottom-right-radius: $border-radius-lg;
@@ -105,4 +125,3 @@ $aside-schedule-width: 22vw;
     }
 
   }
-}
