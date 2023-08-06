@@ -5,6 +5,7 @@ import { SessionDto } from '../dto/session.dto';
 import { firstValueFrom } from 'rxjs';
 import { FilmService } from '../../film/film.service';
 import { isSessionWithinPastThirtyMinutes } from '../../shared/session-utils';
+import { DateDropdownService } from '../../shared/date-dropdown/date-dropdown.service';
 
 @Component({
   selector: 'app-poster-element',
@@ -13,7 +14,6 @@ import { isSessionWithinPastThirtyMinutes } from '../../shared/session-utils';
 })
 export class PosterElementComponent implements OnInit {
   @Input() poster!: PosterDto;
-  isDaySelectionHidden = true;
   selectedDate = new Date();
   sessions!: SessionDto[];
   @Output() openTrailer = new EventEmitter<{ title: string; url: string }>();
@@ -22,7 +22,10 @@ export class PosterElementComponent implements OnInit {
   protected readonly isSessionWithinPastThirtyMinutes =
     isSessionWithinPastThirtyMinutes;
 
-  constructor(private filmService: FilmService) {}
+  constructor(
+    private filmService: FilmService,
+    private dateDropdownService: DateDropdownService,
+  ) {}
 
   async ngOnInit() {
     this.sessions = (
@@ -32,16 +35,12 @@ export class PosterElementComponent implements OnInit {
     ).sort((a, b) => compareAsc(a.startAt, b.startAt));
   }
 
-  onHideDaySelection($event: Event) {
-    if (
-      !(<HTMLElement>$event.target).classList.contains('btn-selection-date')
-    ) {
-      this.hideDaySelection();
-    }
+  onHideDaySelection($event: MouseEvent) {
+    this.dateDropdownService.hideOnClick($event);
   }
 
   hideDaySelection() {
-    this.isDaySelectionHidden = true;
+    this.dateDropdownService.isDaySelectionShown = false;
   }
 
   triggerOpenTrailerEvent() {

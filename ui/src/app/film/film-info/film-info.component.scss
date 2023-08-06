@@ -20,22 +20,27 @@ $aside-schedule-width: 25vw;
       transition: all .4s;
 
       &:hover {
-        transform: scale(1.1);
         background-color: var(--color-primary);
       }
     }
 
     & .dates {
-      width: 85%;
+      width: 85.955%;
       color: #fff;
       background-color: var(--color-grey-dark-1);
       border: none;
       border-top-left-radius: 0;
       border-top-right-radius: 0;
+      transform: translate(-55.7%, 5.3%) !important;
+
+      &__btn {
+        &:hover {
+          color: var(--color-grey-light-3);
+        }
+      }
     }
   }
 }
-
 
 .info {
   display: grid;

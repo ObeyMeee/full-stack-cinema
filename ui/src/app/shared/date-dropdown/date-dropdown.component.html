@@ -15,7 +15,7 @@
     <ng-content></ng-content>
   </button>
 
-  <div class="dates" [@openClosed]="isDaySelectionHidden ? 'closed' : 'open'">
+  <div class="dates" [@openClosed]="service.isDaySelectionShown ? 'open' : 'closed'">
   <ul class="dates__list">
     <li *ngFor="let date of dates"
         class="dates__item">

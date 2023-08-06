@@ -6,7 +6,7 @@
   </app-trailer>
 </ng-container>
 
-<section *ngIf="film$ | async as film" class="section-film-info">
+<section *ngIf="film$ | async as film" class="section-film-info" (click)="hideDateDropdown($event)">
   <div class="media">
     <img alt="{{film.title}}" class="media__poster" src="{{film.media.image}}">
     <button class="btn media__trailer-btn" (click)="toggleTrailer()">

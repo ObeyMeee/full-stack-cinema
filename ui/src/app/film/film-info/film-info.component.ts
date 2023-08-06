@@ -1,4 +1,12 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { isSameDay } from 'date-fns';
 import { firstValueFrom, Observable } from 'rxjs';
 import { Film } from '../model/film.model';
@@ -16,9 +24,10 @@ export class FilmInfoComponent implements OnInit {
   film$!: Observable<Film>;
   sessions!: SessionDto[];
   selectedDate = new Date();
-  isDaySelectionHidden = true;
 
-  @ViewChild('daySelect') daySelectElementRef!: ElementRef;
+  @Input() isDaySelectionHidden = true;
+  @Output() isDaySelectionHiddenChange = new EventEmitter<boolean>();
+
   protected readonly isSameDay = isSameDay;
   protected readonly isSessionWithinPastThirtyMinutes =
     isSessionWithinPastThirtyMinutes;

@@ -8,6 +8,7 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
+import { DateDropdownService } from './date-dropdown.service';
 
 @Component({
   selector: 'app-date-dropdown',
@@ -48,11 +49,11 @@ export class DateDropdownComponent {
   dates: Date[] = [];
 
   @Input() sessions!: SessionDto[];
-  @Input() isDaySelectionHidden!: boolean;
   @Output() selectDate = new EventEmitter<Date>();
-  @Output() isDaySelectionHiddenChange = new EventEmitter<boolean>();
 
   protected readonly isSameDay = isSameDay;
+
+  constructor(public service: DateDropdownService) {}
 
   isTodayOrFuture(date: Date) {
     return isToday(date) || isFuture(date);
@@ -66,15 +67,13 @@ export class DateDropdownComponent {
   }
 
   onSelectDate(date: Date) {
-    this.isDaySelectionHidden = true;
-    this.isDaySelectionHiddenChange.emit(this.isDaySelectionHidden);
+    this.service.isDaySelectionShown = false;
     this.selectedDate = date;
     this.selectDate.next(date);
   }
 
   onShowSchedule() {
-    this.isDaySelectionHidden = !this.isDaySelectionHidden;
-    this.isDaySelectionHiddenChange.emit(this.isDaySelectionHidden);
+    this.service.isDaySelectionShown = !this.service.isDaySelectionShown;
     this.dates = this.sessions
       .map((session) => session.startAt)
       .sort(compareAsc);

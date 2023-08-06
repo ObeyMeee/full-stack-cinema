@@ -3,6 +3,7 @@ import { FilmService } from './film.service';
 import { Film } from './model/film.model';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
+import { DateDropdownService } from '../shared/date-dropdown/date-dropdown.service';
 
 @Component({
   selector: 'app-film',
@@ -16,6 +17,7 @@ export class FilmComponent implements OnInit {
   constructor(
     private filmService: FilmService,
     private route: ActivatedRoute,
+    private dateDropdownService: DateDropdownService,
   ) {}
 
   async ngOnInit() {
@@ -25,5 +27,9 @@ export class FilmComponent implements OnInit {
 
   toggleTrailer() {
     this.isTrailerShown = !this.isTrailerShown;
+  }
+
+  hideDateDropdown($event: MouseEvent) {
+    this.dateDropdownService.hideOnClick($event);
   }
 }
