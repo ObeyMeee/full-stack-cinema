@@ -1,7 +1,7 @@
 .container {
-  position: relative;
+  padding: 0;
 
-  .btn-selection-date {
+  & .btn-selection-date {
     color: var(--color-primary);
     border-bottom: 1px dotted currentColor;
     transition: color .3s;
@@ -11,7 +11,7 @@
     }
   }
 
-  .dates {
+  & .dates {
     position: absolute;
     top: 50%;
     left: 50%;

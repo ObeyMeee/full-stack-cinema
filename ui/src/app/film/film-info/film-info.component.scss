@@ -25,13 +25,15 @@ $aside-schedule-width: 25vw;
     }
 
     & .dates {
-      width: 85.955%;
+      position: absolute;
       color: #fff;
+      top: 79%;
+      width: 80.28%;
       background-color: var(--color-grey-dark-1);
       border: none;
       border-top-left-radius: 0;
       border-top-right-radius: 0;
-      transform: translate(-55.7%, 5.3%) !important;
+      transform: translate(-55.7%, 0) !important;
 
       &__btn {
         &:hover {
@@ -81,7 +83,7 @@ $aside-schedule-width: 25vw;
     }
   }
 
-  .aside-schedule-box {
+.aside-schedule-box {
     position: fixed;
     top: calc(var(--header-height) + 3rem);
     right: 5rem;
@@ -89,6 +91,7 @@ $aside-schedule-width: 25vw;
     box-shadow: 0 1rem 2rem rgba(#444444ff, .2);
 
     .date-selection-box {
+      position: relative;
       background-color: var(--color-grey-dark-2);
       border-top-left-radius: $border-radius-lg;
       border-top-right-radius: $border-radius-lg;
@@ -101,7 +104,7 @@ $aside-schedule-width: 25vw;
     }
 
     .showtimes-box {
-      height: 60vh;
+      height: 65vh;
       background-color: var(--color-grey-dark-3);
       border-bottom-left-radius: $border-radius-lg;
       border-bottom-right-radius: $border-radius-lg;

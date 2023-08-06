@@ -17,8 +17,7 @@
 
   <div class="dates" [@openClosed]="service.isDaySelectionShown ? 'open' : 'closed'">
   <ul class="dates__list">
-    <li *ngFor="let date of dates"
-        class="dates__item">
+    <li *ngFor="let date of dates" class="dates__item">
       <ng-container [ngSwitch]="getDateType(date)">
         <ng-template [ngIf]="isTodayOrFuture(date)">
           <button [ngClass]="{'text-white': isSameDay(date, selectedDate)}"

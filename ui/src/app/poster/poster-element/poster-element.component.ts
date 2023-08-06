@@ -10,6 +10,7 @@ import { DateDropdownService } from '../../shared/date-dropdown/date-dropdown.se
 @Component({
   selector: 'app-poster-element',
   templateUrl: './poster-element.component.html',
+  providers: [DateDropdownService],
   styleUrls: ['./poster-element.component.scss'],
 })
 export class PosterElementComponent implements OnInit {

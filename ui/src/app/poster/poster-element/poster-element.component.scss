@@ -58,7 +58,6 @@
   }
 
   & > *:not(&__dates-box, &__title) {
-    position: relative;
     z-index: var(--zindex-main-content);
   }
 
@@ -94,7 +93,6 @@
   }
 
   &__selection-date {
-    position: relative;
     grid-column: 1 / -1;
     align-self: end;
     z-index: $zindex-dropdown!important;

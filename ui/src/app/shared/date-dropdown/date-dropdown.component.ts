@@ -21,6 +21,7 @@ import { DateDropdownService } from './date-dropdown.service';
         style({
           opacity: 1,
           height: '*',
+          visibility: 'visible',
           transform: 'translate(-50%, -50%)',
         }),
       ),
@@ -29,18 +30,11 @@ import { DateDropdownService } from './date-dropdown.service';
         style({
           opacity: 0,
           height: 0,
-          display: 'none',
+          visibility: 'hidden',
           transform: 'translate(-50%, -65%)',
         }),
       ),
-      transition('closed => open', [
-        animate('.5s ease-in-out'),
-        style({ display: 'none' }),
-      ]),
-      transition('open => closed', [
-        style({ display: 'block' }),
-        animate('.5s ease-in-out'),
-      ]),
+      transition('closed <=> open', [animate('.5s ease-in-out')]),
     ]),
   ],
 })

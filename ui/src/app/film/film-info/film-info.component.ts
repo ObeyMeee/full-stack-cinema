@@ -1,12 +1,4 @@
-import {
-  Component,
-  ElementRef,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-  ViewChild,
-} from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { isSameDay } from 'date-fns';
 import { firstValueFrom, Observable } from 'rxjs';
 import { Film } from '../model/film.model';
@@ -14,19 +6,17 @@ import { FilmService } from '../film.service';
 import { ActivatedRoute } from '@angular/router';
 import { SessionDto } from '../../poster/dto/session.dto';
 import { isSessionWithinPastThirtyMinutes } from '../../shared/session-utils';
+import { DateDropdownService } from '../../shared/date-dropdown/date-dropdown.service';
 
 @Component({
   selector: 'app-film-info',
   templateUrl: './film-info.component.html',
   styleUrls: ['./film-info.component.scss'],
 })
-export class FilmInfoComponent implements OnInit {
+export class FilmInfoComponent implements OnInit, OnDestroy {
   film$!: Observable<Film>;
   sessions!: SessionDto[];
   selectedDate = new Date();
-
-  @Input() isDaySelectionHidden = true;
-  @Output() isDaySelectionHiddenChange = new EventEmitter<boolean>();
 
   protected readonly isSameDay = isSameDay;
   protected readonly isSessionWithinPastThirtyMinutes =
@@ -35,6 +25,7 @@ export class FilmInfoComponent implements OnInit {
   constructor(
     private filmService: FilmService,
     private route: ActivatedRoute,
+    private dateDropdownService: DateDropdownService,
   ) {}
 
   async ngOnInit() {
@@ -45,8 +36,11 @@ export class FilmInfoComponent implements OnInit {
     );
   }
 
+  ngOnDestroy() {
+    this.dateDropdownService.isDaySelectionShown = false;
+  }
+
   selectDate($event: Date) {
     this.selectedDate = $event;
-    this.isDaySelectionHidden = true;
   }
 }
