@@ -4,59 +4,51 @@
           [draggable]="false"
           [resizable]="false">
   <ng-template pTemplate="header">
-    <span class="fs-3 font-bold text-white">Rate this film!</span>
+    <h2 class="heading-2">Rate this film!</h2>
   </ng-template>
-  <form class="row" #leaveCommentForm="ngForm" (ngSubmit)="onSendComment()">
-    <div class="col-12">
+  <form class="form-comment" #leaveCommentForm="ngForm" (ngSubmit)="onSendComment()">
+    <div class="form-comment__mark">
       <p-rating [(ngModel)]="leftComment.mark" name="mark"
-                [iconOnStyle]="{color: 'var(--primary-red)'}"
+                [iconOnStyle]="{color: 'var(--color-primary)'}"
                 [cancel]="false"
                 [stars]="10"
                 required>
       </p-rating>
     </div>
-    <textarea class="col-12 bg-dark text-white mt-2"
+    <textarea class="form-comment__review"
               rows="5"
               name="review"
               [(ngModel)]="leftComment.review">
-            </textarea>
-    <div class="row mt-2 justify-content-end">
-      <div class="col-auto p-0">
-        <p-button icon="pi pi-send"
-                  label="Send"
-                  type="submit"
-                  styleClass="p-button-text text-danger"
-                  [disabled]="!leaveCommentForm.valid">
-        </p-button>
-      </div>
-    </div>
+    </textarea>
+    <p-button icon="pi pi-send"
+              label="Send"
+              type="submit"
+              styleClass="p-button-text text-danger form-comment__btn-submit"
+              [disabled]="!leaveCommentForm.valid">
+    </p-button>
   </form>
 </p-dialog>
-<div class="row mt-3">
-  <div class="col-xxl-auto" *ngIf="(commentsPage$?.status | async) === Status.LOADING">
-    <p-progressSpinner styleClass="h-3rem"></p-progressSpinner>
-    <span class="text-white fs-4">Loading comments...</span>
-  </div>
 
+<div class="section-film-comments">
+  <app-loading [status$]="commentsPage$.status"
+               collection="comments">
+  </app-loading>
 
   <ng-container *ngIf="commentsPage$.data | async as page">
-    <div class="row align-items-center">
-      <div class="col-auto" *ngIf="!(isAuthenticated$ | async)">
-        <p-messages [(value)]="authenticatedInfoMessage" [enableService]="false"
-                    [closable]="false">
-        </p-messages>
+    <div class="section-film-comments__header">
+      <div class="section-film-comments__message section-film-comments__message--not-authenticated"
+           *ngIf="!(isAuthenticated$ | async)">
+        <p-message severity="info" text="Only authenticated users can leave comments and reactions!"></p-message>
       </div>
-      <div class="col-auto">
-        <p-button icon="pi pi-comment"
-                  label="Leave comment"
-                  styleClass="p-button-outlined p-button-danger"
-                  [disabled]="!(isAuthenticated$ | async)!"
-                  (click)="toggleLeaveCommentDialog()">
-        </p-button>
-      </div>
-      <div class="col-auto">
-        <label for="sort" class="text-white">Sort by most</label>
-        <p-dropdown styleClass="ms-2"
+      <p-button icon="pi pi-comment"
+                label="Leave comment"
+                styleClass="p-button-outlined p-button-danger leave-comment"
+                [disabled]="!(isAuthenticated$ | async)!"
+                (click)="toggleLeaveCommentDialog()">
+      </p-button>
+      <div class="sort">
+        <label for="sort" class="sort__label">Sort by most</label>
+        <p-dropdown styleClass="sort__dropdown"
                     id="sort"
                     (ngModelChange)="changeSorting($event)"
                     [options]="getSortOptions()"
@@ -64,71 +56,52 @@
         </p-dropdown>
       </div>
     </div>
-    <div class="row" *ngIf="page.empty">
-      <div class="col-xxl-12">
-        <p-messages [(value)]="noCommentsInfoMessage" [enableService]="false"
-                    [closable]="false">
-        </p-messages>
+    <div class="section-film-comments__message section-film-comments__message--no-comments" *ngIf="page.empty">
+      <p-message severity="info" text="There is no comments yet. Leave one to be first :)"></p-message>
+    </div>
+
+    <div class="comments">
+      <div class="comment" *ngFor="let comment of page.content">
+        <p-fieldset>
+          <ng-template pTemplate="header">
+            <div class="comment__header">
+              <div class="comment__user-name">{{comment.username}}</div>
+              <div class="comment__stars">
+                <i *ngFor="let _ of [].constructor(comment.mark)" class="bi bi-star-fill"></i>
+                <i *ngFor="let _ of [].constructor(10 - comment.mark)" class="bi bi-star"></i>
+              </div>
+              <div class="comment__date">{{comment.wroteAt | date: 'MM/dd/yy HH:mm'}}</div>
+            </div>
+          </ng-template>
+
+          <div class="comment__review">
+            {{comment.review}}
+          </div>
+          <div class="comment__footer">
+            <button class="comment__react comment__react-dislike"
+                    [disabled]="!(isAuthenticated$ | async)"
+                    (click)="reactOnComment(comment, ReactionType.DISLIKE)">
+              <i class="bi bi-hand-thumbs-down{{currentUserReacted(comment, ReactionType.DISLIKE)}}"></i>
+            </button>
+            <span class="comment__rating">{{getCommentRating(comment)}}</span>
+            <button class="comment__react comment__react-dislike"
+                    [disabled]="!(isAuthenticated$ | async)"
+                    (click)="reactOnComment(comment, ReactionType.LIKE)">
+              <i class="bi bi-hand-thumbs-up{{currentUserReacted(comment, ReactionType.LIKE)}}"></i>
+            </button>
+          </div>
+        </p-fieldset>
       </div>
     </div>
 
-    <div class="row">
-      <div class="row mt-2" *ngFor="let comment of page.content">
-        <div class="col-xxl-12">
-          <p-fieldset>
-            <ng-template pTemplate="header">
-              <div class="row text-danger">
-                <div class="col-xxl-auto">
-                  <span class="font-bold text-lg">{{comment.username}}</span>
-                  <span class="ms-2">
-                  <i *ngFor="let _ of [].constructor(comment.mark)" class="bi bi-star-fill"></i>
-                  <i *ngFor="let _ of [].constructor(10 - comment.mark)" class="bi bi-star"></i>
-                </span>
-                  <span class="ms-2">{{comment.mark}} / 10</span>
-                </div>
-              </div>
-              <div class="row row-cols-1">
-                <div class="text-white fs-6">{{comment.wroteAt | date: 'MM/dd/yy HH:mm'}}</div>
-              </div>
-
-            </ng-template>
-            <div class="row text-white">
-              <div class="col-xxl-12">
-                {{comment.review}}
-              </div>
-            </div>
-            <div class="row d-flex justify-content-between ms-2 mt-2">
-              <button
-                class="col-xxl-auto bg-transparent text-white border border-1 border-secondary rounded-3 px-2 py-2">
-                <i class="bi bi-arrow-90deg-left"></i>
-                <span class="ms-2">Respond</span>
-              </button>
-              <div class="col-xxl-auto text-white fs-5">
-                <button class="bg-transparent border-0 text-white" [disabled]="!(isAuthenticated$ | async)"
-                        (click)="reactOnComment(comment, ReactionType.DISLIKE)">
-                  <i class="bi bi-hand-thumbs-down{{currentUserReacted(comment, ReactionType.DISLIKE)}}"></i>
-                </button>
-                <span class="mx-2">{{getCommentRating(comment)}}</span>
-                <button class="bg-transparent border-0 text-white" [disabled]="!(isAuthenticated$ | async)"
-                        (click)="reactOnComment(comment, ReactionType.LIKE)">
-                  <i class="bi bi-hand-thumbs-up{{currentUserReacted(comment, ReactionType.LIKE)}}"></i>
-                </button>
-              </div>
-            </div>
-          </p-fieldset>
-        </div>
-      </div>
-    </div>
-    <div class="row mt-2 justify-content-center">
-      <div class="col-xxl-auto">
-        <p-paginator
-          (onPageChange)="onPageChange($event)"
-          [first]="first"
-          [rows]="rows"
-          [totalRecords]="page.totalElements"
-          [rowsPerPageOptions]="[3, 5, 10]">
-        </p-paginator>
-      </div>
+    <div class="paginator">
+      <p-paginator
+        (onPageChange)="onPageChange($event)"
+        [first]="first"
+        [rows]="rows"
+        [totalRecords]="page.totalElements"
+        [rowsPerPageOptions]="[3, 5, 10]">
+      </p-paginator>
     </div>
   </ng-container>
 </div>

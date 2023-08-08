@@ -66,6 +66,7 @@ import { TagModule } from 'primeng/tag';
 import { KeyFilterModule } from 'primeng/keyfilter';
 import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
 import { DateDropdownComponent } from './shared/date-dropdown/date-dropdown.component';
+import { LoadingComponent } from './shared/loading/loading.component';
 
 const routes: Route[] = [
   { path: '', component: PosterComponent, pathMatch: 'full' },
@@ -129,6 +130,7 @@ const oktaAuth = new OktaAuth(environment.okta);
     AdminPanelComponent,
     UsersComponent,
     DateDropdownComponent,
+    LoadingComponent,
   ],
   imports: [
     BrowserModule,

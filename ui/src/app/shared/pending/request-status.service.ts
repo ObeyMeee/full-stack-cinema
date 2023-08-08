@@ -14,7 +14,9 @@ export class RequestStatusService {
         status.next(Status.ERROR);
         throw err;
       }),
-      tap(() => status.next(Status.SUCCESS)),
+      tap(() => {
+        status.next(Status.SUCCESS);
+      }),
     );
 
     const data = defer(() => {

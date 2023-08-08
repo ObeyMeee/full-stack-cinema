@@ -5,12 +5,9 @@ import {
   Inject,
   OnInit,
 } from '@angular/core';
-import { FilmService } from '../film.service';
 import { ActivatedRoute } from '@angular/router';
 import { map, Observable, take } from 'rxjs';
 import { OKTA_AUTH, OktaAuthStateService } from '@okta/okta-angular';
-import { Message } from 'primeng/api';
-import { Status } from '../../shared/pending/status.enum';
 import { Pending } from '../../shared/pending/pending.interface';
 import { Comment } from '../model/comment.model';
 import { ReactionType } from '../model/reaction-type';
@@ -29,21 +26,16 @@ import { Page } from '../../shared/pagination/page.interface';
 export class FilmCommentsComponent implements OnInit, AfterContentChecked {
   commentsPage$!: Pending<Page<Comment>>;
   isAuthenticated$!: Observable<boolean>;
-  authenticatedInfoMessage!: Message[];
-  noCommentsInfoMessage!: Message[];
   user!: UserClaims;
   leftComment = new Comment();
   visibleLeftCommentDialog = false;
   first = 0;
   rows = 3;
-
   sortType = SortType.RECENT;
 
-  protected readonly Status = Status;
   protected readonly ReactionType = ReactionType;
 
   constructor(
-    private filmService: FilmService,
     private commentService: CommentService,
     private reactionService: ReactionService,
     private route: ActivatedRoute,
@@ -53,22 +45,6 @@ export class FilmCommentsComponent implements OnInit, AfterContentChecked {
   ) {}
 
   async ngOnInit() {
-    this.authenticatedInfoMessage = [
-      {
-        severity: 'info',
-        summary: 'Info',
-        detail: 'Only authenticated users can leave comments and reactions!',
-      },
-    ];
-
-    this.noCommentsInfoMessage = [
-      {
-        severity: 'info',
-        summary: 'Info',
-        detail: 'There is no comments yet. Leave one to be first :)',
-      },
-    ];
-
     const id = this.getFilmId();
     this.commentsPage$ = this.commentService.getByFilmId(
       id,
