@@ -8,22 +8,17 @@ import { Status } from './status.enum';
 export class RequestStatusService {
   handleRequestWithStatus<T>(request: Observable<T>) {
     const status = new ReplaySubject<Status>();
-    request.pipe(
-      retry(2),
-      catchError((err) => {
-        status.next(Status.ERROR);
-        throw err;
-      }),
-      tap(() => {
-        status.next(Status.SUCCESS);
-      }),
-    );
-
     const data = defer(() => {
       status.next(Status.LOADING);
-      return request;
+      return request.pipe(
+        retry(2),
+        catchError((err) => {
+          status.next(Status.ERROR);
+          throw err;
+        }),
+        tap(() => status.next(Status.SUCCESS)),
+      );
     });
-
     return { data, status };
   }
 }
