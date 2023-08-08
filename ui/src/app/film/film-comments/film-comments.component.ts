@@ -28,7 +28,7 @@ export class FilmCommentsComponent implements OnInit, AfterContentChecked {
   isAuthenticated$!: Observable<boolean>;
   user!: UserClaims;
   leftComment = new Comment();
-  visibleLeftCommentDialog = false;
+  visibleLeaveCommentDialog = false;
   first = 0;
   rows = 3;
   sortType = SortType.RECENT;
@@ -118,7 +118,7 @@ export class FilmCommentsComponent implements OnInit, AfterContentChecked {
   }
 
   toggleLeaveCommentDialog() {
-    this.visibleLeftCommentDialog = !this.visibleLeftCommentDialog;
+    this.visibleLeaveCommentDialog = !this.visibleLeaveCommentDialog;
   }
 
   onSendComment() {
