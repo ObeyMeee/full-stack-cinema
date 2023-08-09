@@ -33,7 +33,8 @@
   // PAGINATION
   .p-paginator-page.p-link,
   .p-paginator-icon {
-    font-size: 3rem;
+    font-size: 2.2rem;
+    margin: 0 .5rem;
   }
 
   .p-paginator-rpp-options.p-dropdown.p-component {
@@ -147,7 +148,7 @@
       &__footer {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(0, max-content));
-        grid-column-gap: .5rem;
+        grid-column-gap: .3rem;
         justify-content: end;
         align-items: center;
       }

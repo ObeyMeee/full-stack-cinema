@@ -62,7 +62,7 @@
     </div>
 
     <div class="comments">
-      <div class="comment" *ngFor="let comment of page.content">
+      <div class="comment" id="{{'comment-id-' + comment.id}}" *ngFor="let comment of page.content">
         <p-fieldset>
           <ng-template pTemplate="header">
             <div class="comment__header">
@@ -87,7 +87,7 @@
             <span class="comment__rating">{{getCommentRating(comment)}}</span>
             <button class="btn comment__react comment__react-dislike"
                     [disabled]="!(isAuthenticated$ | async)"
-                    (click)="reactOnComment(comment, ReactionType.LIKE)">
+                    (click)="like(comment)">
               <i class="bi bi-hand-thumbs-up{{currentUserReacted(comment, ReactionType.LIKE)}}"></i>
             </button>
           </div>

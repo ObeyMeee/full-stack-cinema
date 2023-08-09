@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MessageService } from 'primeng/api';
+import { upperFirst } from 'lodash';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +12,7 @@ export class ToastService {
     closable: boolean,
     detail: string,
     severity: string,
-    summary = severity[0].toUpperCase() + severity.slice(1),
+    summary = upperFirst(severity),
   ) {
     this.messageService.add({ closable, severity, summary, detail });
   }

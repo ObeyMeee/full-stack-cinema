@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 
 import { environment } from '../../environments/environment.development';
 import OktaSignIn from '@okta/okta-signin-widget';
-import { OKTA_AUTH, OktaAuthStateService } from '@okta/okta-angular';
+import { OKTA_AUTH } from '@okta/okta-angular';
 import OktaAuth from '@okta/okta-auth-js';
 
 @Component({
@@ -13,14 +13,11 @@ import OktaAuth from '@okta/okta-auth-js';
 export class LoginComponent implements OnInit {
   private oktaSignIn!: OktaSignIn;
 
-  constructor(
-    private oktaStateService: OktaAuthStateService,
-    @Inject(OKTA_AUTH) private oktaAuth: OktaAuth,
-  ) {}
+  constructor(@Inject(OKTA_AUTH) private oktaAuth: OktaAuth) {}
 
   ngOnInit() {
     this.oktaSignIn = new OktaSignIn({
-      logo: 'favicon.ico',
+      logo: 'assets/logo.png',
       issuer: environment.okta.issuer,
       clientId: environment.okta.clientId,
       redirectUri: environment.okta.redirectUri,

@@ -12,7 +12,7 @@
       background: radial-gradient(circle at center, var(--color-primary-light), var(--color-primary-dark));
       border: #190d1b 4px solid;
       color: white;
-      z-index: $zindex-offcanvas-backdrop;
+      z-index: calc(var(--zindex-main-content) + 1);
       transition: all .2s;
     }
 

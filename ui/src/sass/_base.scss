@@ -15,7 +15,7 @@
   --color-grey-dark-3: #222;
   --color-grey-dark-4: #111;
 
-  --header-height: 7rem;
+  --header-height: 10rem;
 
   --font-primary: Lato, sans-serif;
   --zindex-main-content: 990;
@@ -38,13 +38,16 @@
 
 html {
   box-sizing: border-box;
-  font-size: 62.5% // 10px / 16px = 62.5% ==> 1rem = 10px
+  font-size: 62.5%; // 10px / 16px = 62.5% ==> 1rem = 10px
 }
 
 body {
-  background: var(--color-black);
   font-family: var(--font-primary);
   font-weight: 300;
+  background-image: linear-gradient(to right bottom, var(--color-grey-dark-3), var(--color-grey-dark-4));
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 100vh;
 }
 
 ::-webkit-scrollbar {

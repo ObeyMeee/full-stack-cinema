@@ -3,8 +3,10 @@
              [title]="title"
              (closeTrailer)="toggleTrailer()">
 </app-trailer>
+
 <ng-container *ngIf="posters$ | async as posters">
-  <p-carousel [circular]="true" [responsiveOptions]="responsiveOptions" [showIndicators]="false"
+  <p-carousel [responsiveOptions]="responsiveOptions"
+              [showIndicators]="false"
               [value]="posters">
     <ng-template let-poster pTemplate="item">
       <app-poster-element [poster]="poster" (openTrailer)="setData($event)"></app-poster-element>

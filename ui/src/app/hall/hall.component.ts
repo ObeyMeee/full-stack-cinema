@@ -1,17 +1,10 @@
-import {
-  Component,
-  ElementRef,
-  Inject,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HallService } from './hall.service';
 import { firstValueFrom } from 'rxjs';
 import { SessionBuyTicketDto } from './session-buy-ticket.dto';
 import { Ticket } from './models/ticket.model';
-import { OKTA_AUTH, OktaAuthStateService } from '@okta/okta-angular';
-import OktaAuth from '@okta/okta-auth-js';
+import { OktaAuthStateService } from '@okta/okta-angular';
 import { TicketService } from './ticket.service';
 import { ToastService } from '../shared/toast.service';
 import { addMinutes } from 'date-fns';
@@ -39,7 +32,6 @@ export class HallComponent implements OnInit {
     private ticketService: TicketService,
     private toastService: ToastService,
     private oktaStateService: OktaAuthStateService,
-    @Inject(OKTA_AUTH) private oktaAuth: OktaAuth,
   ) {}
 
   async ngOnInit() {

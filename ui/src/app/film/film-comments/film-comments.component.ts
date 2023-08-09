@@ -17,6 +17,7 @@ import OktaAuth, { UserClaims } from '@okta/okta-auth-js';
 import { SortType } from './sort-type.enum';
 import { PageEvent } from '../../shared/pagination/page-event.interface';
 import { Page } from '../../shared/pagination/page.interface';
+import { ToastService } from '../../shared/toast.service';
 
 @Component({
   selector: 'app-film-comments',
@@ -38,6 +39,7 @@ export class FilmCommentsComponent implements OnInit, AfterContentChecked {
   constructor(
     private commentService: CommentService,
     private reactionService: ReactionService,
+    private toastService: ToastService,
     private route: ActivatedRoute,
     private changeDetector: ChangeDetectorRef,
     private oktaStateService: OktaAuthStateService,
@@ -94,6 +96,37 @@ export class FilmCommentsComponent implements OnInit, AfterContentChecked {
     }
   }
 
+  like(comment: Comment) {
+    const filmId = this.getFilmId();
+    const reaction = comment.reactions.find(
+      (reaction) => reaction.username === this.user?.preferred_username,
+    );
+    if (reaction) {
+      if (reaction.type === ReactionType.LIKE) {
+        this.reactionService
+          .delete(filmId, comment.id)
+          .data.subscribe(() => this.changeRating(comment.id, -1));
+      } else {
+        this.reactionService
+          .update(filmId, comment.id, ReactionType.LIKE)
+          .data.subscribe(() => this.changeRating(comment.id, 2));
+      }
+    } else {
+      this.reactionService
+        .save(filmId, comment.id, ReactionType.LIKE)
+        .data.subscribe(() => this.changeRating(comment.id, 1));
+    }
+  }
+
+  changeRating(commentId: string, value: number) {
+    const foundedComment = document.getElementById(`comment-id-${commentId}`);
+    const commentRatingElement =
+      foundedComment?.querySelector('.comment__rating')!;
+    commentRatingElement.innerHTML = String(
+      parseInt(commentRatingElement.innerHTML) + value,
+    );
+  }
+
   onPageChange(event: PageEvent) {
     this.first = event.first;
     this.rows = event.rows;
@@ -124,9 +157,18 @@ export class FilmCommentsComponent implements OnInit, AfterContentChecked {
   onSendComment() {
     this.toggleLeaveCommentDialog();
     const filmId = this.getFilmId();
-    this.commentService
-      .save(this.leftComment, filmId)
-      .data.subscribe(console.log);
+    this.commentService.save(this.leftComment, filmId).data.subscribe(() => {
+      this.commentsPage$ = this.commentService.getByFilmId(
+        filmId,
+        this.first,
+        this.rows,
+      );
+      this.toastService.showToast(
+        true,
+        'You have successfully left review!',
+        'success',
+      );
+    });
   }
 
   getSortOptions() {

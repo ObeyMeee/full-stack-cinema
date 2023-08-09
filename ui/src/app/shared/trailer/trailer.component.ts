@@ -16,14 +16,13 @@ export class TrailerComponent {
   @Input() title!: string;
   @Input() url!: string;
   @Output() closeTrailer = new EventEmitter<{ title: string; url: string }>();
-  @ViewChild('trailer') trailer!: ElementRef;
+  @ViewChild('trailer') trailerRef!: ElementRef;
 
-  toggleTrailer() {
-    const iframe = (<HTMLElement>this.trailer.nativeElement).querySelector(
-      'iframe',
-    )!;
+  close() {
+    const trailer = <HTMLIFrameElement>this.trailerRef.nativeElement;
+
     // stop video
-    iframe.src = iframe.src;
+    trailer.src = trailer.src;
     this.closeTrailer.emit();
   }
 }

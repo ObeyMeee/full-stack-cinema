@@ -1,4 +1,4 @@
-import { Component, HostListener, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { OKTA_AUTH, OktaAuthStateService } from '@okta/okta-angular';
 import OktaAuth, { AuthState } from '@okta/okta-auth-js';
 import { filter, map, Observable } from 'rxjs';
@@ -10,7 +10,6 @@ import { filter, map, Observable } from 'rxjs';
 })
 export class HeaderComponent implements OnInit {
   isAuthenticated$!: Observable<boolean>;
-  innerWidth = window.screen.width;
 
   constructor(
     private oktaStateService: OktaAuthStateService,
@@ -22,11 +21,6 @@ export class HeaderComponent implements OnInit {
       filter((s: AuthState) => !!s),
       map((s: AuthState) => s.isAuthenticated ?? false),
     );
-  }
-
-  @HostListener('window:resize', ['$event'])
-  onResize(event: Event) {
-    this.innerWidth = window.screen.width;
   }
 
   async onLogout() {

@@ -1,56 +1,40 @@
-<header class="row d-flex justify-content-between align-items-center bg-dark">
-  <div class="col ms-2">
-    <div class="row">
-      <button class="col-auto bg-transparent border-0 text-center" type="button">
-        <i class="fa-solid fa-bars text-white xs:text-base md:text-lg lg:text-xl xl:text-2xl"></i>
-      </button>
-      <div class="col-auto">
-        <a class="navbar-brand" routerLink="/">
-          <img alt="Andromeda cinema" ngSrc="favicon.ico" [height]="50" [width]="50">
+<header class="header">
+  <nav class="nav">
+    <ul class="nav__list">
+      <li class="nav__item">
+        <a class="nav__logo" routerLink="/">
+          <img class="logo" src="assets/logo.png" alt="Andromeda cinema">
         </a>
-      </div>
-      <div class="col-auto align-self-center">
-        <a href="#" class="text-white text-decoration-none xs:text-base md:text-lg lg:text-xl xl:text-2xl">Schedule</a>
-      </div>
-    </div>
-  </div>
-  <div class="col" *oktaHasAnyGroup="'Admins'">
-    <div class="row justify-content-center">
-      <div class="col-auto">
-        <a routerLink="admin"
-           class="text-white text-decoration-none xs:text-base md:text-lg lg:text-xl xl:text-2xl">Admin</a>
-      </div>
-    </div>
-  </div>
-  <div class="col">
-    <div class="row d-flex justify-content-end">
-      <div class="col-auto align-self-center" *ngIf="isAuthenticated$ | async">
-        <a href="#">
-          <i class="fas fa-bell text-white xs:text-base md:text-lg lg:text-xl xl:text-2xl"></i>
+      </li>
+      <li class="nav__item nav__item--schedule">
+        <a href="#" class="nav__link">Schedule</a>
+      </li>
+      <li class="nav__item nav__item--admin" *oktaHasAnyGroup="'Admins'">
+        <a class="nav__link" routerLink="admin">Admin</a>
+      </li>
+      <li class="nav__item" *ngIf="isAuthenticated$ | async">
+        <button class="btn nav__notifications">
+          <i class="fas fa-bell"></i>
+        </button>
+      </li>
+      <li class="nav__item nav__item--sign-up" *ngIf="!(isAuthenticated$ | async)">
+        <a class="nav__link" routerLink="register">Sign up</a>
+      </li>
+      <li class="nav__item nav__item--profile" *ngIf="isAuthenticated$ | async">
+        <a class="nav__link" [routerLink]="['user', 'tickets']">
+          <i class="bi bi-person"></i>
         </a>
-      </div>
-      <div class="col-auto" *ngIf="!(isAuthenticated$ | async)">
-        <a routerLink="register" class="text-white text-decoration-none xs:text-base md:text-lg lg:text-xl xl:text-2xl">Sign
-          up</a>
-      </div>
-      <div class="col-auto p-0" *ngIf="isAuthenticated$ | async">
-        <a [routerLink]="['user', 'tickets']">
-          <i class="bi bi-person text-white xs:text-base md:text-lg lg:text-xl xl:text-2xl"></i>
-        </a>
-      </div>
-      <div class="col-auto">
-        <a *ngIf="!(isAuthenticated$ | async)"
-           class="text-white text-decoration-none xs:text-base md:text-lg lg:text-xl xl:text-2xl"
-           routerLink="login">
+      </li>
+      <li class="nav__item nav__item--login" *ngIf="!(isAuthenticated$ | async)">
+        <a class="nav__link" routerLink="login">
           Log in
         </a>
-        <button
-          (click)="onLogout()"
-          *ngIf="isAuthenticated$ | async"
-          class="bg-transparent border-0 text-white text-decoration-none xs:text-base md:text-lg lg:text-xl xl:text-2xl">
+      </li>
+      <li class="nav__item" *ngIf="isAuthenticated$ | async">
+        <button class="btn nav__logout" (click)="onLogout()">
           Log out
         </button>
-      </div>
-    </div>
-  </div>
+      </li>
+    </ul>
+  </nav>
 </header>

@@ -1,30 +1,17 @@
-<div #trailer class="position-absolute top-0" style="z-index: 21">
-  <div class="row  bg-dark text-white fw-bold fs-3 d-flex align-content-center"
-       style="height: var(--header-height); width: 100vw">
-    <div class="col-xxl-auto ms-2">
-      <button class="border-0 bg-transparent text-white"
-              appHover
-              selector="i"
-              classToRemove="bg-dark"
-              (click)="toggleTrailer()">
-        <i class="bi bi-arrow-left bg-dark px-3 py-1"></i>
-      </button>
-      <span class="ms-2">Title: {{title}}</span>
-    </div>
-    <button class="col-xxl-auto border-0 bg-transparent text-white ms-auto"
-            appHover
-            selector="i"
-            classToRemove="bg-dark"
-            (click)="toggleTrailer()">
-      <i class="bi bi-x-lg bg-dark rounded-5 p-2"></i>
-      <span class="ms-2">Close</span>
+<div class="trailer">
+  <header class="header">
+    <button class="btn trailer__btn-back" (click)="close()">
+      <i class="bi bi-arrow-left"></i>
     </button>
-  </div>
-  <iframe
-    [title]="title"
-    [src]="url | safe"
-    class="row position-absolute full-height"
-    style="top: var(--header-height); width: 100vw;"
-  >
+    <h2 class="title heading-2">Title: {{title}}</h2>
+    <button class="btn trailer__btn-close" (click)="close()">
+      <i class="bi bi-x-lg"></i>
+      <span>Close</span>
+    </button>
+  </header>
+  <iframe #trailer
+          [title]="title"
+          [src]="url | safe"
+          class="trailer__iframe">
   </iframe>
 </div>

@@ -1,4 +1,92 @@
 header {
-  max-height: var(--header-height);
-  min-height: var(--header-height);
+  height: var(--header-height);
+  border-bottom: 1px solid var(--color-grey-dark-1);
+
+  & .nav {
+    display: block;
+
+    &__list {
+      list-style: none;
+      display: flex;
+      align-items: center;
+      padding: 0;
+    }
+
+    &__item {
+      display: block;
+
+      &--schedule {
+        margin-right: auto;
+      }
+
+      &--profile {
+        a {
+          font-size: 2.5rem;
+          padding: 1rem 1.5rem;
+        }
+      }
+
+      &--admin {
+        margin-right: auto;
+      }
+    }
+
+    &__notifications {
+      padding: 1rem 1.5rem;
+      color: var(--color-grey-light-3);
+      font-size: 2rem;
+      transition: all .3s;
+    }
+
+    &__link:link,
+    &__link:visited,
+    &__logout {
+      position: relative;
+      display: inline-block;
+      text-decoration: none;
+      padding: 1.5rem 3rem;
+      color: var(--color-grey-light-3);
+      font-size: 2rem;
+      font-weight: 200;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      transition: all .3s;
+    }
+
+    &__link::after,
+    &__logout::after {
+      content: "";
+      display: block;
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      right: 50%;
+      height: 2px;
+      width: 80%;
+      transform: scaleX(0);
+      color: var(--color-primary);
+      background-color: var(--color-primary);
+      transition: transform .4s cubic-bezier(1, 0, 0, 1);
+    }
+
+    &__link:hover,
+    &__link:active,
+    &__notifications:hover,
+    &__logout:hover {
+      color: var(--color-grey-light-1);
+      transform: scale(1.1);
+    }
+
+    &__link:hover::after,
+    &__logout:hover::after {
+      transform: scaleX(1) translateX(-50%);
+    }
+  }
+}
+
+.logo {
+  display: inline-block;
+  height: var(--header-height);
+  width: auto;
+  object-fit: cover;
 }
