@@ -27,10 +27,20 @@
 
   // FIELDSET
   .p-fieldset {
+    background-color: var(--color-grey-dark-2);
     box-shadow: var(--box-shadow-smallest);
+
+    &-legend {
+      background-color: var(--color-grey-dark-2);
+    }
   }
 
   // PAGINATION
+
+  .p-paginator {
+    background-color: transparent;
+  }
+
   .p-paginator-page.p-link,
   .p-paginator-icon {
     font-size: 2.2rem;
