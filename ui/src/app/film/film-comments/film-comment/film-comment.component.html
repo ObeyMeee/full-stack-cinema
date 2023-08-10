@@ -1,0 +1,31 @@
+<div class='comment'>
+  <p-fieldset>
+    <ng-template pTemplate='header'>
+      <div class='comment__header'>
+        <div class='comment__user-name'>{{comment.username}}</div>
+        <div class='comment__stars'>
+          <i *ngFor='let _ of [].constructor(comment.mark)' class='bi bi-star-fill'></i>
+          <i *ngFor='let _ of [].constructor(10 - comment.mark)' class='bi bi-star'></i>
+        </div>
+        <div class='comment__date'>{{comment.wroteAt | date: 'MM/dd/yy HH:mm'}}</div>
+      </div>
+    </ng-template>
+
+    <div class='comment__review'>
+      {{comment.review}}
+    </div>
+    <div class='comment__footer'>
+      <button class='btn comment__react comment__react-dislike'
+              [disabled]='!(isAuthenticated$ | async)'
+              (click)='reactOnComment(ReactionType.DISLIKE)'>
+        <i class='bi bi-hand-thumbs-down{{currentUserReacted(ReactionType.DISLIKE)}}'></i>
+      </button>
+      <span class='comment__rating'>{{getCommentRating()}}</span>
+      <button class='btn comment__react comment__react-dislike'
+              [disabled]='!(isAuthenticated$ | async)'
+              (click)='reactOnComment(ReactionType.LIKE)'>
+        <i class='bi bi-hand-thumbs-up{{currentUserReacted(ReactionType.LIKE)}}'></i>
+      </button>
+    </div>
+  </p-fieldset>
+</div>

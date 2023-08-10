@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { BaseService } from '../../shared/base.service';
 import { ReactionType } from '../model/reaction-type';
 import { RequestStatusService } from '../../shared/pending/request-status.service';
+import HTTPMethod from 'http-method-enum';
+import { Reaction } from '../model/reaction.model';
 
 @Injectable({
   providedIn: 'root',
@@ -15,32 +17,31 @@ export class ReactionService extends BaseService {
     super(requestStatusService);
   }
 
-  save(filmId: string, commentId: string, reactionType: ReactionType) {
-    return this.sendRequest(filmId, commentId, reactionType, 'post');
-  }
-
-  private sendRequest(
+  save(
     filmId: string,
     commentId: string,
     reactionType: ReactionType,
-    method: 'post' | 'put',
+    method: HTTPMethod.POST | HTTPMethod.PUT,
   ) {
     const url = this.getUrl(filmId, commentId);
-    const request = this.http[method]<void>(url, { type: reactionType });
-    return this.requestStatusService.handleRequestWithStatus<void>(request);
+    // @ts-ignore
+    const request = this.http[method.toLowerCase()]<Reaction[]>(url, {
+      type: reactionType,
+    });
+    return this.requestStatusService.handleRequestWithStatus<Reaction[]>(
+      request,
+    );
   }
 
   private getUrl(filmId: string, commentId: string) {
     return `${this.baseUrl}films/${filmId}/comments/${commentId}/reactions`;
   }
 
-  update(filmId: string, commentId: string, reactionType: ReactionType) {
-    return this.sendRequest(filmId, commentId, reactionType, 'put');
-  }
-
   delete(filmId: string, commentId: string) {
     const url = this.getUrl(filmId, commentId);
-    const request = this.http.delete<void>(url);
-    return this.requestStatusService.handleRequestWithStatus<void>(request);
+    const request = this.http.delete<Reaction[]>(url);
+    return this.requestStatusService.handleRequestWithStatus<Reaction[]>(
+      request,
+    );
   }
 }

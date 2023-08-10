@@ -1,0 +1,49 @@
+.comment {
+  &__header {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(0, max-content));
+    grid-column-gap: 1rem;
+    align-items: center;
+    color: var(--color-primary);
+  }
+
+  &__user-name {
+    font-size: 2.2rem;
+    font-weight: 300;
+  }
+
+  &__date {
+    grid-row: 2 / span 1;
+    margin-left: 1.5rem;
+    font-size: 1.4rem;
+    color: var(--color-grey-light-2);
+  }
+
+  &__review {
+    font-size: 1.6rem;
+  }
+
+  &__footer {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(0, max-content));
+    grid-column-gap: .3rem;
+    justify-content: end;
+    align-items: center;
+  }
+
+  &__react {
+    transition: all .3s;
+    font-size: 2rem;
+    color: var(--color-grey-light-3);
+
+    &:hover {
+      i {
+        color: var(--color-grey-light-1);
+      }
+    }
+  }
+
+  &__rating {
+    font-size: 2rem;
+  }
+}

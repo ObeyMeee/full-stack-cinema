@@ -1,19 +1,10 @@
-import {
-  AfterContentChecked,
-  ChangeDetectorRef,
-  Component,
-  Inject,
-  OnInit,
-} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { map, Observable, take } from 'rxjs';
-import { OKTA_AUTH, OktaAuthStateService } from '@okta/okta-angular';
+import { map, Observable } from 'rxjs';
+import { OktaAuthStateService } from '@okta/okta-angular';
 import { Pending } from '../../shared/pending/pending.interface';
 import { Comment } from '../model/comment.model';
-import { ReactionType } from '../model/reaction-type';
-import { ReactionService } from './reaction.service';
 import { CommentService } from './comment.service';
-import OktaAuth, { UserClaims } from '@okta/okta-auth-js';
 import { SortType } from './sort-type.enum';
 import { PageEvent } from '../../shared/pagination/page-event.interface';
 import { Page } from '../../shared/pagination/page.interface';
@@ -24,26 +15,20 @@ import { ToastService } from '../../shared/toast.service';
   templateUrl: './film-comments.component.html',
   styleUrls: ['./film-comments.component.scss'],
 })
-export class FilmCommentsComponent implements OnInit, AfterContentChecked {
+export class FilmCommentsComponent implements OnInit {
   commentsPage$!: Pending<Page<Comment>>;
   isAuthenticated$!: Observable<boolean>;
-  user!: UserClaims;
   leftComment = new Comment();
   visibleLeaveCommentDialog = false;
   first = 0;
   rows = 3;
   sortType = SortType.RECENT;
 
-  protected readonly ReactionType = ReactionType;
-
   constructor(
     private commentService: CommentService,
-    private reactionService: ReactionService,
     private toastService: ToastService,
     private route: ActivatedRoute,
-    private changeDetector: ChangeDetectorRef,
     private oktaStateService: OktaAuthStateService,
-    @Inject(OKTA_AUTH) private oktaAuth: OktaAuth,
   ) {}
 
   async ngOnInit() {
@@ -56,75 +41,10 @@ export class FilmCommentsComponent implements OnInit, AfterContentChecked {
     this.isAuthenticated$ = this.oktaStateService.authState$.pipe(
       map((authState) => !!authState.isAuthenticated),
     );
-    this.isAuthenticated$.pipe(take(1)).subscribe(async (isAuthenticated) => {
-      if (isAuthenticated) this.user = await this.oktaAuth.getUser();
-    });
   }
 
   private getFilmId() {
     return this.route.parent?.snapshot.params['id'];
-  }
-
-  ngAfterContentChecked() {
-    this.changeDetector.detectChanges();
-  }
-
-  currentUserReacted(comment: Comment, reactionType: ReactionType) {
-    const reaction = comment.reactions.find(
-      (reaction) => reaction.username === this.user?.preferred_username,
-    );
-    return reaction?.type === reactionType ? '-fill' : '';
-  }
-
-  reactOnComment(comment: Comment, reactionType: ReactionType) {
-    const filmId = this.getFilmId();
-    const reaction = comment.reactions.find(
-      (reaction) => reaction.username === this.user?.preferred_username,
-    );
-    if (reaction) {
-      if (reaction.type === reactionType) {
-        this.reactionService.delete(filmId, comment.id).data.subscribe();
-      } else {
-        this.reactionService
-          .update(filmId, comment.id, reactionType)
-          .data.subscribe();
-      }
-    } else {
-      this.reactionService
-        .save(filmId, comment.id, reactionType)
-        .data.subscribe();
-    }
-  }
-
-  like(comment: Comment) {
-    const filmId = this.getFilmId();
-    const reaction = comment.reactions.find(
-      (reaction) => reaction.username === this.user?.preferred_username,
-    );
-    if (reaction) {
-      if (reaction.type === ReactionType.LIKE) {
-        this.reactionService
-          .delete(filmId, comment.id)
-          .data.subscribe(() => this.changeRating(comment.id, -1));
-      } else {
-        this.reactionService
-          .update(filmId, comment.id, ReactionType.LIKE)
-          .data.subscribe(() => this.changeRating(comment.id, 2));
-      }
-    } else {
-      this.reactionService
-        .save(filmId, comment.id, ReactionType.LIKE)
-        .data.subscribe(() => this.changeRating(comment.id, 1));
-    }
-  }
-
-  changeRating(commentId: string, value: number) {
-    const foundedComment = document.getElementById(`comment-id-${commentId}`);
-    const commentRatingElement =
-      foundedComment?.querySelector('.comment__rating')!;
-    commentRatingElement.innerHTML = String(
-      parseInt(commentRatingElement.innerHTML) + value,
-    );
   }
 
   onPageChange(event: PageEvent) {
@@ -137,17 +57,6 @@ export class FilmCommentsComponent implements OnInit, AfterContentChecked {
       event.rows,
       this.sortType,
     );
-  }
-
-  getCommentRating(comment: Comment) {
-    const likes = this.countReactions(comment, ReactionType.LIKE);
-    const dislikes = this.countReactions(comment, ReactionType.DISLIKE);
-    return likes - dislikes;
-  }
-
-  private countReactions(comment: Comment, type: ReactionType) {
-    return comment.reactions.filter((reaction) => reaction.type === type)
-      .length;
   }
 
   toggleLeaveCommentDialog() {

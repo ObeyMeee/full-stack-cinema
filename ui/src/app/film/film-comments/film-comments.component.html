@@ -41,12 +41,14 @@
            *ngIf="!(isAuthenticated$ | async)">
         <p-message severity="info" text="Only authenticated users can leave comments and reactions!"></p-message>
       </div>
+
       <p-button icon="pi pi-comment"
                 label="Leave comment"
                 styleClass="p-button-outlined p-button-danger leave-comment"
                 [disabled]="!(isAuthenticated$ | async)!"
                 (click)="toggleLeaveCommentDialog()">
       </p-button>
+
       <div class="sort">
         <label for="sort" class="sort__label">Sort by most</label>
         <p-dropdown styleClass="sort__dropdown"
@@ -57,42 +59,13 @@
         </p-dropdown>
       </div>
     </div>
+
     <div class="section-film-comments__message section-film-comments__message--no-comments" *ngIf="page.empty">
       <p-message severity="info" text="There is no comments yet. Leave one to be first :)"></p-message>
     </div>
 
     <div class="comments">
-      <div class="comment" id="{{'comment-id-' + comment.id}}" *ngFor="let comment of page.content">
-        <p-fieldset>
-          <ng-template pTemplate="header">
-            <div class="comment__header">
-              <div class="comment__user-name">{{comment.username}}</div>
-              <div class="comment__stars">
-                <i *ngFor="let _ of [].constructor(comment.mark)" class="bi bi-star-fill"></i>
-                <i *ngFor="let _ of [].constructor(10 - comment.mark)" class="bi bi-star"></i>
-              </div>
-              <div class="comment__date">{{comment.wroteAt | date: 'MM/dd/yy HH:mm'}}</div>
-            </div>
-          </ng-template>
-
-          <div class="comment__review">
-            {{comment.review}}
-          </div>
-          <div class="comment__footer">
-            <button class="btn comment__react comment__react-dislike"
-                    [disabled]="!(isAuthenticated$ | async)"
-                    (click)="reactOnComment(comment, ReactionType.DISLIKE)">
-              <i class="bi bi-hand-thumbs-down{{currentUserReacted(comment, ReactionType.DISLIKE)}}"></i>
-            </button>
-            <span class="comment__rating">{{getCommentRating(comment)}}</span>
-            <button class="btn comment__react comment__react-dislike"
-                    [disabled]="!(isAuthenticated$ | async)"
-                    (click)="like(comment)">
-              <i class="bi bi-hand-thumbs-up{{currentUserReacted(comment, ReactionType.LIKE)}}"></i>
-            </button>
-          </div>
-        </p-fieldset>
-      </div>
+      <app-film-comment [comment]="comment" *ngFor="let comment of page.content"></app-film-comment>
     </div>
 
     <div class="paginator">

@@ -67,6 +67,7 @@ import { KeyFilterModule } from 'primeng/keyfilter';
 import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
 import { DateDropdownComponent } from './shared/date-dropdown/date-dropdown.component';
 import { LoadingComponent } from './shared/loading/loading.component';
+import { FilmCommentComponent } from './film/film-comments/film-comment/film-comment.component';
 
 const routes: Route[] = [
   { path: '', component: PosterComponent, pathMatch: 'full' },
@@ -131,6 +132,7 @@ const oktaAuth = new OktaAuth(environment.okta);
     UsersComponent,
     DateDropdownComponent,
     LoadingComponent,
+    FilmCommentComponent,
   ],
   imports: [
     BrowserModule,
