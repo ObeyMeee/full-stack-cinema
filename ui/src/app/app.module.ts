@@ -133,6 +133,7 @@ const oktaAuth = new OktaAuth(environment.okta);
     DateDropdownComponent,
     LoadingComponent,
     FilmCommentComponent,
+    FilmCommentComponent,
   ],
   imports: [
     BrowserModule,

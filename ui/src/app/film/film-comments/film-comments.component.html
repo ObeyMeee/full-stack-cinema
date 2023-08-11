@@ -54,9 +54,9 @@
         <p-dropdown styleClass="sort__dropdown"
                     id="sort"
                     (ngModelChange)="changeSorting($event)"
-                    [options]="getSortOptions()"
+                    [options]="sortOptions"
                     [(ngModel)]="sortType">
-        </p-dropdown>
+          </p-dropdown>
       </div>
     </div>
 
@@ -65,7 +65,11 @@
     </div>
 
     <div class="comments">
-      <app-film-comment [comment]="comment" *ngFor="let comment of page.content"></app-film-comment>
+      <app-film-comment *ngFor="let comment of page.content"
+                        [comment]="comment"
+                        [isAuthenticated$]="isAuthenticated$"
+                        [user]="user">
+      </app-film-comment>
     </div>
 
     <div class="paginator">

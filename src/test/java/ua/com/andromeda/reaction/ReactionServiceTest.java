@@ -13,9 +13,9 @@ import ua.com.andromeda.reaction.exception.ReactionNotFoundException;
 import ua.com.andromeda.user.exception.UserNotAuthenticatedException;
 
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -65,11 +65,14 @@ class ReactionServiceTest {
         when(commentRepository.findById(uuid)).thenReturn(Optional.of(comment));
         when(principal.getName()).thenReturn(defaultName);
 
-        target.save(reactionType, principal, commentId);
+        Set<Reaction> actual = target.save(reactionType, principal, commentId);
+        Set<Reaction> expected = Set.of(new Reaction(principal.getName(), reactionType, comment));
 
         verify(commentRepository, times(1)).findById(uuid);
         verify(reactionRepository, times(1)).save(any());
         verify(reactionRepository).save(new Reaction(defaultName, reactionType, comment));
+        assertEquals(1, actual.size());
+        assertEquals(expected, actual);
     }
 
     @Test
@@ -96,20 +99,21 @@ class ReactionServiceTest {
         Comment comment = new Comment();
         Reaction firstReaction = new Reaction(defaultName, reactionType, comment);
         Reaction secondReaction = new Reaction("", reactionType, comment);
-        List<Reaction> reactions = new ArrayList<>();
+        Set<Reaction> reactions = new HashSet<>();
         reactions.add(firstReaction);
         reactions.add(secondReaction);
+
         comment.setReactions(reactions);
 
         when(principal.getName()).thenReturn(defaultName);
         when(commentRepository.findById(uuid)).thenReturn(Optional.of(comment));
 
-        target.delete(principal, commentId);
+        Set<Reaction> expected = Set.of(secondReaction);
+        Set<Reaction> actual = target.delete(principal, commentId);
 
         verify(reactionRepository, times(1)).deleteByUsernameAndCommentId(defaultName, uuid);
-        List<Reaction> resultedReactions = comment.getReactions();
-        assertEquals(1, resultedReactions.size());
-        assertEquals(secondReaction, resultedReactions.get(0));
+        assertEquals(1, expected.size());
+        assertEquals(expected, actual);
     }
 
     @Test
@@ -146,14 +150,18 @@ class ReactionServiceTest {
     void update_success() {
         Comment comment = new Comment();
         Reaction foundedReaction = new Reaction(defaultName, reactionType, comment);
+        comment.setReactions(Set.of(foundedReaction));
+
         when(principal.getName()).thenReturn(defaultName);
         when(commentRepository.findById(UUID.fromString(commentId))).thenReturn(Optional.of(comment));
         when(reactionRepository.findByUsernameAndComment(defaultName, comment)).thenReturn(Optional.of(foundedReaction));
 
-        target.update(reactionType, principal, commentId);
+        Set<Reaction> expected = Set.of(new Reaction(defaultName, ReactionType.DISLIKE, comment));
+        Set<Reaction> actual = target.update(ReactionType.DISLIKE, principal, commentId);
 
         verify(reactionRepository, times(1)).findByUsernameAndComment(defaultName, comment);
         verify(reactionRepository, times(1)).save(foundedReaction);
-        assertEquals(reactionType, foundedReaction.getType());
+        assertEquals(1, actual.size());
+        assertEquals(expected, actual);
     }
 }

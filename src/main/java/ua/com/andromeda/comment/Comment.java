@@ -10,8 +10,8 @@ import ua.com.andromeda.film.Film;
 import ua.com.andromeda.reaction.Reaction;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -38,7 +38,7 @@ public class Comment {
             mappedBy = "comment",
             cascade = CascadeType.ALL
     )
-    private List<Reaction> reactions = new ArrayList<>();
+    private Set<Reaction> reactions = new HashSet<>();
 
     @NotNull
     private LocalDateTime wroteAt;
@@ -47,4 +47,12 @@ public class Comment {
     @JoinColumn(name = "film_id", nullable = false)
     @JsonIgnore
     private Film film;
+
+
+    public void addReaction(Reaction reaction) {
+        if (!reactions.contains(reaction)) {
+            reaction.setComment(this);
+            reactions.add(reaction);
+        }
+    }
 }

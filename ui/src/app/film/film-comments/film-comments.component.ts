@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { map, Observable } from 'rxjs';
-import { OktaAuthStateService } from '@okta/okta-angular';
+import { OKTA_AUTH, OktaAuthStateService } from '@okta/okta-angular';
 import { Pending } from '../../shared/pending/pending.interface';
 import { Comment } from '../model/comment.model';
 import { CommentService } from './comment.service';
@@ -9,6 +9,8 @@ import { SortType } from './sort-type.enum';
 import { PageEvent } from '../../shared/pagination/page-event.interface';
 import { Page } from '../../shared/pagination/page.interface';
 import { ToastService } from '../../shared/toast.service';
+import { capitalize } from 'lodash';
+import OktaAuth, { UserClaims } from '@okta/okta-auth-js';
 
 @Component({
   selector: 'app-film-comments',
@@ -18,10 +20,12 @@ import { ToastService } from '../../shared/toast.service';
 export class FilmCommentsComponent implements OnInit {
   commentsPage$!: Pending<Page<Comment>>;
   isAuthenticated$!: Observable<boolean>;
+  user!: UserClaims;
   leftComment = new Comment();
   visibleLeaveCommentDialog = false;
   first = 0;
   rows = 3;
+  sortOptions!: { label: string; value: SortType }[];
   sortType = SortType.RECENT;
 
   constructor(
@@ -29,6 +33,7 @@ export class FilmCommentsComponent implements OnInit {
     private toastService: ToastService,
     private route: ActivatedRoute,
     private oktaStateService: OktaAuthStateService,
+    @Inject(OKTA_AUTH) private oktaAuth: OktaAuth,
   ) {}
 
   async ngOnInit() {
@@ -41,10 +46,19 @@ export class FilmCommentsComponent implements OnInit {
     this.isAuthenticated$ = this.oktaStateService.authState$.pipe(
       map((authState) => !!authState.isAuthenticated),
     );
+    this.user = await this.oktaAuth.getUser();
+    this.sortOptions = this.getSortOptions();
   }
 
   private getFilmId() {
     return this.route.parent?.snapshot.params['id'];
+  }
+
+  private getSortOptions() {
+    return Object.values(SortType).map((sortOption) => ({
+      label: capitalize(sortOption),
+      value: sortOption,
+    }));
   }
 
   onPageChange(event: PageEvent) {
@@ -78,10 +92,6 @@ export class FilmCommentsComponent implements OnInit {
         'success',
       );
     });
-  }
-
-  getSortOptions() {
-    return Object.values(SortType);
   }
 
   changeSorting($event: SortType) {

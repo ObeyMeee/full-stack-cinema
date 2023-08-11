@@ -11,7 +11,7 @@ import ua.com.andromeda.reaction.exception.ReactionNotFoundException;
 import ua.com.andromeda.user.exception.UserNotAuthenticatedException;
 
 import java.security.Principal;
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -20,11 +20,12 @@ public class ReactionService {
     private final ReactionRepository reactionRepository;
     private final CommentRepository commentRepository;
 
-    public List<Reaction> save(@NotNull ReactionType reactionType,
-                               Principal principal,
-                               @NotNull String commentId) {
+    public Set<Reaction> save(@NotNull ReactionType reactionType,
+                              Principal principal,
+                              @NotNull String commentId) {
         Comment comment = validatePrincipalAndGetComment(principal, commentId);
         Reaction reaction = new Reaction(principal.getName(), reactionType, comment);
+        comment.addReaction(reaction);
         reactionRepository.save(reaction);
         return comment.getReactions();
     }
@@ -42,23 +43,23 @@ public class ReactionService {
     }
 
     @Transactional
-    public List<Reaction> delete(Principal principal, @NotNull String commentId) {
+    public Set<Reaction> delete(Principal principal, @NotNull String commentId) {
         Comment comment = validatePrincipalAndGetComment(principal, commentId);
         comment.getReactions().removeIf(reaction -> reaction.getUsername().equals(principal.getName()));
         reactionRepository.deleteByUsernameAndCommentId(principal.getName(), UUID.fromString(commentId));
         return comment.getReactions();
     }
 
-    public List<Reaction> update(@NotNull ReactionType reactionType, Principal principal, @NotNull String commentId) {
+    public Set<Reaction> update(@NotNull ReactionType reactionType, Principal principal, @NotNull String commentId) {
         Comment comment = validatePrincipalAndGetComment(principal, commentId);
         String username = principal.getName();
-        Reaction reaction = getReaction(username, comment);
+        Reaction reaction = findByUsernameAndComment(username, comment);
         reaction.setType(reactionType);
         reactionRepository.save(reaction);
-        return comment.getReactions();
+        return reaction.getComment().getReactions();
     }
 
-    private Reaction getReaction(String username, Comment comment) {
+    private Reaction findByUsernameAndComment(String username, Comment comment) {
         return reactionRepository.findByUsernameAndComment(username, comment).orElseThrow(() -> {
                     String message = "Cannot find reaction of comment with id=" + "'" + comment.getId() + "'" + " by user " + username;
                     return new ReactionNotFoundException(message);

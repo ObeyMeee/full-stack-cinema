@@ -20,8 +20,9 @@
               (click)='reactOnComment(ReactionType.DISLIKE)'>
         <i class='bi bi-hand-thumbs-down{{currentUserReacted(ReactionType.DISLIKE)}}'></i>
       </button>
-      <span class='comment__rating'>{{getCommentRating()}}</span>
-      <button class='btn comment__react comment__react-dislike'
+      <span class='comment__rating'>{{commentRating}}</span>
+      <button #likeBtn
+              class='btn comment__react comment__react-like'
               [disabled]='!(isAuthenticated$ | async)'
               (click)='reactOnComment(ReactionType.LIKE)'>
         <i class='bi bi-hand-thumbs-up{{currentUserReacted(ReactionType.LIKE)}}'></i>
