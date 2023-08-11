@@ -99,9 +99,9 @@
               (click)="onPurchaseTickets()"
               [disabled]="!isAuthenticated"
               class="tickets-box__purchase-btn">
-        Purchase
+        <span>Purchase</span>
+        <p-progressSpinner styleClass="h-4rem" *ngIf="(purchaseStatus$ | async) === Status.LOADING"></p-progressSpinner>
       </button>
     </div>
   </div>
-
 </section>

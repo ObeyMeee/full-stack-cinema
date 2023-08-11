@@ -1,0 +1,57 @@
+@keyframes combine-two {
+  25% {
+    transform: translate(0, -100%);
+  }
+  50% {
+    transform: translate(0, 50%);
+  }
+  75% {
+    transform: translate(0, 150%);
+  }
+}
+
+.container {
+
+  & .combine-two {
+    height: 30px;
+    position: relative;
+    width: 30px;
+    color: var(--color-primary);
+
+    & div {
+      --rotation: 45;
+      position: absolute;
+      transform: rotate(calc(var(--rotation) * 1deg));
+
+      &:after {
+        animation: combine-two 1.5s infinite ease;
+        border: 15px solid transparent;
+        border-top-color: var(--primary);
+        content: '';
+        display: block;
+        height: 30px;
+        width: 30px;
+      }
+
+      &:nth-child(2) {
+        --rotation: 135;
+      }
+
+      &:nth-child(3) {
+        --rotation: 225;
+      }
+
+      &:nth-child(4) {
+        --rotation: 315;
+      }
+    }
+  }
+
+  & span {
+    color: var(--color-grey-light-2);
+    font-size: 2rem;
+    letter-spacing: 2px;
+  }
+}
+
+

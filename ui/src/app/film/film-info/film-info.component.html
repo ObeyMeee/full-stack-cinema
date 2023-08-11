@@ -1,5 +1,6 @@
+<app-loading collection="info" [status$]="film$.status"></app-loading>
 <section class="info">
-  <div class="film-details" *ngIf="film$ | async as film">
+  <div class="film-details" *ngIf="film$.data | async as film">
     <h1 class="heading-1 film-details__title">{{film.title}}</h1>
     <div class="film-details__text">Age:</div>
     <div class="film-details__value">16+</div>
@@ -35,7 +36,7 @@
     <div class="film-details__description">{{film.description}}</div>
   </div>
 
-  <div *ngIf="sessions">
+  <div *ngIf="sessions$.data | async as sessions ">
     <div class="aside-schedule-box" *ngIf="sessions">
       <div class="date-selection-box">
         <p>Schedule of sessions</p>

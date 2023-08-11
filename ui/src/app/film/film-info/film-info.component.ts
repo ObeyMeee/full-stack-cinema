@@ -1,12 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { isSameDay } from 'date-fns';
-import { firstValueFrom, Observable } from 'rxjs';
 import { Film } from '../model/film.model';
 import { FilmService } from '../film.service';
 import { ActivatedRoute } from '@angular/router';
 import { SessionDto } from '../../poster/dto/session.dto';
 import { isSessionWithinPastThirtyMinutes } from '../../shared/session-utils';
 import { DateDropdownService } from '../../shared/date-dropdown/date-dropdown.service';
+import { Pending } from '../../shared/pending/pending.interface';
 
 @Component({
   selector: 'app-film-info',
@@ -14,8 +14,8 @@ import { DateDropdownService } from '../../shared/date-dropdown/date-dropdown.se
   styleUrls: ['./film-info.component.scss'],
 })
 export class FilmInfoComponent implements OnInit, OnDestroy {
-  film$!: Observable<Film>;
-  sessions!: SessionDto[];
+  film$!: Pending<Film>;
+  sessions$!: Pending<SessionDto[]>;
   selectedDate = new Date();
 
   protected readonly isSameDay = isSameDay;
@@ -30,10 +30,8 @@ export class FilmInfoComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     const id = this.route.parent?.snapshot.params['id'];
-    this.film$ = this.filmService.getById(id).data;
-    this.sessions = await firstValueFrom(
-      this.filmService.getSessionsById(id).data,
-    );
+    this.film$ = this.filmService.getById(id);
+    this.sessions$ = this.filmService.getSessionsById(id);
   }
 
   ngOnDestroy() {

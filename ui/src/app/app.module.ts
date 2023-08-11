@@ -68,6 +68,7 @@ import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
 import { DateDropdownComponent } from './shared/date-dropdown/date-dropdown.component';
 import { LoadingComponent } from './shared/loading/loading.component';
 import { FilmCommentComponent } from './film/film-comments/film-comment/film-comment.component';
+import { SkeletonModule } from 'primeng/skeleton';
 
 const routes: Route[] = [
   { path: '', component: PosterComponent, pathMatch: 'full' },
@@ -165,6 +166,7 @@ const oktaAuth = new OktaAuth(environment.okta);
     TagModule,
     KeyFilterModule,
     NgxIntlTelInputModule,
+    SkeletonModule,
   ],
   providers: [
     {

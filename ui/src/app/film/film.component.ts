@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FilmService } from './film.service';
 import { Film } from './model/film.model';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
 import { DateDropdownService } from '../shared/date-dropdown/date-dropdown.service';
+import { Pending } from '../shared/pending/pending.interface';
+import { Status } from '../shared/pending/status.enum';
 
 @Component({
   selector: 'app-film',
@@ -11,8 +12,9 @@ import { DateDropdownService } from '../shared/date-dropdown/date-dropdown.servi
   styleUrls: ['./film.component.scss'],
 })
 export class FilmComponent implements OnInit {
-  film$!: Observable<Film>;
+  film$!: Pending<Film>;
   isTrailerShown = false;
+  protected readonly Status = Status;
 
   constructor(
     private filmService: FilmService,
@@ -22,7 +24,7 @@ export class FilmComponent implements OnInit {
 
   async ngOnInit() {
     const id = this.route.snapshot.params['id'];
-    this.film$ = this.filmService.getById(id).data;
+    this.film$ = this.filmService.getById(id);
   }
 
   toggleTrailer() {

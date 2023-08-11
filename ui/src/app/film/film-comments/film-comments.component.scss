@@ -147,3 +147,10 @@
     align-items: flex-start;
   }
 }
+
+.skeleton-container {
+  padding: 4rem;
+  margin-top: 2rem;
+  border-radius: 5px;
+  background-color: var(--color-grey-dark-1);
+}

@@ -1,4 +1,9 @@
 <div class="container" *ngIf="(status$ | async) === Status.LOADING">
-  <p-progressSpinner styleClass="h-5rem"></p-progressSpinner>
-  <span class="text-white fs-4">Loading {{collection}}...</span>
+  <div class="combine-two">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+  <span>Loading {{collection}}...</span>
 </div>

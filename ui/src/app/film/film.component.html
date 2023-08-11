@@ -1,18 +1,23 @@
 <ng-container *ngIf="isTrailerShown">
-  <app-trailer *ngIf="film$ | async as film"
+  <app-trailer *ngIf="film$.data | async as film"
                (closeTrailer)="toggleTrailer()"
                [title]="film.title"
                [url]="film.media.trailer">
   </app-trailer>
 </ng-container>
 
-<section *ngIf="film$ | async as film" class="section-film-info" (click)="hideDateDropdown($event)">
-  <div class="media">
+<section class="section-film-info"
+         (click)="hideDateDropdown($event)">
+  <div class="media" *ngIf="film$.data | async as film">
     <img alt="{{film.title}}" class="media__poster" src="{{film.media.image}}">
     <button class="btn media__trailer-btn" (click)="toggleTrailer()">
       <i class="bi bi-play-fill"></i>
       <span>Watch trailer</span>
     </button>
+  </div>
+  <div class="media" *ngIf="(film$.status | async) === Status.LOADING">
+    <p-skeleton width="20rem" height="30rem"></p-skeleton>
+    <p-skeleton width="20rem" height="5rem" styleClass="mt-2"></p-skeleton>
   </div>
   <div class="other">
     <nav class="nav">

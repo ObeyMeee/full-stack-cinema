@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { PosterService } from './poster.service';
-import { Observable } from 'rxjs';
 import { PosterDto } from './dto/poster.dto';
+import { Pending } from '../shared/pending/pending.interface';
+import { Status } from '../shared/pending/status.enum';
 
 @Component({
   selector: 'app-poster',
@@ -9,11 +10,12 @@ import { PosterDto } from './dto/poster.dto';
   styleUrls: ['./poster.component.scss'],
 })
 export class PosterComponent implements OnInit {
-  posters$!: Observable<PosterDto[]>;
+  posters$!: Pending<PosterDto[]>;
   responsiveOptions: any;
   isTrailerShown = false;
   trailerUrl!: string;
   title!: string;
+  protected readonly Status = Status;
 
   constructor(private posterService: PosterService) {
     this.responsiveOptions = [
@@ -46,14 +48,14 @@ export class PosterComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.posters$ = this.posterService.getPoster().data;
+    this.posters$ = this.posterService.getPoster();
   }
 
   toggleTrailer() {
     this.isTrailerShown = !this.isTrailerShown;
   }
 
-  setData($event: { title: string; url: string }) {
+  setTrailerData($event: { title: string; url: string }) {
     this.toggleTrailer();
     this.title = $event.title;
     this.trailerUrl = $event.url;

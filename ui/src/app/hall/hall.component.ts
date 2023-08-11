@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HallService } from './hall.service';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, Observable } from 'rxjs';
 import { SessionBuyTicketDto } from './session-buy-ticket.dto';
 import { Ticket } from './models/ticket.model';
 import { OktaAuthStateService } from '@okta/okta-angular';
@@ -9,6 +9,7 @@ import { TicketService } from './ticket.service';
 import { ToastService } from '../shared/toast.service';
 import { addMinutes } from 'date-fns';
 import { isEqual } from 'lodash';
+import { Status } from '../shared/pending/status.enum';
 
 @Component({
   selector: 'app-hall',
@@ -21,7 +22,7 @@ export class HallComponent implements OnInit {
   sessionId!: string;
   tickets!: Ticket[];
   isAuthenticated: boolean | undefined;
-
+  purchaseStatus$!: Observable<Status>;
   protected addMinutes = addMinutes;
   @ViewChild('purchaseButton') purchaseButtonElementRef!: ElementRef;
 
@@ -58,20 +59,24 @@ export class HallComponent implements OnInit {
 
   async onPurchaseTickets() {
     this.purchaseButtonElementRef.nativeElement.disabled = true;
-    this.isAuthenticated &&
-      this.hallService
-        .purchaseTickets(this.tickets, this.sessionId)
-        .data.subscribe({
-          next: (value) => this.handleSuccess(),
-          error: this.handleError,
-        });
+    if (this.isAuthenticated) {
+      const purchaseTickets = this.hallService.purchaseTickets(
+        this.tickets,
+        this.sessionId,
+      );
+      this.purchaseStatus$ = purchaseTickets.status;
+      purchaseTickets.data.subscribe({
+        next: (_) => this.handleSuccess(),
+        error: this.handleError,
+      });
+    }
   }
 
   private handleSuccess() {
     this.toastService.showToast(
       false,
-      'success',
       'Our cats get their tickets for free! Enjoy the film =)',
+      'success',
     );
     this.reloadCurrentRoute();
   }
@@ -120,4 +125,6 @@ export class HallComponent implements OnInit {
       : 'lux';
     btnSeat.classList.toggle(`hall__seat--selected-${seatType}`);
   }
+
+  protected readonly Status = Status;
 }

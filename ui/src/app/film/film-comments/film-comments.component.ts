@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { map, Observable } from 'rxjs';
+import { map, Observable, tap } from 'rxjs';
 import { OKTA_AUTH, OktaAuthStateService } from '@okta/okta-angular';
 import { Pending } from '../../shared/pending/pending.interface';
 import { Comment } from '../model/comment.model';
@@ -11,6 +11,7 @@ import { Page } from '../../shared/pagination/page.interface';
 import { ToastService } from '../../shared/toast.service';
 import { capitalize } from 'lodash';
 import OktaAuth, { UserClaims } from '@okta/okta-auth-js';
+import { Status } from '../../shared/pending/status.enum';
 
 @Component({
   selector: 'app-film-comments',
@@ -27,6 +28,7 @@ export class FilmCommentsComponent implements OnInit {
   rows = 3;
   sortOptions!: { label: string; value: SortType }[];
   sortType = SortType.RECENT;
+  protected readonly Status = Status;
 
   constructor(
     private commentService: CommentService,
@@ -45,8 +47,12 @@ export class FilmCommentsComponent implements OnInit {
     );
     this.isAuthenticated$ = this.oktaStateService.authState$.pipe(
       map((authState) => !!authState.isAuthenticated),
+      tap(async (isAuthenticated) => {
+        if (isAuthenticated) {
+          this.user = await this.oktaAuth.getUser();
+        }
+      }),
     );
-    this.user = await this.oktaAuth.getUser();
     this.sortOptions = this.getSortOptions();
   }
 
