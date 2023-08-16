@@ -1,0 +1,36 @@
+.table {
+  caption-side: top;
+
+  &__header > tr {
+    font-size: 1.3rem;
+    font-weight: 700;
+    padding: 2rem 0;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--color-grey-light-3);
+    text-align: center;
+  }
+
+  &__container {
+    padding: 2rem 0;
+  }
+}
+
+.message:link,
+.message:visited {
+  display: inline-block;
+  font-size: 1.7rem;
+  color: var(--color-primary);
+  margin: 1.5rem 0;
+  text-decoration: none;
+  transition: all .3s;
+}
+
+.message:hover,
+.message:active {
+  color: var(--color-grey-light-1);
+}
+
+.d-contents {
+  display: contents;
+}

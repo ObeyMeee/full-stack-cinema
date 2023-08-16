@@ -4,10 +4,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.format.annotation.DateTimeFormat;
+import ua.com.andromeda.purchase.Purchase;
 import ua.com.andromeda.session.Session;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -20,9 +19,6 @@ public class Ticket {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(name = "bought_at")
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
-    private LocalDateTime boughtAt;
     private int price;
     private int row;
     private int seat;
@@ -30,5 +26,8 @@ public class Ticket {
     @ManyToOne
     @JoinColumn(name = "session_id", nullable = false)
     private Session session;
-    private String username;
+
+    @ManyToOne
+    @JoinColumn(name = "purchase_id")
+    private Purchase purchase;
 }

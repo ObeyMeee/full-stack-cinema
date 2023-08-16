@@ -5,6 +5,11 @@
 </app-trailer>
 
 <ng-container *ngIf="posters$.data | async as posters">
+  <p-message *ngIf="posters.length === 0"
+             severity="info"
+             text="There is no posters yet.">
+  </p-message>
+
   <p-carousel [responsiveOptions]="responsiveOptions"
               [showIndicators]="false"
               [value]="posters">
@@ -15,7 +20,7 @@
 </ng-container>
 
 <div class="skeleton-container" *ngIf="(posters$.status | async) === Status.LOADING">
-  <p-skeleton width="33.3333%" height="85vh" ></p-skeleton>
+  <p-skeleton width="33.3333%" height="85vh"></p-skeleton>
   <p-skeleton width="33.3333%" height="85vh"></p-skeleton>
   <p-skeleton width="33.3333%" height="85vh"></p-skeleton>
 </div>

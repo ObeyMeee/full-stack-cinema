@@ -23,8 +23,6 @@ import { TooltipModule } from 'primeng/tooltip';
 import { UserComponent } from './user/user.component';
 import { ProfileComponent } from './user/profile/profile.component';
 import { OperationsContainerComponent } from './user/operations-container/operations-container.component';
-import { TransactionsTableComponent } from './user/operations-container/transactions-table/transactions-table.component';
-import { TransactionElementComponent } from './user/operations-container/transactions-table/transaction-element/transaction-element.component';
 import { PosterElementComponent } from './poster/poster-element/poster-element.component';
 import { DropdownDirective } from './shared/directives/dropdown.directive';
 import { TicketComponent } from './hall/ticket/ticket.component';
@@ -69,6 +67,8 @@ import { DateDropdownComponent } from './shared/date-dropdown/date-dropdown.comp
 import { LoadingComponent } from './shared/loading/loading.component';
 import { FilmCommentComponent } from './film/film-comments/film-comment/film-comment.component';
 import { SkeletonModule } from 'primeng/skeleton';
+import { PurchasesTableComponent } from './user/operations-container/purchases-table/purchases-table.component';
+import { PurchasesTableRowComponent } from './user/operations-container/purchases-table/purchases-table-row/purchases-table-row.component';
 
 const routes: Route[] = [
   { path: '', component: PosterComponent, pathMatch: 'full' },
@@ -115,8 +115,7 @@ const oktaAuth = new OktaAuth(environment.okta);
     UserComponent,
     ProfileComponent,
     OperationsContainerComponent,
-    TransactionsTableComponent,
-    TransactionElementComponent,
+    PurchasesTableComponent,
     PosterElementComponent,
     DropdownDirective,
     TicketComponent,
@@ -135,6 +134,7 @@ const oktaAuth = new OktaAuth(environment.okta);
     LoadingComponent,
     FilmCommentComponent,
     FilmCommentComponent,
+    PurchasesTableRowComponent,
   ],
   imports: [
     BrowserModule,

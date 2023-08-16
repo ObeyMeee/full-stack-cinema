@@ -1,9 +1,44 @@
+@import "../../custom-bootstrap";
 
-.tab {
-  border: 1px solid #676f70;
-  border-radius: 10px;
-}
+.section-user {
+  padding: 5rem 20rem;
 
-.tab:hover {
-  border-color: white;
+  &__nav {
+    padding: 3rem 0;
+
+    &-list {
+      list-style: none;
+      display: flex;
+      padding: 0;
+      grid-column-gap: 1rem;
+    }
+
+    &-link:link,
+    &-link:visited {
+      text-decoration: none;
+      padding: 1rem 2rem;
+      color: var(--color-grey-light-1);
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      grid-column-gap: .7rem;
+      border: var(--border-thin-grey-dark-1);
+      border-radius: $border-radius-2xl;
+      transition: all .3s;
+
+      i {
+        font-size: inherit;
+      }
+    }
+
+    &-link:hover {
+      border: var(--border-thin-grey-light-1);
+      transform: translateY(-2px);
+    }
+
+    &-link:active {
+      border: var(--border-thin-grey-light-1);
+      transform: translateY(-1px);
+    }
+  }
 }

@@ -42,7 +42,10 @@
         <p>Schedule of sessions</p>
         <app-date-dropdown [sessions]="sessions"
                            (selectDate)="selectDate($event)">
-          <i class="bi bi-chevron-down mt-1"></i>
+          <i [ngClass]="{
+            'bi bi-chevron-down mt-1': true,
+            'bi-chevron-down--expanded': dateDropdownService.isDaySelectionShown
+           }"></i>
         </app-date-dropdown>
       </div>
       <div class="showtimes-box">

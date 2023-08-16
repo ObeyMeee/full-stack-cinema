@@ -1,0 +1,24 @@
+<div class="table__container">
+  <a *ngIf="!(purchases$ | async)"
+     class="message"
+     routerLink="/">{{noPurchasesMessage}}</a>
+  <table *ngIf="purchases$ | async as purchases" class="table">
+    <caption class="heading-2">{{sectionName}}</caption>
+    <thead class="table__header">
+    <tr>
+      <th>Date of transaction</th>
+      <th>Title</th>
+      <th>Date of session</th>
+      <th>Tickets</th>
+      <th>Price</th>
+      <th>Details</th>
+    </tr>
+    </thead>
+    <tbody>
+      <app-purchases-table-row *ngFor="let purchase of purchases"
+                               [purchase]="purchase"
+                               class="d-contents">
+      </app-purchases-table-row>
+    </tbody>
+  </table>
+</div>

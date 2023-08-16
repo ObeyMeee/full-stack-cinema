@@ -25,7 +25,7 @@ export class FilmInfoComponent implements OnInit, OnDestroy {
   constructor(
     private filmService: FilmService,
     private route: ActivatedRoute,
-    private dateDropdownService: DateDropdownService,
+    public dateDropdownService: DateDropdownService,
   ) {}
 
   async ngOnInit() {

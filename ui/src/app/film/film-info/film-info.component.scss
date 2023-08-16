@@ -2,7 +2,6 @@
 
 $aside-schedule-width: 25vw;
 
-
 :host ::ng-deep {
   .aside-schedule-box .date-selection-box .container {
     & .btn-selection-date {
@@ -84,13 +83,13 @@ $aside-schedule-width: 25vw;
   }
 
 .aside-schedule-box {
-    position: fixed;
-    top: calc(var(--header-height) + 3rem);
-    right: 5rem;
-    width: $aside-schedule-width;
-    box-shadow: 0 1rem 2rem rgba(#444444ff, .2);
+  position: fixed;
+  top: calc(var(--header-height) + 3rem);
+  right: 5rem;
+  width: $aside-schedule-width;
+  box-shadow: 0 1rem 2rem rgba(#444444ff, .2);
 
-    .date-selection-box {
+  .date-selection-box {
       position: relative;
       background-color: var(--color-grey-dark-2);
       border-top-left-radius: $border-radius-lg;
@@ -101,9 +100,17 @@ $aside-schedule-width: 25vw;
         font-size: 1.8rem;
         color: var(--color-grey-light-1);
       }
-    }
 
-    .showtimes-box {
+      .bi-chevron-down {
+        transition: all .5s;
+
+        &--expanded {
+          transform: rotate(180deg);
+        }
+      }
+  }
+
+  .showtimes-box {
       height: 65vh;
       background-color: var(--color-grey-dark-3);
       border-bottom-left-radius: $border-radius-lg;
@@ -115,21 +122,20 @@ $aside-schedule-width: 25vw;
       }
     }
 
-    .showtime__link:link,
-    .showtime__link:visited {
-      display: inline-block;
-      text-decoration: none;
-      font-size: 1.6rem;
-      font-weight: 700;
-      color: var(--color-primary);
-      padding: 1.5rem;
-      transition: all .4s;
-    }
-
-    .showtime__link:hover,
-    .showtime__link:active {
-      color: var(--color-grey-light-1);
-      transform: scale(1.1);
-    }
-
+  .showtime__link:link,
+  .showtime__link:visited {
+    display: inline-block;
+    text-decoration: none;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    padding: 1.5rem;
+    transition: all .4s;
   }
+
+  .showtime__link:hover,
+  .showtime__link:active {
+    color: var(--color-grey-light-1);
+    transform: scale(1.1);
+  }
+}

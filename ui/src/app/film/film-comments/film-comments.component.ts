@@ -1,4 +1,10 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import {
+  AfterContentChecked,
+  ChangeDetectorRef,
+  Component,
+  Inject,
+  OnInit,
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { map, Observable, tap } from 'rxjs';
 import { OKTA_AUTH, OktaAuthStateService } from '@okta/okta-angular';
@@ -18,7 +24,7 @@ import { Status } from '../../shared/pending/status.enum';
   templateUrl: './film-comments.component.html',
   styleUrls: ['./film-comments.component.scss'],
 })
-export class FilmCommentsComponent implements OnInit {
+export class FilmCommentsComponent implements OnInit, AfterContentChecked {
   commentsPage$!: Pending<Page<Comment>>;
   isAuthenticated$!: Observable<boolean>;
   user!: UserClaims;
@@ -34,6 +40,7 @@ export class FilmCommentsComponent implements OnInit {
     private commentService: CommentService,
     private toastService: ToastService,
     private route: ActivatedRoute,
+    private changeDetector: ChangeDetectorRef,
     private oktaStateService: OktaAuthStateService,
     @Inject(OKTA_AUTH) private oktaAuth: OktaAuth,
   ) {}
@@ -54,6 +61,10 @@ export class FilmCommentsComponent implements OnInit {
       }),
     );
     this.sortOptions = this.getSortOptions();
+  }
+
+  ngAfterContentChecked() {
+    this.changeDetector.detectChanges();
   }
 
   private getFilmId() {

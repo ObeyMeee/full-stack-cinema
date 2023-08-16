@@ -25,8 +25,13 @@ export class HallService extends BaseService {
   }
 
   purchaseTickets(tickets: Ticket[], sessionId: string) {
-    const url = `${this.baseUrl}tickets`;
-    const request = this.http.post<void>(url, { tickets, sessionId });
-    return this.requestStatusService.handleRequestWithStatus<void>(request);
+    const url = `${this.baseUrl}purchases`;
+    const request = this.http.post<{ purchaseId: number }>(url, {
+      tickets,
+      sessionId,
+    });
+    return this.requestStatusService.handleRequestWithStatus<{
+      purchaseId: number;
+    }>(request);
   }
 }

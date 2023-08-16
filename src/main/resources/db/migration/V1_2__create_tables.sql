@@ -93,11 +93,19 @@ create table films_genres
             references genres
 );
 
+create table purchase
+(
+    id        bigserial
+        primary key,
+    dealt_at timestamp(6),
+    username  varchar(255)
+);
+
 create table reactions
 (
     id         bigserial
         primary key,
-    type       varchar(255),
+    type       varchar(255) not null,
     username   varchar(255),
     comment_id uuid
         constraint fk49rifnmyo1sd243acaysemlbw
@@ -142,14 +150,16 @@ create table sessions
 
 create table tickets
 (
-    id         uuid    not null
+    id          uuid    not null
         primary key,
-    bought_at  timestamp(6),
-    price      integer not null,
-    row        integer not null,
-    seat       integer not null,
-    username   varchar(255),
-    session_id uuid    not null
+    price       integer not null,
+    row         integer not null,
+    seat        integer not null,
+    purchase_id bigint
+        constraint fkt7ugns80vdxgwtl7xcvlf90re
+            references purchase,
+    session_id  uuid    not null
         constraint fk6yhwfajgdoqa8kq4gnuimtkpp
             references sessions
 );
+

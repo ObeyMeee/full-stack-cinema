@@ -1,26 +1,26 @@
-<div *ngIf="user" class="row justify-content-center mt-5 text-white">
-  <div class="col-xxl-9">
-    <div class="fs-2">{{user.name}}</div>
-    <div class="row mt-3 fs-5">
-      <div class="col-auto">
-        <a [routerLinkActive]="['border-danger']"
-           class="tab text-white text-decoration-none px-3 py-1"
-           routerLink="tickets">
-          <i class="bi bi-ticket"></i>
-          <span class="ms-2">Tickets</span>
+<section *ngIf="user" class="section-user">
+  <h2 class="heading-2">{{user.name}}</h2>
+  <nav class="section-user__nav">
+    <ul class="section-user__nav-list">
+      <li class="section-user__nav-item">
+        <a class="section-user__nav-link"
+           routerLink="tickets"
+           [routerLinkActive]="['border-danger']">
+          <i class="pi pi-ticket"></i>
+          <span>Tickets</span>
         </a>
-      </div>
-      <div class="col-auto">
-        <a [routerLinkActive]="['border-danger']"
-           class="tab text-white text-decoration-none px-3 py-1"
-           routerLink="profile">
-          <i class="bi bi-person"></i>
-          <span class="ms-2">Profile</span>
+      </li>
+      <li class="section-user__nav-item">
+        <a class="section-user__nav-link"
+           routerLink="profile"
+           [routerLinkActive]="['border-danger']">
+          <i class="pi pi-user"></i>
+          <span>Profile</span>
         </a>
-      </div>
-    </div>
-    <div class="row mt-5">
+      </li>
+    </ul>
+  </nav>
+  <div class="section-user__main">
       <router-outlet></router-outlet>
-    </div>
   </div>
-</div>
+</section>

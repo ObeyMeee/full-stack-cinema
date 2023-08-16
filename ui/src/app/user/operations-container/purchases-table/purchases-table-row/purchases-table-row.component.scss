@@ -1,0 +1,62 @@
+tr {
+  cursor: pointer;
+  padding: 2rem 0;
+  transition: all .2s;
+
+  &:hover {
+    background: var(--color-grey-dark-4);
+  }
+}
+
+td {
+  text-align: center;
+  font-size: 1.6rem;
+  color: var(--color-grey-light-1);
+  padding: 2rem;
+
+  & .bi-chevron-down {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    background: var(--color-grey-dark-1);
+    border-radius: 100px;
+    height: 3rem;
+    width: 3rem;
+    transition: all .3s;
+
+    &::before {
+      padding: .5rem;
+      vertical-align: middle;
+      transform: translateY(1px);
+      transition: all .3s;
+    }
+
+    &--expanded {
+      background: var(--color-primary);
+
+      &::before {
+        transform: translateY(-1px) rotate(180deg);
+      }
+    }
+  }
+}
+
+.row-expansion {
+  margin-top: 2rem;
+
+  &__header-item {
+    color: var(--color-grey-dark-1);
+    font-size: 1.4rem;
+  }
+
+  &__tickets-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  &__tickets-item {
+    font-size: 1.3rem;
+  }
+}

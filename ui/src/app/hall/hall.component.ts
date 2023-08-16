@@ -24,6 +24,7 @@ export class HallComponent implements OnInit {
   isAuthenticated: boolean | undefined;
   purchaseStatus$!: Observable<Status>;
   protected addMinutes = addMinutes;
+  protected readonly Status = Status;
   @ViewChild('purchaseButton') purchaseButtonElementRef!: ElementRef;
 
   constructor(
@@ -66,16 +67,19 @@ export class HallComponent implements OnInit {
       );
       this.purchaseStatus$ = purchaseTickets.status;
       purchaseTickets.data.subscribe({
-        next: (_) => this.handleSuccess(),
-        error: this.handleError,
+        next: this.handleSuccess.bind(this),
+        error: this.handleError.bind(this),
       });
     }
   }
 
-  private handleSuccess() {
+  private handleSuccess(orderNumber: { purchaseId: number }) {
     this.toastService.showToast(
       false,
-      'Our cats get their tickets for free! Enjoy the film =)',
+      `
+      Our cats get their tickets for free! Enjoy the film =)
+      You have successfully purchased tickets. Your order number: ${orderNumber.purchaseId}
+      `,
       'success',
     );
     this.reloadCurrentRoute();
@@ -84,8 +88,8 @@ export class HallComponent implements OnInit {
   private handleError(err: any) {
     this.toastService.showToast(
       false,
-      'error',
       "Ooops... Something went wrong but don't worry, Andromeda is on the way :)",
+      'error',
     );
     console.error(err);
   }
@@ -125,6 +129,4 @@ export class HallComponent implements OnInit {
       : 'lux';
     btnSeat.classList.toggle(`hall__seat--selected-${seatType}`);
   }
-
-  protected readonly Status = Status;
 }

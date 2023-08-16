@@ -5,13 +5,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ua.com.andromeda.hall.RowType;
 
-import java.util.UUID;
-
 @Getter
 @Setter
 @NoArgsConstructor
 public class TicketDto {
-    private UUID id;
     private int row;
     private int seat;
     private RowType type;
@@ -22,8 +19,7 @@ public class TicketDto {
         this.seat = seat;
     }
 
-    public TicketDto(UUID id, int row, int seat, int price) {
-        this.id = id;
+    public TicketDto(int row, int seat, int price) {
         this.row = row;
         this.seat = seat;
         this.price = price;

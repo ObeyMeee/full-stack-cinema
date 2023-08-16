@@ -1,41 +1,15 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { compareAsc, isFuture, isSameDay, isToday, isTomorrow } from 'date-fns';
 import { SessionDto } from '../../poster/dto/session.dto';
-import {
-  animate,
-  state,
-  style,
-  transition,
-  trigger,
-} from '@angular/animations';
 import { DateDropdownService } from './date-dropdown.service';
+import { openClosedAnimation } from '../animations';
 
 @Component({
   selector: 'app-date-dropdown',
   templateUrl: './date-dropdown.component.html',
   styleUrls: ['./date-dropdown.component.scss'],
   animations: [
-    trigger('openClosed', [
-      state(
-        'open',
-        style({
-          opacity: 1,
-          height: '*',
-          visibility: 'visible',
-          transform: 'translate(-50%, -50%)',
-        }),
-      ),
-      state(
-        'closed',
-        style({
-          opacity: 0,
-          height: 0,
-          visibility: 'hidden',
-          transform: 'translate(-50%, -65%)',
-        }),
-      ),
-      transition('closed <=> open', [animate('.5s ease-in-out')]),
-    ]),
+    openClosedAnimation('translate(-50%, -50%)', 'translate(-50%, -65%)', 0.5),
   ],
 })
 export class DateDropdownComponent {

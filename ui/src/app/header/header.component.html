@@ -22,7 +22,7 @@
       </li>
       <li class="nav__item nav__item--profile" *ngIf="isAuthenticated$ | async">
         <a class="nav__link" [routerLink]="['user', 'tickets']">
-          <i class="bi bi-person"></i>
+          <i class="pi pi-user"></i>
         </a>
       </li>
       <li class="nav__item nav__item--login" *ngIf="!(isAuthenticated$ | async)">
