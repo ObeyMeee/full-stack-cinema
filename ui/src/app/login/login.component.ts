@@ -26,6 +26,9 @@ export class LoginComponent implements OnInit {
         pkce: environment.okta.pkce,
         scopes: environment.okta.scopes,
       },
+      features: {
+        showPasswordToggleOnSignInPage: true,
+      },
     });
     this.oktaSignIn.remove();
     this.oktaSignIn.renderEl(
