@@ -65,7 +65,7 @@ public class PdfCreator {
         Session session = tickets.get(0).getSession();
         LocalDateTime startAt = session.getStartAt();
 
-        Image logo = getImage(getLogoFromResource());
+        Image logo = getImage(getLogoFromResource()).setHeight(150).setWidth(210);
         Paragraph title = getTitle(session.getFilm().getTitle());
         Paragraph dateParagraph = getParagraph("Date", startAt.format(DateTimeFormatter.ISO_DATE));
         Paragraph timeParagraph = getParagraph("Time", startAt.format(DateTimeFormatter.ofPattern("HH:mm")));
