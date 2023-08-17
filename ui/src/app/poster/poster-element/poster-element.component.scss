@@ -40,21 +40,27 @@
 
   & > *:not(:last-child) {
     visibility: hidden;
+    opacity: 0;
+    transition: opacity .3s ease-in-out;
   }
 
   &:hover *:not(:last-child) {
+    opacity: 1;
     visibility: visible;
   }
 
-  &:hover::after {
-    backdrop-filter: blur(5px) brightness(50%);
-
+  &::after {
     content: "";
     display: block;
     position: absolute;
     width: 100%;
     height: 100%;
     top: 0;
+    transition: backdrop-filter .3s ease-in-out;
+  }
+
+  &:hover::after {
+    backdrop-filter: blur(5px) brightness(50%);
   }
 
   & > *:not(&__dates-box, &__title) {
