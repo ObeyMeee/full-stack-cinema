@@ -3,19 +3,11 @@
   position="top-center"
   showTransitionOptions="300ms"
   hideTransitionOptions="300ms"
-  hideTransformOptions="translateX(100%)"
->
+  hideTransformOptions="translateX(100%)">
 </p-toast>
-<!--todo overfow-hidden-->
-<div class="container-fluid p-0 overflow-hidden">
-  <div class="row">
-    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">
-      <app-header></app-header>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-12 p-0">
-      <router-outlet></router-outlet>
-    </div>
-  </div>
+<div class="app-container overflow-hidden">
+  <app-header></app-header>
+  <main>
+    <router-outlet></router-outlet>
+  </main>
 </div>

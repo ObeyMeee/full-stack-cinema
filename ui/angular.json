@@ -33,14 +33,14 @@
 							"node_modules/ngx-bootstrap/datepicker/bs-datepicker.css",
 							"node_modules/intl-tel-input/build/css/intlTelInput.css",
 							"node_modules/primeicons/primeicons.css",
-              "node_modules/primeng/resources/themes/md-dark-deeppurple/theme.css",
-              "node_modules/primeng/resources/primeng.min.css",
+							"node_modules/primeng/resources/themes/md-dark-deeppurple/theme.css",
+							"node_modules/primeng/resources/primeng.min.css",
 							"node_modules/primeflex/primeflex.css",
 							"node_modules/@fortawesome/fontawesome-free/css/all.min.css",
 							"node_modules/bootstrap/dist/css/bootstrap.min.css",
 							"node_modules/@okta/okta-signin-widget/dist/css/okta-sign-in.min.css",
-              "src/styles.scss"
-            ],
+							"src/styles.scss"
+            			],
 						"scripts": []
 					},
 					"configurations": {

@@ -1,3 +1,121 @@
-.input-success:focus {
-  box-shadow: 0 0 3px 3px green;
+@import "../../custom-bootstrap";
+
+:host ::ng-deep {
+  // Sign up button
+  .p-button.p-button-outlined.form__submit {
+    width: 100%;
+    height: 5rem;
+    font-size: 1.7rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--color-primary);
+    border: 1px solid var(--color-primary);
+    margin-top: 1.5rem;
+    box-shadow: var(--box-shadow-smallest);
+    transition: all .3s;
+
+    &:hover {
+      transform: translateY(-2px);
+      color: var(--color-grey-light-1);
+      background-color: var(--color-primary);
+      border: 1px solid var(--color-primary-dark);
+      box-shadow: var(--box-shadow-medium);
+      outline: none;
+    }
+
+    &:active {
+      transform: translateY(-1px);
+    }
+  }
+
+  // Error messages
+  .p-message-error .p-message-wrapper {
+    font-size: 1.5rem;
+
+    .p-message-detail {
+      margin-left: .8rem;
+    }
+  }
 }
+
+.loading-container {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: calc(100vh - var(--header-height));
+  width: 100vw;
+  backdrop-filter: blur(5px) brightness(70%);
+  z-index: $zindex-fixed;
+}
+
+.section-signup {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - var(--header-height));
+}
+
+.form-container {
+  background-image: linear-gradient(105deg, rgba(0, 0, 0, .75) 50%, transparent 50%), url('assets/signup-bg.jpg');
+  background-size: contain;
+  background-position-y: center;
+  background-position-x: right;
+  background-repeat: no-repeat;
+  height: 90%;
+  width: 90vw;
+}
+
+.form {
+  display: grid;
+  grid-row-gap: 1rem;
+  width: 50%;
+  padding: 2rem 10rem;
+  font-size: 1.5rem;
+
+  &__group {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+
+  &__input {
+    display: block;
+    font-family: inherit;
+    color: var(--color-grey-light-1);
+    border: none;
+    border-radius: $border-radius-lg;
+    width: 100%;
+    padding: 1.5rem 1rem;
+    background-color: rgba(70, 90, 126, 0.4);
+
+    &--invalid {
+      outline: none;
+      border: 2px solid var(--color-primary-dark);
+    }
+
+    &--success {
+      border: 2px solid forestgreen;
+
+      &:focus {
+        outline: none;
+        box-shadow: 0 0 3px 3px rgba(green, .3);
+      }
+    }
+  }
+
+  &__label {
+    display: block;
+    margin-bottom: .5rem;
+    color: var(--color-grey-light-2);
+    opacity: 1;
+    transition: all .3s;
+  }
+
+  &__input:placeholder-shown + &__label {
+    opacity: 0;
+    visibility: hidden;
+    transform: translate(1rem, 4.5rem);
+  }
+}
+

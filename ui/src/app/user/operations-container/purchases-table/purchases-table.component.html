@@ -1,9 +1,10 @@
 <div class="table__container">
-  <a *ngIf="!(purchases$ | async)"
+  <h2 class="heading-2">{{sectionName}}</h2>
+  <a *ngIf="!(purchases$ | async)?.length"
      class="message"
      routerLink="/">{{noPurchasesMessage}}</a>
-  <table *ngIf="purchases$ | async as purchases" class="table">
-    <caption class="heading-2">{{sectionName}}</caption>
+  <ng-container *ngIf="purchases$ | async as purchases">
+    <table *ngIf="purchases.length" class="table">
     <thead class="table__header">
     <tr>
       <th>Date of transaction</th>
@@ -21,4 +22,5 @@
       </app-purchases-table-row>
     </tbody>
   </table>
+  </ng-container>
 </div>

@@ -38,6 +38,4 @@ export class PurchasesTableComponent implements OnChanges, OnInit {
         : this.purchaseService.getAll();
     }
   }
-
-  protected readonly print = print;
 }

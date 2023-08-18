@@ -10,5 +10,6 @@ import { Observable } from 'rxjs';
 export class LoadingComponent {
   @Input() collection!: string;
   @Input() status$!: Observable<Status>;
+  @Input() labelShown = true;
   protected readonly Status = Status;
 }
