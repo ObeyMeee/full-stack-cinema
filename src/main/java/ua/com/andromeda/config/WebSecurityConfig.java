@@ -23,6 +23,8 @@ public class WebSecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/films/{id}/sessions", "/sessions/{id}").permitAll()
                 .requestMatchers(HttpMethod.GET, "/films/{id}/comments").permitAll()
                 .requestMatchers(HttpMethod.POST, "/users/new").permitAll()
+                .requestMatchers(HttpMethod.DELETE, "/users/{userId}").hasAuthority("Admins")
+                .requestMatchers(HttpMethod.PUT, "/users}").hasAuthority("Admins")
                 .anyRequest().authenticated();
         http.oauth2ResourceServer().jwt();
         http.cors();
