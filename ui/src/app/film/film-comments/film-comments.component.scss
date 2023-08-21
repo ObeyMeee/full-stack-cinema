@@ -35,28 +35,6 @@
     }
   }
 
-  // PAGINATION
-
-  .p-paginator {
-    background-color: transparent;
-  }
-
-  .p-paginator-page.p-link,
-  .p-paginator-icon {
-    font-size: 2.2rem;
-    margin: 0 .5rem;
-  }
-
-  .p-paginator-rpp-options.p-dropdown.p-component {
-    align-items: center;
-    height: 4rem;
-    width: 6rem;
-  }
-
-  .p-highlight {
-    color: var(--color-primary) !important;
-  }
-
   // DROPDOWN
   .p-button.p-button-danger.p-button-outlined {
     color: var(--color-primary);

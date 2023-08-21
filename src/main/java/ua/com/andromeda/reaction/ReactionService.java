@@ -3,6 +3,8 @@ package ua.com.andromeda.reaction;
 import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ua.com.andromeda.comment.Comment;
 import ua.com.andromeda.comment.CommentRepository;
@@ -17,6 +19,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class ReactionService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReactionService.class);
     private final ReactionRepository reactionRepository;
     private final CommentRepository commentRepository;
 
@@ -24,9 +27,11 @@ public class ReactionService {
                               Principal principal,
                               @NotNull String commentId) {
         Comment comment = validatePrincipalAndGetComment(principal, commentId);
-        Reaction reaction = new Reaction(principal.getName(), reactionType, comment);
+        String username = principal.getName();
+        Reaction reaction = new Reaction(username, reactionType, comment);
         comment.addReaction(reaction);
         reactionRepository.save(reaction);
+        LOGGER.info("User {} left reaction {} of comment {}", username, reactionType, comment);
         return comment.getReactions();
     }
 
@@ -45,8 +50,10 @@ public class ReactionService {
     @Transactional
     public Set<Reaction> delete(Principal principal, @NotNull String commentId) {
         Comment comment = validatePrincipalAndGetComment(principal, commentId);
-        comment.getReactions().removeIf(reaction -> reaction.getUsername().equals(principal.getName()));
-        reactionRepository.deleteByUsernameAndCommentId(principal.getName(), UUID.fromString(commentId));
+        String username = principal.getName();
+        comment.getReactions().removeIf(reaction -> reaction.getUsername().equals(username));
+        reactionRepository.deleteByUsernameAndCommentId(username, UUID.fromString(commentId));
+        LOGGER.info("User {} deleted reaction of comment {}", username, comment);
         return comment.getReactions();
     }
 
@@ -56,6 +63,7 @@ public class ReactionService {
         Reaction reaction = findByUsernameAndComment(username, comment);
         reaction.setType(reactionType);
         reactionRepository.save(reaction);
+        LOGGER.info("User {} updated reaction {} of comment {}", username, reactionType, comment);
         return reaction.getComment().getReactions();
     }
 

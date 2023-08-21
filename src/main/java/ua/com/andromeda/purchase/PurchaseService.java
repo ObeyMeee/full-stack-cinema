@@ -3,6 +3,8 @@ package ua.com.andromeda.purchase;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ua.com.andromeda.common.EmailSender;
 import ua.com.andromeda.common.PdfCreator;
@@ -25,6 +27,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class PurchaseService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(PurchaseService.class);
     private final PurchaseRepository purchaseRepository;
     private final SessionRepository sessionRepository;
     private final EmailSender emailSender;
@@ -60,6 +63,7 @@ public class PurchaseService {
         File file = pdfCreator.createTicketsFile(tickets, qrCodeBytes);
         emailSender.sendTicketsEmail(username, tickets, file);
         Files.deleteIfExists(file.toPath());
+        LOGGER.info("User {} bought tickets {}", username, tickets);
         return new OrderNumberResponse(purchase.getId());
     }
 

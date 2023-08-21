@@ -1,4 +1,4 @@
-export class User {
+export class UserRegisterDto {
   firstName!: string;
   lastName!: string;
   email!: string;

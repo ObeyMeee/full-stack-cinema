@@ -1,5 +1,5 @@
-<div class="position-relative">
-  <div class="loading-container" *ngIf="(response?.status | async) === Status.LOADING">
+<div class="position-relative" *ngIf="(response?.status | async) === Status.LOADING">
+  <div class="loading-container">
     <app-loading [status$]="response.status" [labelShown]="false"></app-loading>
   </div>
 </div>

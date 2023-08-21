@@ -1,10 +1,4 @@
-.btn {
-  display: inline-block;
-  background-color: transparent;
-  border: none;
-  border-radius: 0;
-  font-size: inherit;
-}
+@import "../custom-bootstrap";
 
 @mixin tooltip($translateBlock, $translateArrow) {
   transform: translateY($translateBlock);
@@ -21,6 +15,7 @@
   }
 }
 
+// TOOLTIP
 .p-tooltip {
   &.p-tooltip-top {
     @include tooltip(-9px, 4px);
@@ -31,3 +26,80 @@
   }
 }
 
+.btn {
+  display: inline-block;
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+  font-size: inherit;
+}
+
+.p-button.p-button-text {
+  &.p-button-secondary {
+    color: var(--color-grey-light-3);
+
+    &:enabled:hover {
+      color: var(--color-grey-light-1);
+      background-color: var(--color-grey-dark-1);
+    }
+  }
+
+  &.p-button-danger {
+    color: var(--color-primary);
+
+    &:enabled:hover {
+      color: var(--color-grey-light-1);
+      background-color: var(--color-primary-dark);
+    }
+  }
+}
+
+// PAGINATION
+.p-paginator {
+  padding: 2rem;
+  background-color: transparent;
+
+  &-page.p-link,
+  &-icon {
+    font-size: 2.2rem;
+    margin: 0 .5rem;
+  }
+
+  &-rpp-options.p-dropdown.p-component {
+    align-items: center;
+    height: 4rem;
+    width: 6rem;
+
+    &.p-focus {
+      border-color: var(--color-primary);
+      box-shadow: 0 0 1rem rgba(var(--color-primary-rgb), .2);
+    }
+  }
+
+  &-current {
+    font-size: 1.5rem;
+  }
+
+  .p-highlight {
+    color: var(--color-primary) !important;
+  }
+}
+
+
+// LOADING
+.loading-container {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: calc(100vh - var(--header-height));
+  width: 100vw;
+  backdrop-filter: blur(5px) brightness(70%);
+  z-index: $zindex-fixed;
+}
+
+// TOAST
+.p-toast-message {
+  font-size: 1.3rem;
+}

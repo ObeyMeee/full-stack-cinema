@@ -12,6 +12,7 @@ import java.util.UUID;
 @Table(name = "seats")
 @Getter
 @Setter
+@ToString
 public class Seat {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

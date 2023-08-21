@@ -4,12 +4,12 @@ import com.okta.sdk.client.Client;
 import com.okta.sdk.resource.group.Group;
 import com.okta.sdk.resource.user.User;
 import com.okta.sdk.resource.user.UserBuilder;
+import com.okta.sdk.resource.user.UserProfile;
+import com.okta.sdk.resource.user.UserStatus;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ua.com.andromeda.user.exception.UserAlreadyExistsException;
 
@@ -20,21 +20,23 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class UserService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
     private final Client oktaClient;
 
-    public void register(@Valid UserDto userDto, Set<String> groupsNames) {
-        String email = userDto.getEmail();
+    public void register(@Valid UserRegisterDto userRegisterDto, Set<String> groupsNames) {
+        String email = userRegisterDto.getEmail();
         if (userExists(email)) {
-            throw new UserAlreadyExistsException("User with this email already exists");
+            throw new UserAlreadyExistsException("User '" + email + "' already exists");
         }
         Set<String> groupIds = getGroupIds(groupsNames);
         UserBuilder.instance()
-                .setFirstName(userDto.getFirstName())
-                .setLastName(userDto.getLastName())
+                .setFirstName(userRegisterDto.getFirstName())
+                .setLastName(userRegisterDto.getLastName())
                 .setEmail(email)
-                .setPassword(userDto.getPassword().toCharArray())
+                .setPassword(userRegisterDto.getPassword().toCharArray())
                 .setGroups(groupIds)
                 .buildAndCreate(oktaClient);
+        LOGGER.info("User {} registered", email);
     }
 
     private boolean userExists(String email) {
@@ -51,28 +53,54 @@ public class UserService {
                 .collect(Collectors.toSet());
     }
 
-    public Page<User> findAll(int page, int size) {
-        List<User> allUsers = getAll();
-        Pageable pageable = PageRequest.of(page, size);
-        int offset = page * size;
-        List<User> pageContent = allUsers.stream()
-                .skip(offset)
-                .limit(size)
-                .toList();
-        return new PageImpl<>(pageContent, pageable, allUsers.size());
-    }
-
-    private List<User> getAll() {
+    public List<UserTableDto> findAll() {
         return oktaClient.listUsers()
                 .stream()
+                .map(UserTableDto::new)
                 .toList();
     }
 
-    public User update(User user) {
-        return oktaClient.partialUpdateUser(user, user.getId());
+    public UserTableDto update(UserTableDto user) {
+        String userId = user.getId();
+        User foundedUser = oktaClient.getUser(userId);
+        UserCopy.copy(user, foundedUser);
+        oktaClient.partialUpdateUser(foundedUser, userId);
+        LOGGER.info("User {} is updated", userId);
+        return user;
     }
 
     public void delete(String id) {
-        oktaClient.getUser(id).delete(true);
+        User userToBeDeleted = oktaClient.getUser(id);
+        userToBeDeleted.delete(true);
+        LOGGER.info("User {} is deleted", id);
+    }
+
+    private static class UserCopy {
+        public static void copy(UserTableDto from, User to) {
+            UserProfile profile = to.getProfile();
+            profile.setEmail(from.getEmail())
+                    .setFirstName(from.getFirstName())
+                    .setLastName(from.getLastName())
+                    .setMobilePhone(from.getPhone());
+            updateStatus(to, from.getStatus());
+        }
+
+        private static void updateStatus(User user, UserStatus status) {
+            if (user.getStatus().equals(status)) return;
+
+            switch (status) {
+                case ACTIVE -> {
+                    if (user.getStatus().equals(UserStatus.SUSPENDED)) {
+                        user.unsuspend();
+                    } else {
+                        user.activate(true);
+                    }
+                }
+                case DEPROVISIONED -> user.deactivate(true);
+                case PASSWORD_EXPIRED -> user.expirePassword();
+                case SUSPENDED -> user.suspend();
+                default -> throw new UnsupportedOperationException("Invalid status");
+            }
+        }
     }
 }

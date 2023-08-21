@@ -9,7 +9,7 @@ import ua.com.andromeda.user.validation.annotations.HasNumeric;
 import ua.com.andromeda.user.validation.annotations.HasUpperCase;
 
 @Data
-public class UserDto {
+public class UserRegisterDto {
     @Email(message = "Invalid email address")
     private String email;
 

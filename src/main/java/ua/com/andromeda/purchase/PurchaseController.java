@@ -18,11 +18,13 @@ public class PurchaseController {
 
     @GetMapping("/user")
     public ResponseEntity<List<PurchaseProfileDto>> findAllByUser(Principal principal) {
-        return ResponseEntity.ok(purchaseService.findAllByUsername(principal.getName()));
+        List<PurchaseProfileDto> purchases = purchaseService.findAllByUsername(principal.getName());
+        return ResponseEntity.ok(purchases);
     }
 
     @PostMapping
     public ResponseEntity<OrderNumberResponse> purchase(@RequestBody PurchaseDto purchase, Principal principal) {
-        return ResponseEntity.ok(purchaseService.save(purchase, principal.getName()));
+        OrderNumberResponse orderNumber = purchaseService.save(purchase, principal.getName());
+        return ResponseEntity.ok(orderNumber);
     }
 }

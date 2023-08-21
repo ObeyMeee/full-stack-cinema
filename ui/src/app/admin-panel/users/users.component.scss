@@ -1,56 +1,182 @@
-:host ::ng-deep .p-paginator,
-:host ::ng-deep .p-dropdown {
-  background: black;
+@import "../../../custom-bootstrap";
+
+.section-users {
+  padding: 3rem 10rem;
 }
 
-:host ::ng-deep .p-paginator-element {
-  font-size: 150%;
-  color: white;
-  border: white solid 1px;
-}
+:host ::ng-deep {
 
-:host ::ng-deep .p-paginator-rpp-options,
-:host ::ng-deep .p-dropdown-label,
-:host ::ng-deep .p-dropdown-trigger,
-:host ::ng-deep .p-dropdown-items,
-:host ::ng-deep .p-datatable .p-datatable-thead > tr > th,
-:host ::ng-deep .p-inputtext{
-  background: black;
-  color: white;
-}
+  // DATATABLE
+  .p-datatable-table {
+    min-height: 40rem;
 
-:host ::ng-deep .p-dropdown-items {
-  margin: 0;
-  padding: 0
-}
+    & .p-datatable-thead {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--color-grey-light-3);
+      text-transform: uppercase;
+      letter-spacing: 2px;
 
-:host ::ng-deep .p-dropdown-item.p-highlight {
-  background: #292929!important;
-  color: darkred!important;
-}
+      & > tr > th {
+        padding: 1.5rem;
 
-:host ::ng-deep .p-dialog-header,
-:host ::ng-deep .p-dialog-footer,
-:host ::ng-deep .p-dialog-content {
-  background: #191a22;
-}
+        & .p-column-filter-row .p-inputtext:focus {
+          border-color: var(--color-primary);
+          box-shadow: 0 0 1rem rgba(var(--color-primary-rgb), .2);
+        }
+      }
+    }
 
-:host ::ng-deep .p-dialog-content {
-  padding-bottom: 0;
-}
+    & .p-datatable-tbody {
+      font-size: 1.4rem;
+      color: var(--color-grey-light-1);
 
-:host ::ng-deep .p-confirm-dialog-icon {
-  color: yellow;
-}
+      & > tr {
+        border-color: var(--color-grey-light-3);
 
-:host ::ng-deep .p-confirm-dialog-message {
-  color: white;
-}
+        &:nth-child(2n) {
+          background: var(--color-grey-dark-2);
+        }
 
-.input-success:focus {
-  box-shadow: 0 0 3px 3px green;
-}
+        &:hover {
+          background: var(--color-grey-dark-1);
+        }
 
-.input-error:focus {
-  box-shadow: 0 0 3px 3px darkred;
+        & > td {
+          padding: 1.5rem;
+          max-width: 20rem;
+        }
+      }
+    }
+
+  }
+
+  .btn-delete,
+  .btn-edit {
+    border-radius: 100px;
+    height: 3rem;
+    width: 3rem;
+    transition: all .3s;
+
+    &:hover {
+      transform: translateY(-2px);
+    }
+
+    &:active {
+      transform: translateY(-1px);
+    }
+
+    & span {
+      font-size: 1.5rem;
+    }
+  }
+
+  .btn-delete {
+    background-color: var(--color-primary);
+    margin-left: 1rem;
+
+    &:hover {
+      background-color: var(--color-primary-dark);
+    }
+
+    &:focus {
+      background-color: var(--color-primary);
+    }
+  }
+
+  .btn-edit {
+    background-color: limegreen;
+
+    &:hover {
+      background-color: forestgreen;
+    }
+
+    &:focus {
+      background-color: limegreen;
+    }
+  }
+
+  // CONFIRM DIALOG
+  .p-component-overlay {
+    backdrop-filter: blur(3px) brightness(50%);
+  }
+
+  .p-confirm-dialog .p-dialog-content {
+    font-size: 1.6rem;
+
+    .p-confirm-dialog-icon {
+      color: gold;
+    }
+  }
+
+  .btn-primary {
+    font-size: 1.5rem;
+    background-color: var(--color-primary);
+
+    &:hover,
+    &:focus {
+      color: var(--color-grey-light-1);
+      background-color: var(--color-primary-dark);
+    }
+  }
+
+  .btn-secondary {
+    font-size: 1.5rem;
+    background-color: var(--color-grey-light-3);
+
+    &:hover,
+    &:focus {
+      color: var(--color-grey-light-1);
+      background-color: var(--color-grey-dark-1);
+    }
+  }
+
+  //EDIT FORM
+  .form {
+    font-size: 1.5rem;
+
+    &__group {
+      display: flex;
+      flex-direction: column-reverse;
+      margin-bottom: 1.5rem;
+    }
+
+
+    &__input {
+      font-size: 1.5rem;
+      font-family: inherit;
+
+      &--invalid {
+        outline: none;
+        border: 2px solid var(--color-primary-dark);
+      }
+
+      &--success {
+        border: 2px solid forestgreen;
+
+        &:focus {
+          outline: none;
+          box-shadow: 0 0 3px 3px rgba(green, .3);
+        }
+      }
+    }
+
+    &__label {
+      margin-bottom: .5rem;
+    }
+
+    &__footer {
+      display: flex;
+
+      & .p-button-text {
+        display: inline-block;
+        font-size: 1.6rem;
+      }
+
+      & .p-button-secondary {
+        margin-left: auto;
+        margin-right: 1.5rem;
+      }
+    }
+  }
 }

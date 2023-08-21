@@ -3,6 +3,8 @@ package ua.com.andromeda.comment;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +19,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class CommentService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CommentService.class);
     private final CommentRepository commentRepository;
     private final FilmRepository filmRepository;
 
@@ -41,6 +44,8 @@ public class CommentService {
         UUID uuid = UUID.fromString(filmId);
         Film film = filmRepository.findById(uuid).orElseThrow(() -> new FilmNotFoundException(uuid));
         comment.setFilm(film);
-        return commentRepository.save(comment);
+        commentRepository.save(comment);
+        LOGGER.info("User left comment {}", comment);
+        return comment;
     }
 }

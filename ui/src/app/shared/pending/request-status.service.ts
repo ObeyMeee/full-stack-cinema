@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { catchError, defer, Observable, ReplaySubject, retry, tap } from 'rxjs';
+import { catchError, defer, Observable, ReplaySubject, tap } from 'rxjs';
 import { Status } from './status.enum';
 
 @Injectable({
@@ -11,7 +11,6 @@ export class RequestStatusService {
     const data = defer(() => {
       status.next(Status.LOADING);
       return request.pipe(
-        retry(2),
         catchError((err) => {
           status.next(Status.ERROR);
           throw err;

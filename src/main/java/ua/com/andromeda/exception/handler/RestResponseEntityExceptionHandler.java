@@ -2,6 +2,8 @@ package ua.com.andromeda.exception.handler;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -22,6 +24,8 @@ import java.util.List;
 
 @RestControllerAdvice
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
+    private static final Logger LOGGER = LoggerFactory.getLogger(RestResponseEntityExceptionHandler.class);
+
     @ExceptionHandler({NotFoundException.class, UserAlreadyExistsException.class})
     protected ResponseEntity<Object> handleConflict(RuntimeException ex, WebRequest request) {
         List<String> messages = getSingletonListMessage(ex);
@@ -58,8 +62,8 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     @ExceptionHandler({Exception.class})
     protected ResponseEntity<Object> handleConflict(Exception ex, WebRequest request) {
         ex.printStackTrace();
-        List<String> messages = getSingletonListMessage(ex);
-        ErrorResponse errorResponse = new ErrorResponse(messages, request.getDescription(false));
+        LOGGER.error(ex.getMessage());
+        ErrorResponse errorResponse = new ErrorResponse(List.of("Something went wrong"), request.getDescription(false));
         return handleExceptionInternal(ex, errorResponse, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
     }
 }

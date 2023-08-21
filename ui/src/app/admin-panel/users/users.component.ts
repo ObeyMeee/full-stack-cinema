@@ -1,17 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { UserService } from './user.service';
 import { Pending } from '../../shared/pending/pending.interface';
-import { User } from './user.interface';
-import { Page } from '../../shared/pagination/page.interface';
-import { PageEvent } from '../../shared/pagination/page-event.interface';
+import { UserTableDto } from './user-table.dto';
 import { ConfirmationService } from 'primeng/api';
 import { ToastService } from '../../shared/toast.service';
 import { UserStatus } from '../../shared/user-status.enum';
-import {
-  CountryISO,
-  PhoneNumberFormat,
-  SearchCountryField,
-} from 'ngx-intl-tel-input';
+import { Status } from '../../shared/pending/status.enum';
+import { Table } from 'primeng/table';
 
 @Component({
   selector: 'app-users',
@@ -20,15 +15,14 @@ import {
   providers: [UserService, ConfirmationService, ToastService],
 })
 export class UsersComponent implements OnInit {
-  usersPage$!: Pending<Page<User>>;
-  first = 0;
-  rows = 10;
-  editedUser!: User;
+  usersPage$!: Pending<UserTableDto[]>;
+  editedUser!: UserTableDto;
   editUserDialog = false;
+  userStatuses!: UserStatus[];
+  userStatusesToUpdate!: UserStatus[];
+  @ViewChild('usersTable') usersTable!: Table;
 
-  protected readonly SearchCountryField = SearchCountryField;
-  protected readonly PhoneNumberFormat = PhoneNumberFormat;
-  protected readonly CountryISO = CountryISO;
+  protected readonly Status = Status;
 
   constructor(
     private userService: UserService,
@@ -38,28 +32,29 @@ export class UsersComponent implements OnInit {
 
   ngOnInit() {
     this.usersPage$ = this.userService.getAll();
+    this.userStatuses = Object.values(UserStatus);
+    this.userStatusesToUpdate = [
+      UserStatus.ACTIVE,
+      UserStatus.DEPROVISIONED,
+      UserStatus.PASSWORD_EXPIRED,
+      UserStatus.SUSPENDED,
+    ];
   }
 
-  delete(user: User) {
-    const email = user.profile.email;
+  delete(user: UserTableDto) {
+    this.confirmationService.close();
+    const email = user.email;
     this.confirmationService.confirm({
       message: `Are you sure that you want to delete ${email}?`,
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.userService.delete(user.id).data.subscribe(() => {
-          const page = this.first / this.rows;
-          this.usersPage$ = this.userService.getAll(page, this.rows);
+          this.usersPage$ = this.userService.getAll();
           this.toastService.showToast(true, `User ${email}  deleted`, 'info');
         });
       },
     });
-  }
-
-  fetchUsers($event: PageEvent) {
-    this.first = $event.first;
-    this.rows = $event.rows;
-    this.usersPage$ = this.userService.getAll($event.page, $event.rows);
   }
 
   getSeverityStatusTag(status: string) {
@@ -77,11 +72,7 @@ export class UsersComponent implements OnInit {
     }
   }
 
-  getAllUserStatuses() {
-    return Object.values(UserStatus);
-  }
-
-  edit(user: User) {
+  edit(user: UserTableDto) {
     this.editedUser = structuredClone(user);
     this.editUserDialog = true;
   }
@@ -90,14 +81,23 @@ export class UsersComponent implements OnInit {
     this.editUserDialog = false;
   }
 
-  saveUser() {
-    this.userService.update(this.editedUser).data.subscribe(() => {
-      this.hideDialog();
-      this.toastService.showToast(
-        true,
-        "User's been successfully updated",
-        'success',
-      );
+  save() {
+    this.userService.update(this.editedUser).data.subscribe({
+      next: (updatedUser) => {
+        this.hideDialog();
+        this.toastService.showToast(
+          true,
+          "User's been successfully updated",
+          'success',
+        );
+      },
+      error: (err) =>
+        this.toastService.showToast(true, err.error.messages[0], 'error'),
     });
+  }
+
+  applyFilterGlobal($event: Event, matchmode: string) {
+    const globalFilter = <HTMLInputElement>$event.target;
+    this.usersTable.filterGlobal(globalFilter.value, matchmode);
   }
 }

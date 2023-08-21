@@ -38,18 +38,6 @@
   }
 }
 
-.loading-container {
-  position: fixed;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  height: calc(100vh - var(--header-height));
-  width: 100vw;
-  backdrop-filter: blur(5px) brightness(70%);
-  z-index: $zindex-fixed;
-}
-
 .section-signup {
   display: flex;
   justify-content: center;
