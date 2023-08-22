@@ -13,27 +13,20 @@ export class AdminGuard {
   ) {}
 
   async canActivate() {
-    const isAuthenticated = await this.oktaAuth.isAuthenticated();
-    if (!isAuthenticated) {
-      this.toastService.showToast(
-        true,
-        'Please, authorize to see this page',
-        'error',
-      );
-      return false;
-    }
-
-    const user = await this.oktaAuth.getUser();
-    const groups = <string[]>user['groups'];
-    if (groups.includes('Admins')) {
+    if (await this.isAdmin()) {
       return true;
     }
-
-    this.toastService.showToast(
-      true,
-      'You are not allowed to see this page',
-      'error',
-    );
+    this.showToast('You are not allowed to see this page');
     return false;
+  }
+
+  private async isAdmin() {
+    const user = await this.oktaAuth.getUser();
+    const groups = <string[]>user['groups'];
+    return groups.includes('Admins');
+  }
+
+  private showToast(message: string) {
+    this.toastService.showToast(true, message, 'error');
   }
 }

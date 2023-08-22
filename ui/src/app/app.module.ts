@@ -96,7 +96,7 @@ const routes: Route[] = [
   {
     path: 'admin',
     component: AdminPanelComponent,
-    canActivate: [() => inject(AdminGuard).canActivate()],
+    canActivate: [OktaAuthGuard, () => inject(AdminGuard).canActivate()],
   },
   { path: '**', component: PosterComponent },
 ];

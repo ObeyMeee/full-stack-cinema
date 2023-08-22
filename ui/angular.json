@@ -29,6 +29,7 @@
 							"src/assets"
 						],
 						"styles": [
+							"node_modules/intl-tel-input/build/css/intlTelInput.css",
 							"node_modules/animate.css/animate.css",
 							"node_modules/ngx-bootstrap/datepicker/bs-datepicker.css",
 							"node_modules/intl-tel-input/build/css/intlTelInput.css",

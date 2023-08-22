@@ -28,7 +28,7 @@
     "bootstrap": "^5.2.3",
     "bootstrap-icons": "^1.10.3",
     "date-fns": "^2.29.3",
-    "google-libphonenumber": "^3.2.32",
+    "google-libphonenumber": "^3.2.33",
     "http-method-enum": "^1.0.0",
     "intl-tel-input": "^17.0.3",
     "lodash": "^4.17.21",

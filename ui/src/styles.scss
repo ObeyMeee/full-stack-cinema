@@ -1,7 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~bootstrap-icons/font/bootstrap-icons.css";
 @import "bootstrap/dist/css/bootstrap.min.css";
+@import "bootstrap/scss/bootstrap";
+@import "ngx-bootstrap/datepicker/bs-datepicker";
 @import "primeicons/primeicons.css";
+
 @import "assets/theme";
 @import "sass/base";
 @import "sass/typography";
