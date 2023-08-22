@@ -22,10 +22,7 @@
   </td>
   <td>{{purchase.sessionStartAt | date:'short'}}</td>
   <td>{{purchase.quantity}}</td>
-  <td>
-    <span>{{purchase.totalPrice}}</span>
-    <span class="ms-3">&#8372;</span>
-  </td>
+  <td>{{purchase.totalPrice | currency:"UAH":"symbol-narrow"}}</td>
   <td>
     <i class="bi bi-chevron-down {{rowExpanded ? 'bi-chevron-down--expanded' : ''}}"></i>
   </td>

@@ -1,9 +1,13 @@
+<app-loading [status$]="purchases$.status"
+             collection="purchases">
+</app-loading>
+
 <div class="table__container">
   <h2 class="heading-2">{{sectionName}}</h2>
-  <a *ngIf="!(purchases$ | async)?.length"
+  <a *ngIf="!(purchases$.data | async)?.length"
      class="message"
      routerLink="/">{{noPurchasesMessage}}</a>
-  <ng-container *ngIf="purchases$ | async as purchases">
+  <ng-container *ngIf="purchases$.data | async as purchases">
     <table *ngIf="purchases.length" class="table">
     <thead class="table__header">
     <tr>
