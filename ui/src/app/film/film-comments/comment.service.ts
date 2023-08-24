@@ -3,7 +3,7 @@ import { BaseService } from '../../shared/base.service';
 import { HttpClient } from '@angular/common/http';
 import { Comment } from '../model/comment.model';
 import { SortType } from './sort-type.enum';
-import { SortDirection } from '../../shared/sort-direction.enum';
+import { SortDirection } from '../../shared/enums/sort-direction.enum';
 import { Page } from '../../shared/pagination/page.interface';
 import { RequestStatusService } from '../../shared/pending/request-status.service';
 

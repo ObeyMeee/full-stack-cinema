@@ -4,11 +4,12 @@ import { Pending } from '../../shared/pending/pending.interface';
 import { UserTableDto } from './user-table.dto';
 import { ConfirmationService } from 'primeng/api';
 import { ToastService } from '../../shared/toast.service';
-import { UserStatus } from '../../shared/user-status.enum';
+import { UserStatus } from '../../shared/enums/user-status.enum';
 import { Status } from '../../shared/pending/status.enum';
 import { Table } from 'primeng/table';
 import { Phone } from '../../shared/phone.model';
 import { CountryISO } from 'ngx-intl-tel-input';
+import { ExcelSaver } from '../../shared/excel-saver.service';
 
 @Component({
   selector: 'app-users',
@@ -24,18 +25,40 @@ export class UsersComponent implements OnInit {
   userStatusesToUpdate!: UserStatus[];
   @ViewChild('usersTable') usersTable!: Table;
 
+  columns!: Column[];
+  exportColumns!: ExportColumn[];
+
   protected readonly Status = Status;
   protected readonly CountryISO = CountryISO;
 
   constructor(
     private userService: UserService,
-    private confirmationService: ConfirmationService,
+    private excelSaver: ExcelSaver,
     private toastService: ToastService,
+    private confirmationService: ConfirmationService,
   ) {}
 
   ngOnInit() {
     this.usersPage$ = this.userService.getAll();
     this.allUserStatuses = Object.values(UserStatus);
+
+    this.columns = [
+      { field: 'email', header: 'Email' },
+      { field: 'firstName', header: 'First name' },
+      { field: 'lastName', header: 'Last name' },
+      { field: 'phone', header: 'Phone' },
+      { field: 'status', header: 'Status' },
+      {
+        field: 'created',
+        header: 'Created',
+        customExportHeader: 'Created date',
+      },
+    ];
+
+    this.exportColumns = this.columns.map((col) => ({
+      title: col.header,
+      dataKey: col.field,
+    }));
   }
 
   delete(user: UserTableDto) {
@@ -105,17 +128,26 @@ export class UsersComponent implements OnInit {
 
   save() {
     this.userService.update(this.editedUser).data.subscribe({
-      next: (updatedUser) => {
-        this.hideDialog();
-        this.toastService.showToast(
-          true,
-          "User's been successfully updated",
-          'success',
-        );
-      },
+      next: this.handleUpdateSuccess.bind(this),
       error: (err) =>
         this.toastService.showToast(true, err.error.messages, 'error'),
     });
+  }
+
+  private handleUpdateSuccess(updatedUser: UserTableDto) {
+    this.hideDialog();
+    this.updateRow(updatedUser);
+    this.toastService.showToast(
+      true,
+      "User's been successfully updated",
+      'success',
+    );
+  }
+
+  private updateRow(updatedUser: UserTableDto) {
+    const users = this.usersTable.value;
+    const index = users.findIndex((u) => u.id === updatedUser.id);
+    users[index] = updatedUser;
   }
 
   applyFilterGlobal($event: Event, matchmode: string) {
@@ -126,4 +158,20 @@ export class UsersComponent implements OnInit {
   assignUserPhone($event: Phone) {
     this.editedUser.phone = $event ? $event.internationalNumber : '';
   }
+
+  exportExcel() {
+    const users = this.usersTable.value;
+    this.excelSaver.save(users, 'users');
+  }
+}
+
+interface Column {
+  field: string;
+  header: string;
+  customExportHeader?: string;
+}
+
+interface ExportColumn {
+  title: string;
+  dataKey: string;
 }

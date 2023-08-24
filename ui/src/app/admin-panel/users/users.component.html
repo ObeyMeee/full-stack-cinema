@@ -11,6 +11,7 @@
   <ng-container *ngIf="usersPage$.data | async as users">
     <p-table #usersTable
              dataKey="profile.email"
+             [columns]="columns"
              [value]="users"
              [scrollable]="true"
              scrollHeight="50rem"
@@ -32,6 +33,25 @@
              styleClass="p-datatable-stripped">
       <ng-template pTemplate="caption">
         <div class="flex">
+          <button type="button"
+                  pButton
+                  pRipple
+                  icon="pi pi-file"
+                  (click)="usersTable.exportCSV()"
+                  class="mr-2"
+                  pTooltip="CSV"
+                  tooltipPosition="bottom">
+          </button>
+          <button type="button"
+                  pButton
+                  pRipple
+                  icon="pi pi-file-excel"
+                  (click)="exportExcel()"
+                  class="p-button-success"
+                  pTooltip="XLS"
+                  tooltipPosition="bottom">
+          </button>
+
           <span class="p-input-icon-left ml-auto">
                 <i class="pi pi-search"></i>
                 <input pInputText
@@ -43,29 +63,9 @@
 
       <ng-template pTemplate="header">
         <tr>
-          <th scope="col" pSortableColumn="email">
-            <span>Email</span>
-            <p-sortIcon field="email"></p-sortIcon>
-          </th>
-          <th scope="col" pSortableColumn="firstName">
-            <span>First Name</span>
-            <p-sortIcon field="firstName"></p-sortIcon>
-          </th>
-          <th scope="col" pSortableColumn="lastName">
-            <span>Last Name</span>
-            <p-sortIcon field="lastName"></p-sortIcon>
-          </th>
-          <th scope="col" pSortableColumn="phone">
-            <span>Phone</span>
-            <p-sortIcon field="phone"></p-sortIcon>
-          </th>
-          <th scope="col" pSortableColumn="status">
-            <span>Status</span>
-            <p-sortIcon field="status"></p-sortIcon>
-          </th>
-          <th scope="col" pSortableColumn="created">
-            <span>Created</span>
-            <p-sortIcon field="created"></p-sortIcon>
+          <th *ngFor="let col of columns" scope="col" [pSortableColumn]="col.field">
+            <span>{{col.header}}</span>
+            <p-sortIcon [field]="col.field"></p-sortIcon>
           </th>
           <th scope="col"><span>Action</span></th>
         </tr>

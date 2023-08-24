@@ -1,9 +1,8 @@
-import { UserStatus } from '../../shared/user-status.enum';
+import { UserStatus } from '../../shared/enums/user-status.enum';
 
 export class UserTableDto {
   id!: string;
   status!: UserStatus;
-  activated!: string;
   firstName!: string;
   lastName!: string;
   phone!: string;

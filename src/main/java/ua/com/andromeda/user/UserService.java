@@ -16,7 +16,6 @@ import ua.com.andromeda.user.exception.UserAlreadyExistsException;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -25,11 +24,8 @@ public class UserService {
     private final Client oktaClient;
 
     public List<UserTableDto> findAll() {
-        return Stream.concat(
-                        oktaClient.listUsers(null, "status eq \"DEPROVISIONED\"", null, null, null)
-                                .stream(),
-                        oktaClient.listUsers().stream()
-                )
+        return oktaClient.listUsers()
+                .stream()
                 .map(UserTableDto::new)
                 .toList();
     }
