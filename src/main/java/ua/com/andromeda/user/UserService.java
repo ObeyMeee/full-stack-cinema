@@ -16,12 +16,23 @@ import ua.com.andromeda.user.exception.UserAlreadyExistsException;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
     private final Client oktaClient;
+
+    public List<UserTableDto> findAll() {
+        return Stream.concat(
+                        oktaClient.listUsers(null, "status eq \"DEPROVISIONED\"", null, null, null)
+                                .stream(),
+                        oktaClient.listUsers().stream()
+                )
+                .map(UserTableDto::new)
+                .toList();
+    }
 
     public void register(@Valid UserRegisterDto userRegisterDto, Set<String> groupsNames) {
         String email = userRegisterDto.getEmail();
@@ -53,18 +64,13 @@ public class UserService {
                 .collect(Collectors.toSet());
     }
 
-    public List<UserTableDto> findAll() {
-        return oktaClient.listUsers()
-                .stream()
-                .map(UserTableDto::new)
-                .toList();
-    }
-
     public UserTableDto update(UserTableDto user) {
         String userId = user.getId();
         User foundedUser = oktaClient.getUser(userId);
         UserCopy.copy(user, foundedUser);
-        oktaClient.partialUpdateUser(foundedUser, userId);
+        if (!user.getStatus().equals(UserStatus.DEPROVISIONED)) {
+            oktaClient.partialUpdateUser(foundedUser, userId);
+        }
         LOGGER.info("User {} is updated", userId);
         return user;
     }
@@ -85,21 +91,33 @@ public class UserService {
             updateStatus(to, from.getStatus());
         }
 
-        private static void updateStatus(User user, UserStatus status) {
-            if (user.getStatus().equals(status)) return;
+        private static void updateStatus(User user, UserStatus newStatus) {
+            UserStatus currentStatus = user.getStatus();
+            if (currentStatus.equals(newStatus)) return;
 
-            switch (status) {
-                case ACTIVE -> {
-                    if (user.getStatus().equals(UserStatus.SUSPENDED)) {
-                        user.unsuspend();
-                    } else {
-                        user.activate(true);
-                    }
-                }
-                case DEPROVISIONED -> user.deactivate(true);
+            boolean sendEmail = true;
+            switch (newStatus) {
+                case ACTIVE -> activate(user, sendEmail);
+                case PROVISIONED -> user.activate(sendEmail);
                 case PASSWORD_EXPIRED -> user.expirePassword();
                 case SUSPENDED -> user.suspend();
-                default -> throw new UnsupportedOperationException("Invalid status");
+                case DEPROVISIONED -> user.deactivate(sendEmail);
+                default -> throw new UnsupportedOperationException(
+                        "User having " + currentStatus + " cannot receive " + newStatus
+                );
+            }
+        }
+
+        private static void activate(User user, boolean sendEmail) {
+            UserStatus currentStatus = user.getStatus();
+            switch (currentStatus) {
+                case LOCKED_OUT -> user.unlock();
+                case RECOVERY -> user.resetPassword(sendEmail);
+                case STAGED -> user.activate(sendEmail);
+                case SUSPENDED -> user.unsuspend();
+                default -> throw new UnsupportedOperationException(
+                        "User having " + currentStatus + " cannot be activated"
+                );
             }
         }
     }

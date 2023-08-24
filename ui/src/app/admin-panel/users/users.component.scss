@@ -146,12 +146,12 @@
       font-size: 1.5rem;
       font-family: inherit;
 
-      &--invalid {
+      &.ng-invalid {
         outline: none;
         border: 2px solid var(--color-primary-dark);
       }
 
-      &--success {
+      &.ng-valid {
         border: 2px solid forestgreen;
 
         &:focus {
@@ -176,6 +176,24 @@
       & .p-button-secondary {
         margin-left: auto;
         margin-right: 1.5rem;
+      }
+    }
+  }
+
+  .iti {
+    display: block;
+
+    & .dropdown-menu.country-dropdown {
+      background-color: transparent;
+      border-color: transparent;
+    }
+
+    &__country-list {
+      color: var(--color-grey-light-1);
+      background-color: var(--color-grey-dark-3);
+
+      & li.iti__country:hover {
+        background-color: var(--color-grey-dark-1);
       }
     }
   }

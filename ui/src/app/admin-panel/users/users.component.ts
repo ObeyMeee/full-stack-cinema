@@ -7,6 +7,8 @@ import { ToastService } from '../../shared/toast.service';
 import { UserStatus } from '../../shared/user-status.enum';
 import { Status } from '../../shared/pending/status.enum';
 import { Table } from 'primeng/table';
+import { Phone } from '../../shared/phone.model';
+import { CountryISO } from 'ngx-intl-tel-input';
 
 @Component({
   selector: 'app-users',
@@ -18,11 +20,12 @@ export class UsersComponent implements OnInit {
   usersPage$!: Pending<UserTableDto[]>;
   editedUser!: UserTableDto;
   editUserDialog = false;
-  userStatuses!: UserStatus[];
+  allUserStatuses!: UserStatus[];
   userStatusesToUpdate!: UserStatus[];
   @ViewChild('usersTable') usersTable!: Table;
 
   protected readonly Status = Status;
+  protected readonly CountryISO = CountryISO;
 
   constructor(
     private userService: UserService,
@@ -32,13 +35,7 @@ export class UsersComponent implements OnInit {
 
   ngOnInit() {
     this.usersPage$ = this.userService.getAll();
-    this.userStatuses = Object.values(UserStatus);
-    this.userStatusesToUpdate = [
-      UserStatus.ACTIVE,
-      UserStatus.DEPROVISIONED,
-      UserStatus.PASSWORD_EXPIRED,
-      UserStatus.SUSPENDED,
-    ];
+    this.allUserStatuses = Object.values(UserStatus);
   }
 
   delete(user: UserTableDto) {
@@ -74,7 +71,32 @@ export class UsersComponent implements OnInit {
 
   edit(user: UserTableDto) {
     this.editedUser = structuredClone(user);
+    this.setUserStatusesToUpdate();
     this.editUserDialog = true;
+  }
+
+  private setUserStatusesToUpdate() {
+    const currentStatus = this.editedUser.status;
+    const ACTIVE = UserStatus.ACTIVE;
+    const SUSPENDED = UserStatus.SUSPENDED;
+    const DEPROVISIONED = UserStatus.DEPROVISIONED;
+    this.userStatusesToUpdate = [currentStatus];
+    if (currentStatus !== DEPROVISIONED) {
+      this.userStatusesToUpdate.push(DEPROVISIONED);
+    }
+    switch (currentStatus) {
+      case UserStatus.STAGED:
+        this.userStatusesToUpdate.push(UserStatus.PROVISIONED);
+        break;
+      case ACTIVE:
+        this.userStatusesToUpdate.push(UserStatus.PASSWORD_EXPIRED, SUSPENDED);
+        break;
+      case UserStatus.RECOVERY:
+      case UserStatus.LOCKED_OUT:
+      case SUSPENDED:
+        this.userStatusesToUpdate.push(ACTIVE);
+        break;
+    }
   }
 
   hideDialog() {
@@ -92,12 +114,16 @@ export class UsersComponent implements OnInit {
         );
       },
       error: (err) =>
-        this.toastService.showToast(true, err.error.messages[0], 'error'),
+        this.toastService.showToast(true, err.error.messages, 'error'),
     });
   }
 
   applyFilterGlobal($event: Event, matchmode: string) {
     const globalFilter = <HTMLInputElement>$event.target;
     this.usersTable.filterGlobal(globalFilter.value, matchmode);
+  }
+
+  assignUserPhone($event: Phone) {
+    this.editedUser.phone = $event ? $event.internationalNumber : '';
   }
 }

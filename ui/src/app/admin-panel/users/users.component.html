@@ -84,7 +84,7 @@
             <p-columnFilter field="status" matchMode="equals" [showMenu]="false">
               <ng-template pTemplate="filter" let-value let-filter="filterCallback">
                 <p-dropdown [ngModel]="value"
-                            [options]="userStatuses"
+                            [options]="allUserStatuses"
                             (onChange)="filter($event.value)"
                             placeholder="Any"
                             [showClear]="true">
@@ -167,11 +167,7 @@
             First name must be up to 50 characters long
           </div>
         </small>
-        <input [ngClass]="{
-              'form__input': true,
-              'form__input--success': firstName.valid && (firstName.touched || firstName.dirty),
-              'form__input--invalid': firstName.invalid && (firstName.touched || firstName.dirty)
-              }"
+        <input class="form__input"
                pInputText
                id="first-name"
                name="firstName"
@@ -193,11 +189,7 @@
             Last name must be up to 50 characters long
           </div>
         </small>
-        <input [ngClass]="{
-              'form__input': true,
-              'form__input--success': lastName.valid && (lastName.touched || lastName.dirty),
-              'form__input--invalid': lastName.invalid && (lastName.touched || lastName.dirty)
-             }"
+        <input class="form__input"
                pInputText
                id="last-name"
                name="lastName"
@@ -222,12 +214,9 @@
           </div>
         </small>
         <input id="email"
+               type="email"
                pInputText
-               [ngClass]="{
-              'form__input': true,
-              'form__input--success': email.valid && (email.touched || email.dirty),
-              'form__input--invalid': email.invalid && (email.touched || email.dirty)
-             }"
+               class="form__input"
                name="email"
                placeholder="Email"
                minlength="5"
@@ -253,6 +242,21 @@
           </ng-template>
         </p-dropdown>
         <label class="form__label" for="status">User status</label>
+      </div>
+
+      <div class="form__group">
+        <ngx-intl-tel-input
+            cssClass="form__input p-inputtext"
+            [preferredCountries]="[CountryISO.Ukraine, CountryISO.UnitedStates]"
+            [enablePlaceholder]="true"
+            [selectFirstCountry]="false"
+            [selectedCountryISO]="CountryISO.Ukraine"
+            inputId="phone"
+            name="phone"
+            [(ngModel)]="editedUser.phone"
+            (ngModelChange)="assignUserPhone($event)"
+        ></ngx-intl-tel-input>
+        <label for="phone" class="form__label">Phone</label>
       </div>
 
       <div class="form__footer">
