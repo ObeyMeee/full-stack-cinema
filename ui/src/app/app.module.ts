@@ -10,13 +10,7 @@ import { Route, RouterModule } from '@angular/router';
 import { FilmComponent } from './film/film.component';
 import { HallComponent } from './hall/hall.component';
 import { LoginComponent } from './login/login.component';
-import {
-  OktaAuthGuard,
-  OktaAuthModule,
-  OktaCallbackComponent,
-} from '@okta/okta-angular';
-import { environment } from '../environments/environment.development';
-import OktaAuth from '@okta/okta-auth-js';
+import { OktaAuthGuard, OktaAuthModule, OktaCallbackComponent } from '@okta/okta-angular';
 import { AuthInterceptorService } from './interceptor/auth-interceptor.service';
 import { HoverDirective } from './shared/directives/hover.directive';
 import { TooltipModule } from 'primeng/tooltip';
@@ -66,9 +60,14 @@ import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
 import { DateDropdownComponent } from './shared/date-dropdown/date-dropdown.component';
 import { LoadingComponent } from './shared/loading/loading.component';
 import { FilmCommentComponent } from './film/film-comments/film-comment/film-comment.component';
-import { SkeletonModule } from 'primeng/skeleton';
 import { PurchasesTableComponent } from './user/operations-container/purchases-table/purchases-table.component';
-import { PurchasesTableRowComponent } from './user/operations-container/purchases-table/purchases-table-row/purchases-table-row.component';
+import {
+  PurchasesTableRowComponent
+} from './user/operations-container/purchases-table/purchases-table-row/purchases-table-row.component';
+import { GoogleLoginProvider, SocialLoginModule } from 'angularx-social-login';
+import { SkeletonModule } from 'primeng/skeleton';
+import OktaAuth from '@okta/okta-auth-js';
+import { environment } from '../environments/environment.development';
 
 const routes: Route[] = [
   { path: '', component: PosterComponent, pathMatch: 'full' },
@@ -167,6 +166,7 @@ const oktaAuth = new OktaAuth(environment.okta);
     KeyFilterModule,
     NgxIntlTelInputModule,
     SkeletonModule,
+    SocialLoginModule
   ],
   providers: [
     {
@@ -178,6 +178,21 @@ const oktaAuth = new OktaAuth(environment.okta);
       provide: HTTP_INTERCEPTORS,
       useClass: ConvertDateInterceptorService,
       multi: true,
+    },
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: true, //keeps the user signed in
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider(
+              '510764604889-udcm1ijpoob6a78cqvuuot0suddmbtqr.apps.googleusercontent.com',
+              { scope: 'email', plugin_name: 'andromeda-cinema' }
+            )
+          }
+        ]
+      }
     },
     MessageService,
     OktaAuthGuard,

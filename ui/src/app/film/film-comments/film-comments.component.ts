@@ -1,10 +1,4 @@
-import {
-  AfterContentChecked,
-  ChangeDetectorRef,
-  Component,
-  Inject,
-  OnInit,
-} from '@angular/core';
+import { AfterContentChecked, ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { map, Observable, tap } from 'rxjs';
 import { OKTA_AUTH, OktaAuthStateService } from '@okta/okta-angular';
@@ -12,12 +6,12 @@ import { Pending } from '../../shared/pending/pending.interface';
 import { Comment } from '../model/comment.model';
 import { CommentService } from './comment.service';
 import { SortType } from './sort-type.enum';
-import { PageEvent } from '../../shared/pagination/page-event.interface';
 import { Page } from '../../shared/pagination/page.interface';
 import { ToastService } from '../../shared/toast.service';
 import { capitalize } from 'lodash';
 import OktaAuth, { UserClaims } from '@okta/okta-auth-js';
 import { Status } from '../../shared/pending/status.enum';
+import { PaginatorState } from 'primeng/paginator';
 
 @Component({
   selector: 'app-film-comments',
@@ -78,14 +72,14 @@ export class FilmCommentsComponent implements OnInit, AfterContentChecked {
     }));
   }
 
-  onPageChange(event: PageEvent) {
-    this.first = event.first;
-    this.rows = event.rows;
+  onPageChange(event: PaginatorState) {
+    this.first = event.first!;
+    this.rows = event.rows!;
     const id = this.getFilmId();
     this.commentsPage$ = this.commentService.getByFilmId(
       id,
-      event.page,
-      event.rows,
+      event.page!,
+      event.rows!,
       this.sortType,
     );
   }

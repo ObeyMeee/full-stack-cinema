@@ -34,6 +34,23 @@
   font-size: inherit;
 }
 
+.btn-google {
+  display: grid;
+  grid-template-columns: repeat(2, max-content);
+  width: 100%;
+
+  & img {
+    height: 2rem;
+    width: 2rem;
+    object-fit: cover;
+  }
+
+  & span {
+    color: var(--color-grey-dark-4);
+    background-color: #fff;
+  }
+}
+
 .p-button.p-button-text {
   &.p-button-secondary {
     color: var(--color-grey-light-3);

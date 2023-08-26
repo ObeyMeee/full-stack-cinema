@@ -16,6 +16,11 @@
         </p-messages>
       </div>
 
+      <button (click)="signUpByGoogle()" type="button" class="btn btn-google">
+        <img src="assets/google-logo.png" alt="Google logo">
+        <span>Google</span>
+      </button>
+
       <div class="form__group">
         <small class="p-error" *ngIf="firstName.errors && (firstName.touched || firstName.dirty)">
           <div *ngIf="firstName.errors?.['required']">

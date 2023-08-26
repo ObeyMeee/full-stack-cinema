@@ -1,11 +1,6 @@
-#okta-sign-in-widget {
-  min-height: calc(100vh - var(--header-height));
-  display: flex;
-  align-items: center;
-}
-
 :host ::ng-deep {
   #okta-sign-in.auth-container.main-container.no-beacon {
+    margin: 5rem auto;
     border-color: var(--color-grey-light-3);
 
     & .okta-sign-in-header.auth-header {
