@@ -18,8 +18,8 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     this.oktaSignIn = new OktaSignIn({
       logo: 'assets/logo.png',
-      logoText: 'Andromeda cinema',
-      brandName: 'Andromeda cinema',
+      logoText: environment.brandName,
+      brandName: environment.brandName,
       issuer: environment.okta.issuer,
       clientId: environment.okta.clientId,
       redirectUri: environment.okta.redirectUri,
@@ -31,7 +31,6 @@ export class LoginComponent implements OnInit {
       features: {
         showPasswordToggleOnSignInPage: true,
       },
-      signOutLink: 'https://www.backtosignin.com',
       idps: [{ type: 'GOOGLE', id: '0oaaz2wn5pZyAaoJq5d7' }],
       idpDisplay: 'SECONDARY'
     });
