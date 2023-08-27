@@ -32,11 +32,12 @@
     &-next:hover {
       border: 4px solid white;
     }
+  }
 
-    &-prev-icon,
-    &-next-icon {
-      font-size: 3.5rem;
-    }
+  & .carousel-prev-icon,
+  & .carousel-next-icon {
+    height: 3.5rem;
+    width: 3.5rem;
   }
 
   .p-skeleton {
