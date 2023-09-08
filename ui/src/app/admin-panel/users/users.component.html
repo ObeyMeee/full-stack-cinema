@@ -38,7 +38,7 @@
                   pRipple
                   icon="pi pi-file"
                   (click)="usersTable.exportCSV()"
-                  class="mr-2"
+                  class="p-button-danger mr-2"
                   pTooltip="CSV"
                   tooltipPosition="bottom">
           </button>
@@ -119,13 +119,13 @@
             <button pButton
                     pRipple
                     icon="pi pi-pencil"
-                    class="btn-edit"
+                    class="p-button-success btn-edit me-2"
                     (click)="edit(user)">
             </button>
             <button pButton
                     pRipple
                     icon="pi pi-trash"
-                    class="btn-delete"
+                    class="p-button-danger btn-delete"
                     (click)="delete(user)">
             </button>
           </td>

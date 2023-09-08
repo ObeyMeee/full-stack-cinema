@@ -53,9 +53,7 @@
 
   .btn-delete,
   .btn-edit {
-    border-radius: 100px;
-    height: 3rem;
-    width: 3rem;
+    border-radius: 10rem;
     transition: all .3s;
 
     &:hover {
@@ -68,31 +66,6 @@
 
     & span {
       font-size: 1.5rem;
-    }
-  }
-
-  .btn-delete {
-    background-color: var(--color-primary);
-    margin-left: 1rem;
-
-    &:hover {
-      background-color: var(--color-primary-dark);
-    }
-
-    &:focus {
-      background-color: var(--color-primary);
-    }
-  }
-
-  .btn-edit {
-    background-color: limegreen;
-
-    &:hover {
-      background-color: forestgreen;
-    }
-
-    &:focus {
-      background-color: limegreen;
     }
   }
 

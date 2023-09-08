@@ -21,8 +21,8 @@ export class SignUpComponent {
     password: '',
   };
   errorMessages: Message[] = [];
-  readonly Status = Status;
   response!: Pending<void>;
+  readonly Status = Status;
 
   constructor(
     private signUpService: SignUpService,
@@ -35,12 +35,7 @@ export class SignUpComponent {
     this.response = this.signUpService.register(this.user);
     this.response.data.subscribe({
       complete: this.handleSuccessSignUp.bind(this),
-      error: (err) =>
-        (this.errorMessages = err.error.messages.map((message: string) => ({
-          severity: 'error',
-          summary: 'Error',
-          detail: message,
-        }))),
+      error: this.handleErrorSignUp.bind(this)
     });
   }
 
@@ -53,9 +48,20 @@ export class SignUpComponent {
     this.router.navigate(['/']);
   }
 
+  private handleErrorSignUp(err: any) {
+    console.log(err);
+    this.errorMessages = err.error.messages.map((message: string) => ({
+      severity: 'error',
+      summary: 'Error',
+      detail: message
+    }));
+  }
+
+
   signUpByGoogle() {
     this.socialAuthService
       .signIn(GoogleLoginProvider.PROVIDER_ID)
-      .then(this.handleSuccessSignUp.bind(this));
+      .then(this.handleSuccessSignUp.bind(this))
+      .catch(this.handleErrorSignUp.bind(this));
   }
 }

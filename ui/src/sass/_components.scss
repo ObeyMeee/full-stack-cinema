@@ -71,6 +71,26 @@
   }
 }
 
+.p-button.p-button-danger {
+  background-color: var(--color-primary);
+
+  &:enabled:hover {
+    background-color: var(--color-primary-dark);
+  }
+}
+
+.p-button.p-button-success {
+  background-color: limegreen;
+
+  &:enabled:hover {
+    background-color: forestgreen;
+  }
+
+  &:focus {
+    background-color: limegreen;
+  }
+}
+
 // PAGINATION
 .p-paginator {
   padding: 2rem;
