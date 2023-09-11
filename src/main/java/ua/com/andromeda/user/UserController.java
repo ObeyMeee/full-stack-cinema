@@ -5,7 +5,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @RestController
@@ -36,5 +38,11 @@ public class UserController {
     public ResponseEntity<UserTableDto> update(@RequestBody UserTableDto user) {
         UserTableDto updated = userService.update(user);
         return ResponseEntity.ok(updated);
+    }
+
+    @PatchMapping
+    public ResponseEntity<Void> update(@RequestBody Map<String, Object> map, Principal principal) {
+        userService.update(map, principal);
+        return ResponseEntity.noContent().build();
     }
 }

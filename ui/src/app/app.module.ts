@@ -69,6 +69,7 @@ import { SkeletonModule } from 'primeng/skeleton';
 import OktaAuth from '@okta/okta-auth-js';
 import { environment } from '../environments/environment.development';
 import { CalendarModule } from 'primeng/calendar';
+import { ProfileEditorComponent } from './user/profile/profile-editor/profile-editor.component';
 
 const routes: Route[] = [
   { path: '', component: PosterComponent, pathMatch: 'full' },
@@ -135,6 +136,7 @@ const oktaAuth = new OktaAuth(environment.okta);
     FilmCommentComponent,
     FilmCommentComponent,
     PurchasesTableRowComponent,
+    ProfileEditorComponent,
   ],
     imports: [
         BrowserModule,

@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { UserService } from './user.service';
+import { UserService } from '../../shared/user.service';
 import { Pending } from '../../shared/pending/pending.interface';
 import { UserTableDto } from './user-table.dto';
 import { ConfirmationService } from 'primeng/api';
@@ -15,7 +15,7 @@ import { ExcelSaver } from '../../shared/excel-saver.service';
   selector: 'app-users',
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss'],
-  providers: [UserService, ConfirmationService, ToastService],
+  providers: [ConfirmationService, ToastService],
 })
 export class UsersComponent implements OnInit {
   usersPage$!: Pending<UserTableDto[]>;

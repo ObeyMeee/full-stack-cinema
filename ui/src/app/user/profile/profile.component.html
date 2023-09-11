@@ -2,100 +2,47 @@
   <div class="personal">
     <h3 class="heading-3">Personal information</h3>
     <p>Tell us about yourself!</p>
-    <!--    <div class="personal__data">-->
-    <!--      <i class="pi pi-id-card"></i>-->
-    <!--      <label class="personal__label">First name</label>-->
-    <!--      <div class="personal__value personal__value&#45;&#45;first-name">Andrii</div>-->
-    <!--      <p-button icon="pi pi-pencil" styleClass="p-button-rounded p-button-danger btn-edit"></p-button>-->
-    <!--    </div>-->
-    <div class="personal__field">
-      <div class="personal__label">
-        <i class="pi pi-id-card"></i>
-        <label for="first-name">First name</label>
-      </div>
-      <input pInputText
-             class="personal__input form-control"
-             name="first-name"
-             id="first-name"
-             [value]="user?.given_name">
-      <div class="buttons">
-        <p-button icon="pi pi-check" styleClass="p-button-rounded p-button-success"></p-button>
-        <p-button icon="pi pi-times" styleClass="p-button-rounded p-button-danger"></p-button>
-      </div>
-    </div>
-    <div class="personal__field">
-      <div class="personal__label">
-        <i class="pi pi-id-card"></i>
-        <label for="last-name">Last name</label>
-      </div>
-      <input pInputText
-             class="personal__input form-control"
-             name="last-name"
-             id="last-name"
-             [value]="user?.family_name">
-      <div class="buttons">
-        <p-button icon="pi pi-check" styleClass="p-button-rounded p-button-success"></p-button>
-        <p-button icon="pi pi-times" styleClass="p-button-rounded p-button-danger"></p-button>
-      </div>
-    </div>
-    <div class="personal__field">
-      <div class="personal__label">
-        <i class="fa-solid fa-cake-candles"></i>
-        <label for="last-name">Date of birth</label>
-      </div>
-      <input pInputText
-             class="personal__input form-control"
-             name="birth-date"
-             id="birth-date"
-             [value]="user?.['birthdate']">
-      <p-calendar [showIcon]="true"></p-calendar>
-      <div class="buttons">
-        <p-button icon="pi pi-check" styleClass="p-button-rounded p-button-success"></p-button>
-        <p-button icon="pi pi-times" styleClass="p-button-rounded p-button-danger"></p-button>
-      </div>
-    </div>
-    <div class="personal__field">
-      <div class="personal__label">
-        <i class="bi bi-gender-male"></i>
-        <i class="bi bi-gender-female"></i>
-        <label for="gender">Gender</label>
-      </div>
-      <p-dropdown [options]="genders"
-                  optionLabel="label"
-                  optionValue="value"
-                  inputId="gender"
-                  name="gender"></p-dropdown>
-      <div class="buttons">
-        <p-button icon="pi pi-check" styleClass="p-button-rounded p-button-success"></p-button>
-        <p-button icon="pi pi-times" styleClass="p-button-rounded p-button-danger"></p-button>
-      </div>
-    </div>
-    <div class="personal__data">
-      <i class="pi pi-id-card"></i>
-      <label>Last name</label>
-      <div class="personal__value personal__value--last-name">Heraskin</div>
-      <p-button icon="pi pi-pencil" styleClass="p-button-rounded p-button-danger btn-edit"></p-button>
-    </div>
-    <div class="personal__data">
-      <i class="fa-solid fa-cake-candles"></i>
-      <label>Date of birth</label>
-      <div class="personal__value personal__value--birthday">30.07.2023</div>
-      <p-button icon="pi pi-pencil" styleClass="p-button-rounded p-button-danger btn-edit"></p-button>
-    </div>
-    <div class="personal__data">
-      <i class="bi bi-gender-male"></i>
-      <i class="bi bi-gender-female"></i>
-      <label>Gender</label>
-      <div class="personal__value personal__value--gender">Male</div>
-      <p-button icon="pi pi-pencil" styleClass="p-button-rounded p-button-danger btn-edit"></p-button>
+    <div class="personal__container">
+      <app-profile-editor [value]="user?.given_name"
+                          labelIcon="pi pi-id-card"
+                          key="firstName"
+                          labelValue="First name">
+      </app-profile-editor>
+
+      <app-profile-editor [value]="user?.family_name"
+                          labelIcon="pi pi-id-card"
+                          key="lastName"
+                          labelValue="Last name">
+      </app-profile-editor>
+
+      <app-profile-editor [value]="user?.['birthdate']"
+                          labelIcon="fa-solid fa-cake-candles"
+                          key="birthdate"
+                          labelValue="Date of birth">
+      </app-profile-editor>
+
+      <app-profile-editor [value]="user?.['gender']"
+                          labelIcon="bi bi-gender-male"
+                          key="gender"
+                          labelValue="Gender">
+      </app-profile-editor>
     </div>
   </div>
 
   <div class="contact">
     <h3 class="heading-3">Contact information</h3>
-    <p>Provide us email and phone so we will be able to be in touch with you :)</p>
-    <div class="contact__email">andrrromeda88@gmail.com</div>
-    <div class="contact__phone">+380 98 396 77 59</div>
+    <p>Provide us email and phone so we will be able to stay in touch with you :)</p>
+
+    <app-profile-editor [value]="user?.email"
+                        labelIcon="pi pi-envelope"
+                        key="email"
+                        labelValue="Email">
+    </app-profile-editor>
+    <app-profile-editor [value]="user?.['mobilePhone']"
+                        labelIcon="pi pi-phone"
+                        key="mobilePhone"
+                        labelValue="Mobile phone">
+    </app-profile-editor>
   </div>
 
   <div class="social-login">
@@ -113,6 +60,5 @@
       <i class="google-icon">Apple</i>
       <button class="btn social-login-btn">Connect</button>
     </div>
-
   </div>
 </section>

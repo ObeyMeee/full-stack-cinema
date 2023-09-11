@@ -1,0 +1,95 @@
+@import "../../../../custom-bootstrap";
+
+@mixin field-value {
+  color: var(--color-grey-light-1);
+  font-size: 3rem;
+}
+
+.field {
+  &__data {
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding: 3rem;
+    padding-bottom: 2rem;
+    border: var(--border-thin-grey-light-2);
+    border-radius: $border-radius-xl;
+    transition: all .2s;
+
+    &:hover {
+      border: var(--border-thin-primary);
+      cursor: pointer;
+    }
+
+    & .bi-gender-male {
+      color: deepskyblue;
+    }
+
+    & .bi-gender-female {
+      color: deeppink;
+    }
+
+    & .fa-cake-candles,
+    & .pi-id-card {
+      font-size: 1.7rem;
+    }
+
+    & .fa-cake-candles {
+      color: var(--color-primary);
+    }
+
+    & .pi-id-card {
+      color: var(--color-grey-light-2);
+    }
+  }
+
+  &__key {
+    position: absolute;
+    top: .5rem;
+    left: 1rem;
+
+    & label {
+      color: var(--color-grey-dark-4);
+      font-size: 1.7rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+    }
+
+    & i {
+      color: var(--color-grey-light-2);
+      font-size: 1.7rem;
+      margin-right: .7rem;
+    }
+  }
+
+  &__value {
+    display: inline-block;
+    margin-right: auto;
+    @include field-value;
+  }
+
+  &__input {
+    @include field-value;
+    width: 100%;
+    background: transparent;
+    border: var(--border-thin-grey-light-2);
+    border-radius: $border-radius-xl;
+    padding: 3rem 8rem 2rem 3rem;
+
+    &:focus {
+      border-color: var(--color-primary);
+      box-shadow: unset;
+    }
+  }
+
+  &__changed {
+    position: relative;
+
+    & .buttons {
+      position: absolute;
+      top: 50%;
+      right: 1rem;
+      transform: translateY(-50%);
+    }
+  }
+}

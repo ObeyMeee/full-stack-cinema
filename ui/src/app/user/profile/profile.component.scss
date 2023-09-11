@@ -1,12 +1,12 @@
 @import "../../../custom-bootstrap";
 
+$field-gap: 1.5rem;
+
 .section-profile {
   display: grid;
   grid-row-gap: 2rem;
 
   & > div {
-    display: grid;
-    grid-row-gap: 1.5rem;
     background-color: var(--color-grey-dark-1);
     border-radius: $border-radius-xl;
     padding: 2.5rem;
@@ -18,90 +18,10 @@
       color: var(--color-grey-light-3);
     }
   }
+}
 
-  & .personal {
-    &__data {
-      color: var(--color-grey-light-1);
-      font-weight: 700;
-      padding: 2rem;
-      letter-spacing: 2px;
-      border: var(--border-thin-grey-light-2);
-      border-radius: $border-radius-xl;
-      transition: all .2s;
-
-      &:hover {
-        border: var(--border-thin-primary);
-        cursor: pointer;
-      }
-
-      & .bi-gender-male {
-        color: deepskyblue;
-      }
-
-      & .bi-gender-female {
-        color: deeppink;
-      }
-
-      & .fa-cake-candles,
-      & .pi-id-card {
-        font-size: 1.7rem;
-      }
-
-      & .fa-cake-candles {
-        color: var(--color-primary);
-      }
-
-      & .pi-id-card {
-        color: var(--color-gry-light-2);
-      }
-    }
-
-    &__value {
-      font-size: 2.2rem;
-    }
-
-    &__field {
-      position: relative;
-    }
-
-    &__input {
-      background: transparent;
-      color: var(--color-grey-light-1);
-      border: var(--border-thin-grey-light-2);
-      padding: 3rem;
-      padding-right: 8rem;
-      font-size: 3rem;
-
-      &:focus {
-        border-color: var(--color-primary);
-        box-shadow: unset;
-      }
-    }
-
-    &__label {
-      position: absolute;
-      top: .5rem;
-      left: 1rem;
-
-      & label {
-        color: var(--color-grey-dark-4);
-        font-size: 1.7rem;
-      }
-
-      & i {
-        color: var(--color-grey-light-2);
-        font-size: 1.7rem;
-        margin-right: .7rem;
-      }
-    }
-
-    & .buttons {
-      position: absolute;
-      display: flex;
-      grid-column-gap: 1rem;
-      top: 50%;
-      right: 1rem;
-      transform: translateY(-50%);
-    }
-  }
+.personal__container {
+  display: grid;
+  grid-gap: $field-gap;
+  grid-template-columns: calc(50% - $field-gap / 2) calc(50% - $field-gap / 2);
 }

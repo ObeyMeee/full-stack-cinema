@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BaseService } from '../../shared/base.service';
-import { RequestStatusService } from '../../shared/pending/request-status.service';
-import { UserTableDto } from './user-table.dto';
+import { BaseService } from './base.service';
+import { RequestStatusService } from './pending/request-status.service';
+import { UserTableDto } from '../admin-panel/users/user-table.dto';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class UserService extends BaseService {
   constructor(
     private http: HttpClient,
@@ -33,5 +35,11 @@ export class UserService extends BaseService {
     return this.requestStatusService.handleRequestWithStatus<UserTableDto>(
       request,
     );
+  }
+
+  partialUpdate(field: { [key: string]: any }) {
+    const url = `${this.baseUrl}users`;
+    const request = this.http.patch<void>(url, field);
+    return this.requestStatusService.handleRequestWithStatus<void>(request);
   }
 }

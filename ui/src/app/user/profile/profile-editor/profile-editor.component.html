@@ -1,0 +1,37 @@
+<div class="field-box">
+  <div class="field__data" *ngIf="!edited" (click)="toggleEdited()">
+    <div class="field__key">
+      <i [class]="labelIcon"></i>
+      <label>{{labelValue}}</label>
+    </div>
+    <span class="field__value">{{value}}</span>
+    <p-button icon="pi pi-pencil"
+              styleClass="p-button-rounded p-button-danger"
+              (click)="toggleEdited()">
+    </p-button>
+  </div>
+  <div class="field__changed" *ngIf="edited">
+    <div class="field__key">
+      <i [class]="labelIcon"></i>
+      <label for="input">{{labelValue}}</label>
+    </div>
+    <input pInputText
+           pTooltip="Enter new value"
+           tooltipPosition="top"
+           class="field__input"
+           id="input"
+           [ngModel]="editedValue"
+           [value]="value"
+           autofocus>
+    <div class="buttons">
+      <p-button icon="pi pi-check"
+                styleClass="p-button-rounded p-button-success mr-3"
+                (click)="update()">
+      </p-button>
+      <p-button icon="pi pi-times"
+                styleClass="p-button-rounded p-button-danger"
+                (click)="toggleEdited()">
+      </p-button>
+    </div>
+  </div>
+</div>

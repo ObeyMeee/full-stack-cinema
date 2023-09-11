@@ -12,8 +12,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ua.com.andromeda.user.exception.UserAlreadyExistsException;
+import ua.com.andromeda.user.exception.UserNotAuthenticatedException;
 
+import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -58,6 +61,25 @@ public class UserService {
                 .filter(group -> groupsNames.contains(group.getProfile().getName()))
                 .map(Group::getId)
                 .collect(Collectors.toSet());
+    }
+
+    public void update(Map<String, Object> map, Principal principal) {
+        String email = principal.getName();
+        User user = oktaClient.listUsers(null, null, "profile.email eq \"" + email + "\"", null, null)
+                .stream()
+                .findAny()
+                .orElseThrow(UserNotAuthenticatedException::new);
+        UserProfile profile = user.getProfile();
+        String key = map.keySet().stream().findAny().get();
+        System.out.println(key);
+        switch (key) {
+            case "firstName" -> profile.setFirstName((String) map.get("firstName"));
+            case "lastName" -> profile.setLastName((String) map.get("lastName"));
+            case "email" -> profile.setEmail((String) map.get("email"));
+            case "login" -> profile.setLogin((String) map.get("login"));
+            case "mobilePhone" -> profile.setMobilePhone((String) map.get("mobilePhone"));
+        }
+        user.update(true);
     }
 
     public UserTableDto update(UserTableDto user) {
