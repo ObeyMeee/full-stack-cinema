@@ -64,22 +64,18 @@ public class UserService {
     }
 
     public void update(Map<String, Object> map, Principal principal) {
+        User user = findByEmail(principal);
+        UserProfile profile = user.getProfile();
+        profile.putAll(map);
+        user.update(true);
+    }
+
+    private User findByEmail(Principal principal) {
         String email = principal.getName();
-        User user = oktaClient.listUsers(null, null, "profile.email eq \"" + email + "\"", null, null)
+        return oktaClient.listUsers(null, null, "profile.email eq \"" + email + "\"", null, null)
                 .stream()
                 .findAny()
                 .orElseThrow(UserNotAuthenticatedException::new);
-        UserProfile profile = user.getProfile();
-        String key = map.keySet().stream().findAny().get();
-        System.out.println(key);
-        switch (key) {
-            case "firstName" -> profile.setFirstName((String) map.get("firstName"));
-            case "lastName" -> profile.setLastName((String) map.get("lastName"));
-            case "email" -> profile.setEmail((String) map.get("email"));
-            case "login" -> profile.setLogin((String) map.get("login"));
-            case "mobilePhone" -> profile.setMobilePhone((String) map.get("mobilePhone"));
-        }
-        user.update(true);
     }
 
     public UserTableDto update(UserTableDto user) {
