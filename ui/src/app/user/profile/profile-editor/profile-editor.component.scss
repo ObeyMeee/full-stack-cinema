@@ -1,8 +1,50 @@
 @import "../../../../custom-bootstrap";
 
-@mixin field-value {
+@mixin input-field {
   color: var(--color-grey-light-1);
-  font-size: 3rem;
+  font-size: 2.5rem;
+  width: 100%;
+  background: transparent;
+  border: var(--border-thin-grey-light-2);
+  border-radius: $border-radius-xl;
+  padding: 3rem 8rem 2rem 3rem;
+
+  &:focus {
+    box-shadow: unset;
+  }
+
+  &.ng-valid:focus {
+    border-color: forestgreen;
+  }
+}
+
+:host::ng-deep {
+  .p-calendar {
+    width: 100%;
+
+    & .p-inputtext {
+      @include input-field;
+    }
+  }
+
+  .p-dropdown {
+    @include input-field;
+
+    &-label {
+      font-size: 2.5rem;
+      color: var(--color-grey-light-1);
+      padding: 0;
+    }
+
+    &-item {
+      font-size: 2rem;
+    }
+
+    &-trigger {
+      display: none;
+    }
+  }
+
 }
 
 .field {
@@ -65,21 +107,12 @@
   &__value {
     display: inline-block;
     margin-right: auto;
-    @include field-value;
+    color: var(--color-grey-light-1);
+    font-size: 2.5rem;
   }
 
   &__input {
-    @include field-value;
-    width: 100%;
-    background: transparent;
-    border: var(--border-thin-grey-light-2);
-    border-radius: $border-radius-xl;
-    padding: 3rem 8rem 2rem 3rem;
-
-    &:focus {
-      border-color: var(--color-primary);
-      box-shadow: unset;
-    }
+    @include input-field;
   }
 
   &__changed {
@@ -87,9 +120,14 @@
 
     & .buttons {
       position: absolute;
-      top: 50%;
+      top: 4.9rem;
       right: 1rem;
       transform: translateY(-50%);
     }
   }
+}
+
+.error-message {
+  font-size: 1.5rem;
+  color: var(--color-primary);
 }

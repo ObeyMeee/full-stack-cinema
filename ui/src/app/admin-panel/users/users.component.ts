@@ -48,11 +48,7 @@ export class UsersComponent implements OnInit {
       { field: 'lastName', header: 'Last name' },
       { field: 'phone', header: 'Phone' },
       { field: 'status', header: 'Status' },
-      {
-        field: 'created',
-        header: 'Created',
-        customExportHeader: 'Created date',
-      },
+      { field: 'created', header: 'Created', customExportHeader: 'Created date' }
     ];
 
     this.exportColumns = this.columns.map((col) => ({

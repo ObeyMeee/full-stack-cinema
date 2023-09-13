@@ -9,16 +9,11 @@ import { OKTA_AUTH } from '@okta/okta-angular';
 })
 export class ProfileComponent {
   user!: UserClaims;
-  genders!: { label: string, value: string }[];
 
   constructor(@Inject(OKTA_AUTH) private oktaAuth: OktaAuth) {
   }
 
   async ngOnInit() {
-    this.genders = [
-      { label: 'Male', value: 'MALE' },
-      { label: 'Female', value: 'FEMALE' }
-    ];
     this.user = await this.oktaAuth.getUser();
   }
 }

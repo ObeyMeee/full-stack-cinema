@@ -4,25 +4,64 @@
       <i [class]="labelIcon"></i>
       <label>{{labelValue}}</label>
     </div>
-    <span class="field__value">{{value}}</span>
+
+    <span class="field__value" *ngIf="isValueDate">
+      {{value | date:'shortDate'}}
+    </span>
+    <span class="field__value" *ngIf="!isValueDate">{{value}}</span>
+
     <p-button icon="pi pi-pencil"
               styleClass="p-button-rounded p-button-danger"
               (click)="toggleEdited()">
     </p-button>
   </div>
+
   <div class="field__changed" *ngIf="edited">
     <div class="field__key">
       <i [class]="labelIcon"></i>
       <label for="input">{{labelValue}}</label>
     </div>
-    <input pInputText
-           pTooltip="Enter new value"
-           tooltipPosition="top"
-           class="field__input"
-           id="input"
-           [ngModel]="editedValue"
-           [value]="value"
-           autofocus>
+
+    <ng-container [ngSwitch]="key">
+      <ng-container *ngSwitchDefault>
+        <input #input="ngModel"
+               pInputText
+               pTooltip="Enter new value"
+               tooltipPosition="top"
+               class="field__input"
+               id="input"
+               pattern="[a-zA-Z\s\-]+"
+               [(ngModel)]="editedValue"
+               [value]="value"
+               autofocus
+               required>
+        <div *ngIf="input.errors?.['required']" class="error-message">
+          Field cannot be empty
+        </div>
+        <div *ngIf="input.errors?.['pattern']" class="error-message">
+          Field must contain only letters, spaces or dashes
+        </div>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="'birthdate'">
+        <p-calendar placeholder="Date of birth"
+                    [(ngModel)]="editedValue"
+                    [minDate]="minBirthDate"
+                    [maxDate]="maxBirthDate"
+                    id="input">
+        </p-calendar>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="'gender'">
+        <p-dropdown [options]="genders"
+                    [(ngModel)]="editedValue"
+                    placeholder="Male / Female"
+                    pTooltip="Click to select"
+                    tooltipPosition="top">
+        </p-dropdown>
+      </ng-container>
+    </ng-container>
+
     <div class="buttons">
       <p-button icon="pi pi-check"
                 styleClass="p-button-rounded p-button-success mr-3"
