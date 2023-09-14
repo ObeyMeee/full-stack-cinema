@@ -63,10 +63,10 @@ public class UserService {
                 .collect(Collectors.toSet());
     }
 
-    public void update(Map<String, Object> map, Principal principal) {
+    public void update(Map<String, Object> newFields, Principal principal) {
         User user = findByEmail(principal);
         UserProfile profile = user.getProfile();
-        profile.putAll(map);
+        profile.putAll(newFields);
         user.update(true);
     }
 

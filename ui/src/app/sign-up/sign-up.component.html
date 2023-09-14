@@ -22,12 +22,15 @@
 
       <div class="form__group">
         <small class="p-error" *ngIf="firstName.errors && (firstName.touched || firstName.dirty)">
-          <div *ngIf="firstName.errors?.['required']">
+          <span *ngIf="firstName.errors?.['required']">
             First name is required
-          </div>
-          <div *ngIf="firstName.errors?.['maxlength']">
+          </span>
+          <span *ngIf="firstName.errors?.['maxlength']">
             First name must be up to 50 characters long
-          </div>
+          </span>
+          <span *ngIf="firstName.errors?.['pattern']">
+            First name must contain only letters, spaces or dashes
+          </span>
         </small>
         <input [ngClass]="{
               'form__input': true,
@@ -37,6 +40,7 @@
                id="first-name"
                name="firstName"
                placeholder="First name"
+               pattern="[a-zA-Z\s\-]+"
                required
                maxlength="50"
                [(ngModel)]="user.firstName"
@@ -47,12 +51,15 @@
 
       <div class="form__group">
         <small class="p-error" *ngIf="lastName.errors && (lastName.touched || lastName.dirty)">
-          <div *ngIf="lastName.errors?.['required']">
+          <span *ngIf="lastName.errors?.['required']">
             Last name is required
-          </div>
-          <div *ngIf="lastName.errors?.['maxlength']">
+          </span>
+          <span *ngIf="lastName.errors?.['maxlength']">
             Last name must be up to 50 characters long
-          </div>
+          </span>
+          <span *ngIf="firstName.errors?.['pattern']">
+            Last name must contain only letters, spaces or dashes
+          </span>
         </small>
         <input [ngClass]="{
               'form__input': true,
@@ -62,25 +69,16 @@
                id="last-name"
                name="lastName"
                placeholder="Last name"
-               required
+               pattern="[a-zA-Z\s\-]+"
                maxlength="50"
+               required
                [(ngModel)]="user.lastName"
                #lastName="ngModel" />
         <label class="form__label" for="last-name">Last name</label>
       </div>
 
       <div class="form__group">
-        <small class="p-error" *ngIf="email.errors && (email.touched || email.dirty)">
-          <div *ngIf="email.errors?.['required']">
-            Email is required
-          </div>
-          <div *ngIf="email.errors?.['minlength'] || email.errors?.['maxlength']">
-            Email must be within the range from 5 to 100 characters long
-          </div>
-          <div *ngIf="email.errors?.['isNotValid']">
-            Email is not valid
-          </div>
-        </small>
+        <app-email-error-messages [email]="email"></app-email-error-messages>
         <input id="email"
                [ngClass]="{
               'form__input': true,
@@ -100,21 +98,21 @@
 
       <div class="form__group">
         <small class="p-error" *ngIf="password.errors && (password.touched || password.dirty)">
-          <div *ngIf="password.errors?.['required']">
+          <span *ngIf="password.errors?.['required']">
             Password is required
-          </div>
-          <div *ngIf="password.errors?.['minlength']">
+          </span>
+          <span *ngIf="password.errors?.['minlength']">
             Password must be at least 8 characters long
-          </div>
-          <div *ngIf="password.errors?.['hasUpperCase']">
+          </span>
+          <span *ngIf="password.errors?.['hasUpperCase']">
             Password must contain at least 1 uppercase character
-          </div>
-          <div *ngIf="password.errors?.['hasLowerCase']">
+          </span>
+          <span *ngIf="password.errors?.['hasLowerCase']">
             Password must contain at least 1 lowercase character
-          </div>
-          <div *ngIf="password.errors?.['hasNumeric']">
+          </span>
+          <span *ngIf="password.errors?.['hasNumeric']">
             Password must contain at least 1 digit
-          </div>
+          </span>
         </small>
         <input [ngClass]="{
                 'form__input': true,

@@ -30,35 +30,62 @@
                tooltipPosition="top"
                class="field__input"
                id="input"
-               pattern="[a-zA-Z\s\-]+"
                [(ngModel)]="editedValue"
                [value]="value"
-               autofocus
-               required>
-        <div *ngIf="input.errors?.['required']" class="error-message">
-          Field cannot be empty
-        </div>
-        <div *ngIf="input.errors?.['pattern']" class="error-message">
-          Field must contain only letters, spaces or dashes
-        </div>
+               (keydown.enter)="update()"
+               pattern="[a-zA-Z\s\-]+"
+               maxlength="50"
+               required
+               autofocus>
+        <small class="p-error" *ngIf="input.errors && (input.touched || input.dirty)">
+          <span *ngIf="input.errors?.['required']">
+            Field cannot be empty
+          </span>
+          <span *ngIf="input.errors?.['maxlength']">
+            Field must be up to 50 characters long
+          </span>
+          <span *ngIf="input.errors?.['pattern']">
+            Field must contain only letters, spaces or dashes
+          </span>
+        </small>
+
       </ng-container>
 
-      <ng-container *ngSwitchCase="'birthdate'">
-        <p-calendar placeholder="Date of birth"
-                    [(ngModel)]="editedValue"
-                    [minDate]="minBirthDate"
-                    [maxDate]="maxBirthDate"
-                    id="input">
-        </p-calendar>
-      </ng-container>
+      <p-calendar *ngSwitchCase="'birthdate'"
+                  [(ngModel)]="editedValue"
+                  [minDate]="minBirthDate"
+                  [maxDate]="maxBirthDate"
+                  placeholder="Date of birth"
+                  (keydown.enter)="update()"
+                  id="input">
+      </p-calendar>
 
-      <ng-container *ngSwitchCase="'gender'">
-        <p-dropdown [options]="genders"
-                    [(ngModel)]="editedValue"
-                    placeholder="Male / Female"
-                    pTooltip="Click to select"
-                    tooltipPosition="top">
-        </p-dropdown>
+      <p-dropdown *ngSwitchCase="'gender'"
+                  [(ngModel)]="editedValue"
+                  placeholder="Male / Female"
+                  [options]="genders"
+                  (keydown.enter)="update()"
+                  pTooltip="Click to select"
+                  tooltipPosition="top">
+      </p-dropdown>
+
+      <ng-container *ngSwitchCase="'email'">
+        <input #email="ngModel"
+               pInputText
+               [(ngModel)]="editedValue"
+               [value]="value"
+               id="input"
+               class="field__input"
+               placeholder="johndoe@mail.com"
+               minlength="5"
+               maxlength="100"
+               appEmail
+               required
+               pTooltip="Enter new email"
+               tooltipPosition="top"
+               (keydown.enter)="update()"
+               autofocus />
+        <app-email-error-messages [email]="email"></app-email-error-messages>
       </ng-container>
     </ng-container>
 

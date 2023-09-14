@@ -41,8 +41,8 @@ public class UserController {
     }
 
     @PatchMapping
-    public ResponseEntity<Void> update(@RequestBody Map<String, Object> map, Principal principal) {
-        userService.update(map, principal);
+    public ResponseEntity<Void> update(@RequestBody Map<String, Object> fields, Principal principal) {
+        userService.update(fields, principal);
         return ResponseEntity.noContent().build();
     }
 }

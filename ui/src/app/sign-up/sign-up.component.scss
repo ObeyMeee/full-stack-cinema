@@ -87,7 +87,7 @@
 
       &:focus {
         outline: none;
-        box-shadow: 0 0 3px 3px rgba(green, .3);
+        box-shadow: var(--box-shadow-input-success);
       }
     }
   }
@@ -107,3 +107,6 @@
   }
 }
 
+small.p-error > span {
+  display: block;
+}

@@ -13,8 +13,12 @@
     box-shadow: unset;
   }
 
-  &.ng-valid:focus {
+  &.ng-valid {
     border-color: forestgreen;
+
+    &:focus {
+      box-shadow: var(--box-shadow-input-success);
+    }
   }
 }
 
@@ -45,6 +49,11 @@
     }
   }
 
+  small.p-error > span {
+    display: block;
+    font-size: 1.5rem;
+    color: var(--color-primary);
+  }
 }
 
 .field {
@@ -125,9 +134,4 @@
       transform: translateY(-50%);
     }
   }
-}
-
-.error-message {
-  font-size: 1.5rem;
-  color: var(--color-primary);
 }

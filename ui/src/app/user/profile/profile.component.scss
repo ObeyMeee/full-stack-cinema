@@ -25,3 +25,10 @@ $field-gap: 1.5rem;
   grid-gap: $field-gap;
   grid-template-columns: calc(50% - $field-gap / 2) calc(50% - $field-gap / 2);
 }
+
+.contact__container {
+  display: grid;
+  grid-gap: $field-gap;
+  grid-template-columns: calc(50% - $field-gap / 2) calc(50% - $field-gap / 2);
+}
+

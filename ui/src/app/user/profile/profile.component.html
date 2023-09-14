@@ -33,16 +33,19 @@
     <h3 class="heading-3">Contact information</h3>
     <p>Provide us email and phone so we will be able to stay in touch with you :)</p>
 
-    <app-profile-editor [value]="user?.email"
-                        labelIcon="pi pi-envelope"
-                        key="email"
-                        labelValue="Email">
-    </app-profile-editor>
-    <app-profile-editor [value]="user?.['mobilePhone']"
-                        labelIcon="pi pi-phone"
-                        key="mobilePhone"
-                        labelValue="Mobile phone">
-    </app-profile-editor>
+    <div class="contact__container">
+      <app-profile-editor [value]="user?.email"
+                          labelIcon="pi pi-envelope"
+                          key="email"
+                          labelValue="Email">
+      </app-profile-editor>
+
+      <app-profile-editor [value]="user?.['mobilePhone']"
+                          labelIcon="pi pi-phone"
+                          key="mobilePhone"
+                          labelValue="Mobile phone">
+      </app-profile-editor>
+    </div>
   </div>
 
   <div class="social-login">

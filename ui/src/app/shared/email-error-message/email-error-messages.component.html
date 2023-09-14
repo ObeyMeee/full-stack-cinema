@@ -1,0 +1,11 @@
+<small class="p-error" *ngIf="email.errors && (email.touched || email.dirty)">
+  <span *ngIf="email.errors?.['required']">
+    Email is required
+  </span>
+  <span *ngIf="email.errors?.['minlength'] || email.errors?.['maxlength']">
+    Email must be within the range from 5 to 100 characters long
+  </span>
+  <span *ngIf="email.errors?.['isNotValid']">
+    Email is not valid
+  </span>
+</small>
