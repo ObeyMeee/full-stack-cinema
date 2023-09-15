@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import ua.com.andromeda.exception.ErrorResponse;
 import ua.com.andromeda.exception.NotFoundException;
 import ua.com.andromeda.user.exception.UserAlreadyExistsException;
+import ua.com.andromeda.user.exception.UserNotAuthenticatedException;
 
 import java.util.Collections;
 import java.util.List;
@@ -26,7 +27,7 @@ import java.util.List;
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(RestResponseEntityExceptionHandler.class);
 
-    @ExceptionHandler({NotFoundException.class, UserAlreadyExistsException.class})
+    @ExceptionHandler({NotFoundException.class, UserAlreadyExistsException.class, UserNotAuthenticatedException.class})
     protected ResponseEntity<Object> handleConflict(RuntimeException ex, WebRequest request) {
         List<String> messages = getSingletonListMessage(ex);
         ErrorResponse errorResponse = new ErrorResponse(messages, request.getDescription(false));

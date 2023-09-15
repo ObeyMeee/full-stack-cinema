@@ -42,7 +42,7 @@ export class ProfileEditorComponent implements OnInit, OnChanges {
     this.edited = !this.edited;
   }
 
-  update() {
+  async update() {
     const field = { [this.key]: this.editedValue };
     this.userService.partialUpdate(field)
       .data.subscribe({

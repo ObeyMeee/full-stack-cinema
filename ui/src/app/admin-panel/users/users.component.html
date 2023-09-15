@@ -21,6 +21,7 @@
              [rowsPerPageOptions]="[10, 25, 50]"
              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} users"
              [globalFilterFields]="[
+                'login',
                 'email',
                 'firstName',
                 'lastName',
@@ -71,6 +72,9 @@
         </tr>
         <tr>
           <th scope="col">
+            <p-columnFilter type="text" field="login"></p-columnFilter>
+          </th>
+          <th scope="col">
             <p-columnFilter type="text" field="email"></p-columnFilter>
           </th>
           <th scope="col">
@@ -104,6 +108,7 @@
 
       <ng-template pTemplate="body" let-user>
         <tr class="p-selectable-row">
+          <td>{{user.login}}</td>
           <td>{{user.email}}</td>
           <td>{{user.firstName}}</td>
           <td>{{user.lastName}}</td>

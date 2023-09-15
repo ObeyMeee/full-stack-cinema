@@ -16,84 +16,45 @@
         </p-messages>
       </div>
 
-      <button (click)="signUpByGoogle()" type="button" class="btn social-auth-button social-auth-google-button link-button">
-        <span>Sign up with Google</span>
-      </button>
-
       <div class="form__group">
-        <small class="p-error" *ngIf="firstName.errors && (firstName.touched || firstName.dirty)">
-          <span *ngIf="firstName.errors?.['required']">
-            First name is required
+        <small class="p-error" *ngIf="login.errors && (login.touched || login.dirty)">
+          <span *ngIf="login.errors?.['required']">
+            Login is required
           </span>
-          <span *ngIf="firstName.errors?.['maxlength']">
-            First name must be up to 50 characters long
-          </span>
-          <span *ngIf="firstName.errors?.['pattern']">
-            First name must contain only letters, spaces or dashes
+          <span *ngIf="login.errors?.['minlength']">
+            Login must be at least 5 characters long
           </span>
         </small>
-        <input [ngClass]="{
-              'form__input': true,
-              'form__input--success': firstName.valid && (firstName.touched || firstName.dirty),
-              'form__input--invalid': firstName.invalid && (firstName.touched || firstName.dirty)
-              }"
-               id="first-name"
-               name="firstName"
-               placeholder="First name"
-               pattern="[a-zA-Z\s\-]+"
+        <input class="form__input"
+               id="login"
+               name="login"
+               placeholder="Login*"
+               minlength="5"
                required
-               maxlength="50"
-               [(ngModel)]="user.firstName"
-               #firstName="ngModel"
-               autofocus />
-        <label class="form__label" for="first-name">First name</label>
-      </div>
-
-      <div class="form__group">
-        <small class="p-error" *ngIf="lastName.errors && (lastName.touched || lastName.dirty)">
-          <span *ngIf="lastName.errors?.['required']">
-            Last name is required
-          </span>
-          <span *ngIf="lastName.errors?.['maxlength']">
-            Last name must be up to 50 characters long
-          </span>
-          <span *ngIf="firstName.errors?.['pattern']">
-            Last name must contain only letters, spaces or dashes
-          </span>
-        </small>
-        <input [ngClass]="{
-              'form__input': true,
-              'form__input--success': lastName.valid && (lastName.touched || lastName.dirty),
-              'form__input--invalid': lastName.invalid && (lastName.touched || lastName.dirty)
-             }"
-               id="last-name"
-               name="lastName"
-               placeholder="Last name"
-               pattern="[a-zA-Z\s\-]+"
-               maxlength="50"
-               required
-               [(ngModel)]="user.lastName"
-               #lastName="ngModel" />
-        <label class="form__label" for="last-name">Last name</label>
+               [(ngModel)]="user.login"
+               #login="ngModel" />
+        <label class="form__label" for="login">
+          Login
+          <span class="text-red-600">*</span>
+        </label>
       </div>
 
       <div class="form__group">
         <app-email-error-messages [email]="email"></app-email-error-messages>
-        <input id="email"
-               [ngClass]="{
-              'form__input': true,
-              'form__input--success': email.valid && (email.touched || email.dirty),
-              'form__input--invalid': email.invalid && (email.touched || email.dirty)
-             }"
+        <input class="form__input"
+               id="email"
                name="email"
-               placeholder="Email"
+               placeholder="Email*"
                minlength="5"
                maxlength="100"
                appEmail
                required
                [(ngModel)]="user.email"
                #email="ngModel" />
-        <label class="form__label" for="email">Email</label>
+        <label class="form__label" for="email">
+          Email
+          <span class="text-red-600">*</span>
+        </label>
       </div>
 
       <div class="form__group">
@@ -114,15 +75,11 @@
             Password must contain at least 1 digit
           </span>
         </small>
-        <input [ngClass]="{
-                'form__input': true,
-                'form__input--success': password.valid && (password.touched || password.dirty),
-                'form__input--invalid': password.invalid && (password.touched || password.dirty)
-               }"
+        <input class="form__input"
                id="password"
                name="password"
                type="password"
-               placeholder="Password"
+               placeholder="Password*"
                required
                minlength="8"
                appHasUpperCase
@@ -130,13 +87,35 @@
                appHasNumeric
                [(ngModel)]="user.password"
                #password="ngModel" />
-        <label class="form__label" for="password">Password</label>
+        <label class="form__label" for="password">
+          Password
+          <span class="text-red-600">*</span>
+        </label>
+      </div>
+
+      <div class="form__group">
+        <small class="p-error" *ngIf="user.password !== repeatPassword">
+          Passwords don't match
+        </small>
+        <input class="form__input"
+               id="repeat-password"
+               name="repeat-password"
+               type="password"
+               placeholder="Repeat Password*"
+               required
+               [(ngModel)]="repeatPassword" />
+        <label class="form__label" for="repeat-password">
+          Repeat Password*
+          <span class="text-red-600">*</span>
+        </label>
       </div>
 
       <p-button label="Sign up"
                 styleClass="p-button-outlined form__submit"
                 type="submit"
-                [disabled]="!registerForm.valid || (response?.status | async) === Status.LOADING">
+                [disabled]="!registerForm.valid ||
+                            user.password !== repeatPassword ||
+                            (response?.status | async) === Status.LOADING">
       </p-button>
     </form>
   </div>

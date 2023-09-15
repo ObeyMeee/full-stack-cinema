@@ -34,19 +34,18 @@ public class UserService {
     }
 
     public void register(@Valid UserRegisterDto userRegisterDto, Set<String> groupsNames) {
-        String email = userRegisterDto.getEmail();
-        if (userExists(email)) {
-            throw new UserAlreadyExistsException("User '" + email + "' already exists");
+        String login = userRegisterDto.getLogin();
+        if (userExists(login)) {
+            throw new UserAlreadyExistsException("User '" + login + "' already exists");
         }
         Set<String> groupIds = getGroupIds(groupsNames);
         UserBuilder.instance()
-                .setFirstName(userRegisterDto.getFirstName())
-                .setLastName(userRegisterDto.getLastName())
-                .setEmail(email)
+                .setLogin(login)
+                .setEmail(userRegisterDto.getEmail())
                 .setPassword(userRegisterDto.getPassword().toCharArray())
                 .setGroups(groupIds)
                 .buildAndCreate(oktaClient);
-        LOGGER.info("User {} registered", email);
+        LOGGER.info("User {} registered", login);
     }
 
     private boolean userExists(String email) {
@@ -68,11 +67,12 @@ public class UserService {
         UserProfile profile = user.getProfile();
         profile.putAll(newFields);
         user.update(true);
+        LOGGER.info("User {} is updated", profile.getLogin());
     }
 
     private User findByEmail(Principal principal) {
-        String email = principal.getName();
-        return oktaClient.listUsers(null, null, "profile.email eq \"" + email + "\"", null, null)
+        String login = principal.getName();
+        return oktaClient.listUsers(null, null, "profile.login eq \"" + login + "\"", null, null)
                 .stream()
                 .findAny()
                 .orElseThrow(UserNotAuthenticatedException::new);
@@ -85,14 +85,14 @@ public class UserService {
         if (!user.getStatus().equals(UserStatus.DEPROVISIONED)) {
             oktaClient.partialUpdateUser(foundedUser, userId);
         }
-        LOGGER.info("User {} is updated", userId);
+        LOGGER.info("User {} is updated", user.getLogin());
         return user;
     }
 
     public void delete(String id) {
         User userToBeDeleted = oktaClient.getUser(id);
         userToBeDeleted.delete(true);
-        LOGGER.info("User {} is deleted", id);
+        LOGGER.info("User {} is deleted", userToBeDeleted.getProfile().getLogin());
     }
 
     private static class UserCopy {

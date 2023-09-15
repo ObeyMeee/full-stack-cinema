@@ -15,14 +15,14 @@ import { GoogleLoginProvider, SocialAuthService } from 'angularx-social-login';
 })
 export class SignUpComponent {
   user: UserRegisterDto = {
-    firstName: '',
-    lastName: '',
+    login: '',
     email: '',
     password: '',
   };
+  repeatPassword!: string;
   errorMessages: Message[] = [];
   response!: Pending<void>;
-  readonly Status = Status;
+  protected readonly Status = Status;
 
   constructor(
     private signUpService: SignUpService,
@@ -56,7 +56,6 @@ export class SignUpComponent {
       detail: message
     }));
   }
-
 
   signUpByGoogle() {
     this.socialAuthService

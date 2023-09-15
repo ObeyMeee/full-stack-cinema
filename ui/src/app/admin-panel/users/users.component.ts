@@ -43,6 +43,7 @@ export class UsersComponent implements OnInit {
     this.allUserStatuses = Object.values(UserStatus);
 
     this.columns = [
+      { field: 'login', header: 'Login' },
       { field: 'email', header: 'Email' },
       { field: 'firstName', header: 'First name' },
       { field: 'lastName', header: 'Last name' },
@@ -59,15 +60,15 @@ export class UsersComponent implements OnInit {
 
   delete(user: UserTableDto) {
     this.confirmationService.close();
-    const email = user.email;
+    const login = user.login;
     this.confirmationService.confirm({
-      message: `Are you sure that you want to delete ${email}?`,
+      message: `Are you sure that you want to delete ${login}?`,
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.userService.delete(user.id).data.subscribe(() => {
           this.usersPage$ = this.userService.getAll();
-          this.toastService.showToast(true, `User ${email}  deleted`, 'info');
+          this.toastService.showToast(true, `User ${login} has been deleted`, 'info');
         });
       },
     });

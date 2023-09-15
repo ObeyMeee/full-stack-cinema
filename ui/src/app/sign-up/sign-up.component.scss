@@ -74,15 +74,15 @@
     border: none;
     border-radius: $border-radius-lg;
     width: 100%;
-    padding: 1.5rem 1rem;
+    padding: 1.3rem 1rem;
     background-color: rgba(70, 90, 126, 0.4);
 
-    &--invalid {
+    &.ng-invalid.ng-touched {
       outline: none;
       border: 2px solid var(--color-primary-dark);
     }
 
-    &--success {
+    &.ng-valid {
       border: 2px solid forestgreen;
 
       &:focus {
@@ -94,7 +94,6 @@
 
   &__label {
     display: block;
-    margin-bottom: .5rem;
     color: var(--color-grey-light-2);
     opacity: 1;
     transition: all .3s;
