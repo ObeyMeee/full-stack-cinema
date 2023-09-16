@@ -1,10 +1,11 @@
-.table {
+.tickets-table {
   caption-side: top;
+  box-shadow: var(--box-shadow-1);
 
-  &__header > tr {
-    font-size: 1.3rem;
+  &__header > tr > th {
+    font-size: 1.7rem;
     font-weight: 700;
-    padding: 2rem 0;
+    padding: 2rem;
     letter-spacing: 1px;
     text-transform: uppercase;
     color: var(--color-grey-light-3);

@@ -2,14 +2,14 @@
              collection="purchases">
 </app-loading>
 
-<div class="table__container">
+<div class="tickets-table__container">
   <h2 class="heading-2">{{sectionName}}</h2>
   <a *ngIf="!(purchases$.data | async)?.length"
      class="message"
      routerLink="/">{{noPurchasesMessage}}</a>
   <ng-container *ngIf="purchases$.data | async as purchases">
-    <table *ngIf="purchases.length" class="table">
-    <thead class="table__header">
+    <table *ngIf="purchases.length" class="tickets-table">
+    <thead class="tickets-table__header">
     <tr>
       <th>Date of transaction</th>
       <th>Title</th>

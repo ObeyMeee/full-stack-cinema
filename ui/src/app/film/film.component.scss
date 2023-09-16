@@ -28,12 +28,12 @@
       border-radius: $border-radius-lg;
       transition: all .3s;
       height: 6rem;
-      box-shadow: var(--box-shadow-smallest);
+      box-shadow: var(--box-shadow-1);
 
       &:hover {
         background-color: var(--color-primary);
         transform: translateY(-2px);
-        box-shadow: var(--box-shadow-smaller);
+        box-shadow: var(--box-shadow-2);
       }
 
       &:active {
