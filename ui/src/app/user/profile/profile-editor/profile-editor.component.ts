@@ -1,6 +1,8 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { UserService } from '../../../shared/user.service';
 import { ToastService } from '../../../shared/toast.service';
+import { Pending } from '../../../shared/pending/pending.interface';
+import { Status } from '../../../shared/pending/status.enum';
 
 @Component({
   selector: 'app-profile-editor',
@@ -14,11 +16,14 @@ export class ProfileEditorComponent implements OnInit, OnChanges {
   maxBirthDate = new Date();
   minBirthDate = new Date(1900, 0);
   isValueDate!: boolean;
+  updateResponse!: Pending<void>;
 
   @Input({ required: true }) value: any;
   @Input({ required: true }) key!: string;
   @Input({ required: true }) labelValue!: string;
   @Input({ required: true }) labelIcon!: string;
+
+  protected readonly Status = Status;
 
   constructor(private userService: UserService,
               private toastService: ToastService) {
@@ -44,8 +49,8 @@ export class ProfileEditorComponent implements OnInit, OnChanges {
 
   async update() {
     const field = { [this.key]: this.editedValue };
-    this.userService.partialUpdate(field)
-      .data.subscribe({
+    this.updateResponse = this.userService.partialUpdate(field);
+    this.updateResponse.data.subscribe({
       next: this.handleSuccess.bind(this),
       error: this.handleFailure.bind(this)
     });

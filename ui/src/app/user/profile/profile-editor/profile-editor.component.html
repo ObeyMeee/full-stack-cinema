@@ -92,6 +92,7 @@
     <div class="buttons">
       <p-button icon="pi pi-check"
                 styleClass="p-button-rounded p-button-success mr-3"
+                [loading]="(updateResponse?.status | async) === Status.LOADING"
                 (click)="update()">
       </p-button>
       <p-button icon="pi pi-times"
