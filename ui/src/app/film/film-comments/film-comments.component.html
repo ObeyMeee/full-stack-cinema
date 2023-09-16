@@ -1,6 +1,7 @@
 <p-dialog [(visible)]="visibleLeaveCommentDialog"
           [modal]="true"
           [style]="{ width: '50vw' }"
+          [dismissableMask]="true"
           [draggable]="false"
           [resizable]="false">
   <ng-template pTemplate="header">
@@ -8,8 +9,8 @@
   </ng-template>
   <form class="form-comment" #leaveCommentForm="ngForm" (ngSubmit)="onSendComment()">
     <div class="form-comment__mark">
-      <p-rating [(ngModel)]="leftComment.mark" name="mark"
-                [iconOnStyle]="{color: 'var(--color-primary)'}"
+      <p-rating [(ngModel)]="leftComment.mark"
+                name="mark"
                 [cancel]="false"
                 [stars]="10"
                 required>
@@ -36,8 +37,7 @@
   </app-loading>
 
   <ng-container *ngIf="(commentsPage$.status | async) === Status.LOADING">
-    <div class="skeleton-container"
-         *ngFor="let _ of [].constructor(3)">
+    <div class="skeleton-container" *ngFor="let _ of 3 | range">
       <p-skeleton width="10rem" styleClass="mb-2"></p-skeleton>
       <p-skeleton width="5rem" styleClass="mb-2"></p-skeleton>
       <p-skeleton width="100%" height="150px"></p-skeleton>

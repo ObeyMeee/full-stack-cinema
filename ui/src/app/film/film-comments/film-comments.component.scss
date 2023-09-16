@@ -12,6 +12,32 @@
     }
   }
 
+  // OVERLAY
+  .p-component-overlay {
+    backdrop-filter: blur(5px) brightness(.4);
+  }
+
+  // RATING STARS
+  .p-rating {
+    display: inline-block;
+
+    & .p-rating-icon {
+      height: 2rem;
+      width: 2rem;
+      color: var(--color-primary);
+
+      &:hover::before {
+        color: var(--color-primary-dark);
+      }
+    }
+  }
+
+  // CLOSE DIALOG
+  .p-dialog-header-close-icon {
+    height: 1.6rem;
+    width: 1.6rem;
+  }
+
   // SUBMIT REVIEW BUTTON
   p-button.p-element {
     justify-self: end;
@@ -64,19 +90,6 @@
 
   .p-dropdown-item {
     text-align: center;
-  }
-
-  .p-rating {
-    display: inline-block;
-
-    &-icon {
-      font-size: 1.7rem;
-      color: var(--color-primary);
-
-      &:hover::before {
-        color: var(--color-primary-dark);
-      }
-    }
   }
 }
 
