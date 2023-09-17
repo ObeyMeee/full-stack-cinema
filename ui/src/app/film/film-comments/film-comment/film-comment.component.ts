@@ -1,11 +1,4 @@
-import {
-  Component,
-  ElementRef,
-  Input,
-  OnChanges,
-  SimpleChanges,
-  ViewChild,
-} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import { ReactionType } from '../../model/reaction-type';
 import { Comment } from '../../model/comment.model';
 import { ReactionService } from '../reaction.service';
@@ -21,23 +14,38 @@ import party from 'party-js';
   templateUrl: './film-comment.component.html',
   styleUrls: ['./film-comment.component.scss'],
 })
-export class FilmCommentComponent implements OnChanges {
+export class FilmCommentComponent implements OnChanges, AfterViewInit {
+  readonly COMMENT_HEIGHT_NOT_EXPANDED_PX = 180;
+  commentRating = 0;
+  commentElementHeight!: number;
+  expanded = false;
+
   @Input() comment!: Comment;
   @Input() user!: UserClaims;
   @Input() isAuthenticated$!: Observable<boolean>;
-  commentRating = 0;
   @ViewChild('likeBtn') likeBtnRef!: ElementRef;
   protected readonly ReactionType = ReactionType;
 
   constructor(
     private reactionService: ReactionService,
     private route: ActivatedRoute,
+    private elementRef: ElementRef
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['comment']) {
       this.commentRating = this.calculateCommentRating();
     }
+  }
+
+  ngAfterViewInit() {
+    this.commentElementHeight = this.getCommentElementHeight();
+  }
+
+  private getCommentElementHeight() {
+    const reviewElement = <HTMLSpanElement>this.elementRef
+      .nativeElement.querySelector('.comment__review');
+    return reviewElement.scrollHeight;
   }
 
   currentUserReacted(reactionType: ReactionType) {
@@ -47,7 +55,7 @@ export class FilmCommentComponent implements OnChanges {
 
   findCurrentUserReaction() {
     return this.comment.reactions.find(
-      (reaction) => reaction.username === this.user?.preferred_username,
+      reaction => reaction.username === this.user?.preferred_username
     );
   }
 
@@ -65,7 +73,7 @@ export class FilmCommentComponent implements OnChanges {
     const filmId = this.getFilmId();
     this.reactionService
       .save(filmId, this.comment.id, reactionType, method)
-      .data.subscribe((reactions) => {
+      .data.subscribe(reactions => {
         if (reactionType === ReactionType.LIKE) {
           this.fireConfetti();
         }
@@ -75,7 +83,7 @@ export class FilmCommentComponent implements OnChanges {
 
   private fireConfetti() {
     party.confetti(this.likeBtnRef.nativeElement, {
-      count: party.variation.range(20, 40),
+      count: party.variation.range(20, 40)
     });
   }
 
@@ -102,7 +110,8 @@ export class FilmCommentComponent implements OnChanges {
   }
 
   private countReactions(type: ReactionType) {
-    return this.comment.reactions.filter((reaction) => reaction.type === type)
+    return this.comment.reactions
+      .filter((reaction) => reaction.type === type)
       .length;
   }
 }

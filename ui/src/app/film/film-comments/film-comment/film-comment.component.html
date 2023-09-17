@@ -1,32 +1,41 @@
-<div class='comment'>
+<div class="comment">
   <p-fieldset>
-    <ng-template pTemplate='header'>
-      <div class='comment__header'>
-        <div class='comment__user-name'>{{comment.username}}</div>
-        <div class='comment__stars'>
-          <i *ngFor='let _ of [].constructor(comment.mark)' class='bi bi-star-fill'></i>
-          <i *ngFor='let _ of [].constructor(10 - comment.mark)' class='bi bi-star'></i>
+    <ng-template pTemplate="header">
+      <div class="comment__header">
+        <div class="comment__user-name">{{comment.username}}</div>
+        <div class="comment__stars">
+          <i *ngFor="let _ of comment.mark | range" class="bi bi-star-fill"></i>
+          <i *ngFor="let _ of (10 - comment.mark) | range" class="bi bi-star"></i>
         </div>
-        <div class='comment__date'>{{comment.wroteAt | date: 'MM/dd/yy HH:mm'}}</div>
+        <div class="comment__date">{{comment.wroteAt | date: 'MM/dd/yy HH:mm'}}</div>
       </div>
     </ng-template>
 
-    <div class='comment__review'>
+    <span class="comment__review
+          {{expanded || commentElementHeight < COMMENT_HEIGHT_NOT_EXPANDED_PX
+          ? 'comment__review--expanded' : 'comment__review--collapsed'}}">
       {{comment.review}}
-    </div>
-    <div class='comment__footer'>
-      <button class='btn comment__react comment__react-dislike'
-              [disabled]='!(isAuthenticated$ | async)'
-              (click)='reactOnComment(ReactionType.DISLIKE)'>
-        <i class='bi bi-hand-thumbs-down{{currentUserReacted(ReactionType.DISLIKE)}}'></i>
-      </button>
-      <span class='comment__rating'>{{commentRating}}</span>
-      <button #likeBtn
-              class='btn comment__react comment__react-like'
-              [disabled]='!(isAuthenticated$ | async)'
-              (click)='reactOnComment(ReactionType.LIKE)'>
-        <i class='bi bi-hand-thumbs-up{{currentUserReacted(ReactionType.LIKE)}}'></i>
-      </button>
+    </span>
+    <div class="comment__footer">
+      <p-button *ngIf="commentElementHeight > COMMENT_HEIGHT_NOT_EXPANDED_PX"
+                [label]="expanded ? 'Collapse &uarr;' : 'Show more &darr;'"
+                styleClass="p-button-danger p-button-text me-auto"
+                (click)="expanded = !expanded">
+      </p-button>
+      <div class="comment__reactions-box">
+        <button class="btn comment__react comment__react-dislike"
+                [disabled]="!(isAuthenticated$ | async)"
+                (click)="reactOnComment(ReactionType.DISLIKE)">
+          <i class="bi bi-hand-thumbs-down{{currentUserReacted(ReactionType.DISLIKE)}}"></i>
+        </button>
+        <span class="comment__rating">{{commentRating}}</span>
+        <button #likeBtn
+                class="btn comment__react comment__react-like"
+                [disabled]="!(isAuthenticated$ | async)"
+                (click)="reactOnComment(ReactionType.LIKE)">
+          <i class="bi bi-hand-thumbs-up{{currentUserReacted(ReactionType.LIKE)}}"></i>
+        </button>
+      </div>
     </div>
   </p-fieldset>
 </div>
