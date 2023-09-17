@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Ticket } from '../models/ticket.model';
 import { TicketService } from '../ticket.service';
 
@@ -8,11 +8,12 @@ import { TicketService } from '../ticket.service';
   styleUrls: ['./ticket.component.scss'],
 })
 export class TicketComponent {
-  @Input() ticket!: Ticket;
-
+  @Input({ required: true }) ticket!: Ticket;
+  @Output() remove = new EventEmitter<Ticket>();
   constructor(private ticketService: TicketService) {}
 
   onRemove() {
     this.ticketService.remove(this.ticket);
+    this.remove.emit(this.ticket);
   }
 }

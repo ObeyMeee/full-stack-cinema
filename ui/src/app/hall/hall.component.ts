@@ -26,6 +26,7 @@ export class HallComponent implements OnInit {
   protected addMinutes = addMinutes;
   protected readonly Status = Status;
   @ViewChild('purchaseButton') purchaseButtonElementRef!: ElementRef;
+  @ViewChild('hallContainer') hallContainerElementRef!: ElementRef;
 
   constructor(
     private route: ActivatedRoute,
@@ -50,7 +51,7 @@ export class HallComponent implements OnInit {
 
   isSeatTaken(row: number, seat: number) {
     return !!this.session.boughtTickets.find(
-      (ticket) => ticket.row === row && ticket.seat === seat,
+      (ticket) => ticket.row === row && ticket.seat === seat
     );
   }
 
@@ -76,11 +77,14 @@ export class HallComponent implements OnInit {
   private handleSuccess(orderNumber: { purchaseId: number }) {
     this.toastService.showToast(
       false,
-      `
-      Our cats get their tickets for free! Enjoy the film =)
-      You have successfully purchased tickets. Your order number: ${orderNumber.purchaseId}
-      `,
+      'Our cats get their tickets for free! Enjoy the film =)',
       'success',
+    );
+    this.toastService.showToast(
+      false,
+      `You have successfully purchased tickets.
+       Your order number: ${orderNumber.purchaseId}`,
+      'success'
     );
     this.reloadCurrentRoute();
   }
@@ -91,7 +95,6 @@ export class HallComponent implements OnInit {
       "Ooops... Something went wrong but don't worry, Andromeda is on the way :)",
       'error',
     );
-    console.error(err);
   }
 
   private reloadCurrentRoute() {
@@ -101,21 +104,21 @@ export class HallComponent implements OnInit {
       .then(() => this.router.navigate([currentUrl]));
   }
 
-  async onSelectSeat(btnSeat: HTMLButtonElement) {
-    const dataset = btnSeat.dataset;
+  async onSelectSeat(seatBtn: HTMLButtonElement) {
+    const dataset = seatBtn.dataset;
     const selectedRow = +dataset['row']!;
     const selectedSeat = +dataset['seat']!;
     if (this.isSeatTaken(selectedRow, selectedSeat)) return;
 
-    this.toggleSeatSelected(btnSeat);
+    this.toggleSeatSelected(seatBtn);
     const ticket = new Ticket(
       selectedRow,
       selectedSeat,
       dataset['type'],
-      +dataset['price']!,
+      +dataset['price']!
     );
-    const foundedIndex = this.tickets.findIndex((value) =>
-      isEqual(value, ticket),
+    const foundedIndex = this.tickets.findIndex(value =>
+      isEqual(value, ticket)
     );
     const isTicketSelected = foundedIndex !== -1;
     isTicketSelected
@@ -128,5 +131,20 @@ export class HallComponent implements OnInit {
       ? 'good'
       : 'lux';
     btnSeat.classList.toggle(`hall__seat--selected-${seatType}`);
+  }
+
+  unSelectSeat(ticket: Ticket) {
+    const hallContainer =
+      <HTMLDivElement>this.hallContainerElementRef.nativeElement;
+    const seatBtns =
+      hallContainer.querySelectorAll<HTMLButtonElement>('.hall__seat');
+    const foundedSeat = Array.from(seatBtns)
+      .find(seatBtn => {
+        const dataset = seatBtn.dataset;
+        const row = +dataset['row']!;
+        const seat = +dataset['seat']!;
+        return ticket.row === row && ticket.seat === seat;
+      })!;
+    this.toggleSeatSelected(foundedSeat);
   }
 }

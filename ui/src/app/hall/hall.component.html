@@ -49,13 +49,13 @@
     </svg>
     <p class="hall__screen-text">Екран</p>
 
-    <div class="hall__seats-box">
+    <div class="hall__seats-box" #hallContainer>
       <div class="hall__row"
            [ngClass]="{'hall__row--last' : lastRow}"
            *ngFor="let row of session.hall.rows; last as lastRow">
-        <button #btn
+        <button #hallSeat
                 *ngFor="let seat of row.seats"
-                (click)="onSelectSeat(btn)"
+                (click)="onSelectSeat(hallSeat)"
                 [attr.data-price]="row.price"
                 [attr.data-row]="row.number"
                 [attr.data-seat]="seat.number"
@@ -84,7 +84,7 @@
 
       <ul class="tickets-box__list">
         <li class="tickets-box__item" *ngFor="let ticket of tickets">
-          <app-ticket [ticket]="ticket"></app-ticket>
+          <app-ticket [ticket]="ticket" (remove)="unSelectSeat($event)"></app-ticket>
         </li>
       </ul>
 
