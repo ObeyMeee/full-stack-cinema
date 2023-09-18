@@ -2,7 +2,7 @@
   <div class="personal">
     <h3 class="heading-3">Personal information</h3>
     <p>Tell us about yourself!</p>
-    <div class="personal__container">
+    <div class="info-block">
       <app-profile-editor [value]="user?.given_name"
                           labelIcon="pi pi-id-card"
                           key="firstName"
@@ -33,7 +33,7 @@
     <h3 class="heading-3">Contact information</h3>
     <p>Provide us email and phone so we will be able to stay in touch with you :)</p>
 
-    <div class="contact__container">
+    <div class="info-block">
       <app-profile-editor [value]="user?.email"
                           labelIcon="pi pi-envelope"
                           key="email"
@@ -48,20 +48,34 @@
     </div>
   </div>
 
-  <div class="social-login">
-    <div class="social-login__google">
-      <i class="google-icon">Google</i>
-      <button class="btn social-login-btn">Connect</button>
-    </div>
+  <div class="authentication">
+    <h3 class="heading-3">Authentication</h3>
+    <p>Here you can connect your social networks to account and change password</p>
 
-    <div class="social-login__facebook">
-      <i class="google-icon">Facebook</i>
-      <button class="btn social-login-btn">Connect</button>
-    </div>
+    <div class="info-block">
+      
+      <app-profile-editor [value]="'*'.repeat(10)"
+                          labelIcon="pi pi-lock"
+                          key="password"
+                          labelValue="Password">
+      </app-profile-editor>
 
-    <div class="social-login__apple">
-      <i class="google-icon">Apple</i>
-      <button class="btn social-login-btn">Connect</button>
+      <div class="authentication__social-network-container">
+        <div class="authentication__google">
+          <i class="google-icon">Google</i>
+          <button class="btn authentication__btn">Connect</button>
+        </div>
+
+        <div class="social-login__facebook">
+          <i class="google-icon">Facebook</i>
+          <button class="btn authentication__btn">Connect</button>
+        </div>
+
+        <div class="social-login__apple">
+          <i class="google-icon">Apple</i>
+          <button class="btn authentication__btn">Connect</button>
+        </div>
+      </div>
     </div>
   </div>
 </section>

@@ -1,5 +1,13 @@
 @import "../../../../custom-bootstrap";
 
+@mixin input-valid {
+  border-color: forestgreen;
+
+  &:focus {
+    box-shadow: var(--box-shadow-input-success);
+  }
+}
+
 @mixin input-field {
   color: var(--color-grey-light-1);
   font-size: 2.5rem;
@@ -12,23 +20,20 @@
   &:focus {
     box-shadow: unset;
   }
-
-  &.ng-valid {
-    border-color: forestgreen;
-
-    &:focus {
-      box-shadow: var(--box-shadow-input-success);
-    }
-  }
 }
 
 :host::ng-deep {
-  .p-calendar {
+  .p-calendar,
+  .p-password {
     width: 100%;
 
     & .p-inputtext {
       @include input-field;
     }
+  }
+
+  .p-password-mask.ng-valid .p-inputtext {
+    @include input-valid;
   }
 
   .p-dropdown {
@@ -122,6 +127,10 @@
 
   &__input {
     @include input-field;
+
+    &.ng-valid {
+      @include input-valid;
+    }
   }
 
   &__changed {

@@ -72,6 +72,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { ProfileEditorComponent } from './user/profile/profile-editor/profile-editor.component';
 import { EmailErrorMessagesComponent } from './shared/email-error-message/email-error-messages.component';
 import { RangePipe } from './shared/pipes/range.pipe';
+import { PasswordErrorMessagesComponent } from './shared/password-error-messages/password-error-messages.component';
 
 const routes: Route[] = [
   { path: '', component: PosterComponent, pathMatch: 'full' },
@@ -141,6 +142,7 @@ const oktaAuth = new OktaAuth(environment.okta);
     ProfileEditorComponent,
     EmailErrorMessagesComponent,
     RangePipe,
+    PasswordErrorMessagesComponent,
   ],
     imports: [
         BrowserModule,

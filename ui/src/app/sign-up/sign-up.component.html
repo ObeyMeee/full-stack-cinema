@@ -58,23 +58,9 @@
       </div>
 
       <div class="form__group">
-        <small class="p-error" *ngIf="password.errors && (password.touched || password.dirty)">
-          <span *ngIf="password.errors?.['required']">
-            Password is required
-          </span>
-          <span *ngIf="password.errors?.['minlength']">
-            Password must be at least 8 characters long
-          </span>
-          <span *ngIf="password.errors?.['hasUpperCase']">
-            Password must contain at least 1 uppercase character
-          </span>
-          <span *ngIf="password.errors?.['hasLowerCase']">
-            Password must contain at least 1 lowercase character
-          </span>
-          <span *ngIf="password.errors?.['hasNumeric']">
-            Password must contain at least 1 digit
-          </span>
-        </small>
+        <app-password-error-messages [password]="password">
+        </app-password-error-messages>
+
         <input class="form__input"
                id="password"
                name="password"

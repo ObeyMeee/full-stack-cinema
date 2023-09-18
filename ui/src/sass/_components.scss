@@ -96,6 +96,16 @@
   padding: 2rem;
   background-color: transparent;
 
+  &-next,
+  &-prev,
+  &-last,
+  &-first {
+    svg {
+      height: 2.5rem;
+      width: 2.5rem;
+    }
+  }
+
   &-page.p-link,
   &-icon {
     font-size: 2.2rem;

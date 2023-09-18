@@ -48,7 +48,6 @@
             Field must contain only letters, spaces or dashes
           </span>
         </small>
-
       </ng-container>
 
       <p-calendar *ngSwitchCase="'birthdate'"
@@ -86,6 +85,34 @@
                (keydown.enter)="update()"
                autofocus />
         <app-email-error-messages [email]="email"></app-email-error-messages>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="'password'">
+        <p-password [(ngModel)]="editedValue"
+                    [toggleMask]="true"
+                    styleClass="field__input"
+                    id="input"
+                    (keydown.enter)="update()"
+                    required
+                    minlength="8"
+                    appHasUpperCase
+                    appHasLowerCase
+                    appHasNumeric
+                    autofocus>
+          <ng-template pTemplate="header">
+            <h3>Pick a password</h3>
+          </ng-template>
+          <ng-template pTemplate="footer">
+            <p-divider></p-divider>
+            <p class="fs-4 mt-2">Requirements</p>
+            <ul class="fs-4 pl-2 ml-2 mt-0">
+              <li>At least one lowercase</li>
+              <li>At least one uppercase</li>
+              <li>At least one numeric</li>
+              <li>Minimum 8 characters</li>
+            </ul>
+          </ng-template>
+        </p-password>
       </ng-container>
     </ng-container>
 
