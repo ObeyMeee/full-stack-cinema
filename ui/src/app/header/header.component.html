@@ -9,7 +9,7 @@
       <li class="nav__item nav__item--schedule">
         <a href="#" class="nav__link">Schedule</a>
       </li>
-      <li class="nav__item nav__item--admin" *oktaHasAnyGroup="'Admins'">
+      <li class="nav__item nav__item--admin" *oktaHasAnyGroup="UserGroup.ADMIN">
         <a class="nav__link" [routerLink]="['admin', 'users']">Admin</a>
       </li>
       <li class="nav__item" *ngIf="isAuthenticated$ | async">

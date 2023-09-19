@@ -10,11 +10,13 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.accept.ContentNegotiationStrategy;
 import org.springframework.web.accept.HeaderContentNegotiationStrategy;
+import ua.com.andromeda.user.UserGroup;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class WebSecurityConfig {
+    private static final String ADMIN = UserGroup.ADMIN.toString();
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -23,8 +25,8 @@ public class WebSecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/films/{id}/sessions", "/sessions/{id}").permitAll()
                 .requestMatchers(HttpMethod.GET, "/films/{id}/comments").permitAll()
                 .requestMatchers(HttpMethod.POST, "/users/new").permitAll()
-                .requestMatchers(HttpMethod.DELETE, "/users/{userId}").hasAuthority("Admins")
-                .requestMatchers(HttpMethod.PUT, "/users").hasAuthority("Admins")
+                .requestMatchers(HttpMethod.DELETE, "/users/{userId}").hasAuthority(ADMIN)
+                .requestMatchers(HttpMethod.PUT, "/users").hasAuthority(ADMIN)
                 .anyRequest().authenticated();
         http.oauth2ResourceServer().jwt();
         http.cors();

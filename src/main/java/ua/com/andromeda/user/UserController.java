@@ -18,7 +18,7 @@ public class UserController {
 
     @PostMapping("/new")
     public ResponseEntity<String> register(@RequestBody @Valid UserRegisterDto userRegisterDto) {
-        userService.register(userRegisterDto, Set.of("Users"));
+        userService.register(userRegisterDto, Set.of(UserGroup.USER.toString()));
         return ResponseEntity.ok().build();
     }
 

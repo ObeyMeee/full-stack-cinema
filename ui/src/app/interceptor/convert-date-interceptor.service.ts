@@ -1,22 +1,16 @@
 import { Injectable } from '@angular/core';
-import {
-  HttpEvent,
-  HttpHandler,
-  HttpInterceptor,
-  HttpRequest,
-  HttpResponse,
-} from '@angular/common/http';
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 
 @Injectable()
 export class ConvertDateInterceptorService implements HttpInterceptor {
   intercept(
     req: HttpRequest<any>,
-    next: HttpHandler,
+    next: HttpHandler
   ): Observable<HttpEvent<any>> {
     if (req.responseType === 'json') {
       const cloneReq = req.clone({
-        responseType: 'json',
+        responseType: 'json'
       });
       return next.handle(cloneReq).pipe(
         map((response) => {
@@ -29,7 +23,7 @@ export class ConvertDateInterceptorService implements HttpInterceptor {
             }
           }
           return response;
-        }),
+        })
       );
     }
     return next.handle(req);
