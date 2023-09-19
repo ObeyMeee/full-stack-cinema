@@ -12,12 +12,12 @@ import { CountryISO } from 'ngx-intl-tel-input';
 import { ExcelSaver } from '../../shared/excel-saver.service';
 
 @Component({
-  selector: 'app-users',
-  templateUrl: './users.component.html',
-  styleUrls: ['./users.component.scss'],
+  selector: 'app-users-managing',
+  templateUrl: './users-managing.component.html',
+  styleUrls: ['./users-managing.component.scss'],
   providers: [ConfirmationService, ToastService],
 })
-export class UsersComponent implements OnInit {
+export class UsersManagingComponent implements OnInit {
   usersPage$!: Pending<UserTableDto[]>;
   editedUser!: UserTableDto;
   editUserDialog = false;

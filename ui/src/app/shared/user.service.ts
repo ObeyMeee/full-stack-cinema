@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BaseService } from './base.service';
 import { RequestStatusService } from './pending/request-status.service';
-import { UserTableDto } from '../admin-panel/users/user-table.dto';
+import { UserTableDto } from '../admin-panel/users-managing/user-table.dto';
 
 @Injectable({
   providedIn: 'root'

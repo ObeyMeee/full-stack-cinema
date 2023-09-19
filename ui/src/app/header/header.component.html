@@ -10,7 +10,7 @@
         <a href="#" class="nav__link">Schedule</a>
       </li>
       <li class="nav__item nav__item--admin" *oktaHasAnyGroup="'Admins'">
-        <a class="nav__link" routerLink="admin">Admin</a>
+        <a class="nav__link" [routerLink]="['admin', 'users']">Admin</a>
       </li>
       <li class="nav__item" *ngIf="isAuthenticated$ | async">
         <button class="btn nav__notifications">

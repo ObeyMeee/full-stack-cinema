@@ -48,7 +48,7 @@ import { NgOptimizedImage } from '@angular/common';
 import { ConvertDateInterceptorService } from './interceptor/convert-date-interceptor.service';
 import { AdminGuard } from './guard/admin-guard.service';
 import { AdminPanelComponent } from './admin-panel/admin-panel.component';
-import { UsersComponent } from './admin-panel/users/users.component';
+import { UsersManagingComponent } from './admin-panel/users-managing/users-managing.component';
 import { TableModule } from 'primeng/table';
 import { RippleModule } from 'primeng/ripple';
 import { StyleClassModule } from 'primeng/styleclass';
@@ -73,6 +73,8 @@ import { ProfileEditorComponent } from './user/profile/profile-editor/profile-ed
 import { EmailErrorMessagesComponent } from './shared/email-error-message/email-error-messages.component';
 import { RangePipe } from './shared/pipes/range.pipe';
 import { PasswordErrorMessagesComponent } from './shared/password-error-messages/password-error-messages.component';
+import { FilmsManagingComponent } from './admin-panel/films-managing/films-managing.component';
+import { TabMenuModule } from 'primeng/tabmenu';
 
 const routes: Route[] = [
   { path: '', component: PosterComponent, pathMatch: 'full' },
@@ -101,8 +103,12 @@ const routes: Route[] = [
     path: 'admin',
     component: AdminPanelComponent,
     canActivate: [OktaAuthGuard, () => inject(AdminGuard).canActivate()],
+    children: [
+      { path: 'users', component: UsersManagingComponent },
+      { path: 'films', component: FilmsManagingComponent }
+    ]
   },
-  { path: '**', component: PosterComponent },
+  { path: '**', component: PosterComponent }
 ];
 
 const oktaAuth = new OktaAuth(environment.okta);
@@ -133,7 +139,7 @@ const oktaAuth = new OktaAuth(environment.okta);
     FilmInfoComponent,
     FilmCommentsComponent,
     AdminPanelComponent,
-    UsersComponent,
+    UsersManagingComponent,
     DateDropdownComponent,
     LoadingComponent,
     FilmCommentComponent,
@@ -143,41 +149,43 @@ const oktaAuth = new OktaAuth(environment.okta);
     EmailErrorMessagesComponent,
     RangePipe,
     PasswordErrorMessagesComponent,
+    FilmsManagingComponent
   ],
-    imports: [
-        BrowserModule,
-        BrowserAnimationsModule,
-        CarouselModule,
-        HttpClientModule,
-        RouterModule.forRoot(routes),
-        OktaAuthModule.forRoot({ oktaAuth }),
-        TooltipModule,
-        FormsModule,
-        PasswordModule,
-        DividerModule,
-        MessagesModule,
-        ProgressSpinnerModule,
-        ToastModule,
-        FieldsetModule,
-        RatingModule,
-        MessageModule,
-        PaginatorModule,
-        InputTextareaModule,
-        ButtonModule,
-        DialogModule,
-        NgOptimizedImage,
-        TableModule,
-        RippleModule,
-        StyleClassModule,
-        InputTextModule,
-        ConfirmDialogModule,
-        TagModule,
-        KeyFilterModule,
-        NgxIntlTelInputModule,
-        SkeletonModule,
-        SocialLoginModule,
-        CalendarModule
-    ],
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    CarouselModule,
+    HttpClientModule,
+    RouterModule.forRoot(routes),
+    OktaAuthModule.forRoot({ oktaAuth }),
+    TooltipModule,
+    FormsModule,
+    PasswordModule,
+    DividerModule,
+    MessagesModule,
+    ProgressSpinnerModule,
+    ToastModule,
+    FieldsetModule,
+    RatingModule,
+    MessageModule,
+    PaginatorModule,
+    InputTextareaModule,
+    ButtonModule,
+    DialogModule,
+    NgOptimizedImage,
+    TableModule,
+    RippleModule,
+    StyleClassModule,
+    InputTextModule,
+    ConfirmDialogModule,
+    TagModule,
+    KeyFilterModule,
+    NgxIntlTelInputModule,
+    SkeletonModule,
+    SocialLoginModule,
+    CalendarModule,
+    TabMenuModule
+  ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,

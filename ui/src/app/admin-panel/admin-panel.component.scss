@@ -1,0 +1,31 @@
+:host ::ng-deep {
+  .p-tabmenu {
+    padding: 1rem 3rem 0 3rem;
+
+    & .p-tabmenu-nav {
+      & .p-tabmenuitem {
+        & .p-menuitem-icon {
+          font-size: 2rem;
+        }
+
+        & .p-menuitem-link {
+          font-size: 2rem;
+          font-weight: 400;
+          letter-spacing: 1px;
+
+          &-active {
+            color: var(--color-primary);
+          }
+        }
+      }
+
+      & .p-tabmenu-ink-bar {
+        background-color: var(--color-primary);
+      }
+    }
+  }
+}
+
+.main-container {
+  padding: 3rem 10rem;
+}
