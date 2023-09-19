@@ -69,8 +69,19 @@ $aside-schedule-width: 25vw;
     }
 
     &__genre {
-      text-decoration: none;
-      color: currentColor;
+      display: inline-block;
+      color: var(--color-primary);
+      transition: all .2s;
+      padding: 0 1rem;
+
+      &:first-child {
+        padding-left: 0;
+      }
+
+      &:hover {
+        color: var(--color-grey-light-1);
+        transform: scale(1.2);
+      }
     }
 
     &__description {
@@ -79,8 +90,8 @@ $aside-schedule-width: 25vw;
       font-size: 1.8rem;
       margin-top: 4rem;
     }
-    }
   }
+}
 
 .aside-schedule-box {
   position: fixed;

@@ -12,10 +12,10 @@
     <div class="film-details__value">20.04.2022-23.01.2023</div>
     <div class="film-details__text">Genre:</div>
     <div class="film-details__value">
-      <ng-container *ngFor="let genre of film.genres; let last=last">
-        <a class="film-details__genre" href="#">{{genre.name}}</a>
-        <span *ngIf="!last">, &nbsp;</span>
-      </ng-container>
+      <a class="film-details__genre"
+         *ngFor="let genre of film.genres"
+         href="#">{{genre.name}}
+      </a>
     </div>
     <div class="film-details__text">Duration:</div>
     <div class="film-details__value">{{film.duration}}</div>
