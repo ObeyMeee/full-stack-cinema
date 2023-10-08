@@ -21,7 +21,7 @@ import { PosterElementComponent } from './poster/poster-element/poster-element.c
 import { DropdownDirective } from './shared/directives/dropdown.directive';
 import { TicketComponent } from './hall/ticket/ticket.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SafeUrlPipe } from './shared/pipes/safe-url.pipe';
 import { TrailerComponent } from './shared/trailer/trailer.component';
 import { EmailDirective } from './sign-up/validators/email.directive';
@@ -75,6 +75,8 @@ import { RangePipe } from './shared/pipes/range.pipe';
 import { PasswordErrorMessagesComponent } from './shared/password-error-messages/password-error-messages.component';
 import { FilmsManagingComponent } from './admin-panel/films-managing/films-managing.component';
 import { TabMenuModule } from 'primeng/tabmenu';
+import { NewFilmComponent } from './admin-panel/new-film/new-film.component';
+import { StepsModule } from 'primeng/steps';
 
 const routes: Route[] = [
   { path: '', component: PosterComponent, pathMatch: 'full' },
@@ -105,7 +107,8 @@ const routes: Route[] = [
     canActivate: [OktaAuthGuard, () => inject(AdminGuard).canActivate()],
     children: [
       { path: 'users', component: UsersManagingComponent },
-      { path: 'films', component: FilmsManagingComponent }
+      { path: 'films', component: FilmsManagingComponent },
+      { path: 'films/new', component: NewFilmComponent }
     ]
   },
   { path: '**', component: PosterComponent }
@@ -149,7 +152,8 @@ const oktaAuth = new OktaAuth(environment.okta);
     EmailErrorMessagesComponent,
     RangePipe,
     PasswordErrorMessagesComponent,
-    FilmsManagingComponent
+    FilmsManagingComponent,
+    NewFilmComponent
   ],
   imports: [
     BrowserModule,
@@ -184,7 +188,9 @@ const oktaAuth = new OktaAuth(environment.okta);
     SkeletonModule,
     SocialLoginModule,
     CalendarModule,
-    TabMenuModule
+    TabMenuModule,
+    ReactiveFormsModule,
+    StepsModule
   ],
   providers: [
     {

@@ -1,0 +1,176 @@
+<div class="bg-image">
+  <p-steps [model]="items"
+           [(activeIndex)]="activeStep"
+           [readonly]="false">
+  </p-steps>
+
+  <form class="form" [formGroup]="filmForm" (ngSubmit)="onSubmit()">
+    <fieldset formGroupName="generalInformation"
+              [ngClass]="{'d-none': activeStep !== 0}">
+      <legend>General Information</legend>
+      <div class="form__group">
+        <label for="title" class="form__label">Title</label>
+        <input pInputText
+               id="title"
+               formControlName="title"
+               class="form__input">
+      </div>
+
+      <div class="form__group">
+        <label for="description" class="form__label">Description</label>
+        <input pInputText
+               id="description"
+               formControlName="description"
+               class="form__input">
+      </div>
+
+      <div class="form__group" formArrayName="genres">
+        <label class="form__label">Genres</label>
+        <p-button icon="pi pi-plus"
+                  label="Add genre"
+                  styleClass="p-button-rounded p-button-success p-button-text p-button-raised"
+                  (click)="addGenre()">
+        </p-button>
+
+        <div *ngFor="let _ of genres.controls; let i=index">
+          <label for="genre-{{ i }}">Genre:</label>
+          <input pInputText
+                 id="genre-{{i}}"
+                 [formControlName]="i"
+                 class="form__input">
+        </div>
+      </div>
+
+
+      <div class="form__group">
+        <label for="duration" class="form__label">Duration</label>
+        <input pInputText
+               type="number"
+               id="duration"
+               formControlName="duration"
+               class="form__input">
+      </div>
+
+      <div class="form__group">
+        <label for="production-year" class="form__label">Production Year</label>
+        <input pInputText
+               type="number"
+               id="production-year"
+               formControlName="productionYear"
+               class="form__input">
+      </div>
+
+      <div class="form__group" formArrayName="countries">
+        <label class="form__label">Countries</label>
+        <p-button icon="pi pi-plus"
+                  label="Add country"
+                  styleClass="p-button-rounded p-button-success p-button-text p-button-raised"
+                  (click)="addCountry()">
+        </p-button>
+
+        <div *ngFor="let _ of countries.controls; let i=index">
+          <label for="country-{{ i }}">Country:</label>
+          <input pInputText
+                 id="country-{{i}}"
+                 [formControlName]="i"
+                 class="form__input">
+        </div>
+      </div>
+
+    </fieldset>
+
+    <fieldset formGroupName="crew"
+              [ngClass]="{'d-none': activeStep !== 1}">
+      <legend>Crew</legend>
+      <div class="form__group">
+        <label for="director" class="form__label">Director</label>
+        <input pInputText
+               id="director"
+               class="form__input"
+               formControlName="director">
+      </div>
+
+      <div class="form__group">
+        <label for="screenwriter" class="form__label">Screenwriter</label>
+        <input pInputText
+               id="screenwriter"
+               class="form__input"
+               formControlName="screenwriter">
+      </div>
+
+      <div class="form__group" formGroupName="actors">
+        <label class="form__label">Actors</label>
+        <p-button icon="pi pi-plus"
+                  label="Add actor"
+                  styleClass="p-button-rounded p-button-success p-button-text p-button-raised"
+                  (click)="addActor()">
+        </p-button>
+
+        <div *ngFor="let _ of actors.controls; let i=index">
+          <label for="genre-{{ i }}">Actor:</label>
+          <input pInputText
+                 id="actor-{{i}}"
+                 [formControlName]="i"
+                 class="form__input">
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset formGroupName="additionalInfo"
+              [ngClass]="{'d-none': activeStep !== 2}">
+      <legend>Additional Information</legend>
+      <div class="form__group">
+        <label for="language" class="form__label">Language</label>
+        <input pInputText
+               id="language"
+               class="form__input"
+               formControlName="language">
+      </div>
+
+      <div class="form__group">
+        <label for="age" class="form__label">Age</label>
+        <input pInputText
+               type="number"
+               id="age"
+               class="form__input"
+               formControlName="age">
+      </div>
+
+      <div class="form__group">
+        <label for="start-release" class="form__label">Start Release</label>
+        <input pInputText
+               type="date"
+               id="start-release"
+               class="form__input"
+               formControlName="startReleaseAt">
+      </div>
+
+      <div class="form__group">
+        <label for="end-release" class="form__label">End Release</label>
+        <input pInputText
+               type="date"
+               id="end-release"
+               class="form__input"
+               formControlName="endReleaseAt">
+      </div>
+
+      <ng-container formGroupName="media">
+        <div class="form__group">
+          <label for="poster" class="form__label">Poster</label>
+          <input pInputText
+                 id="poster"
+                 class="form__input"
+                 formControlName="poster">
+        </div>
+        <div class="form__group">
+          <label for="trailer" class="form__label">Trailer</label>
+          <input pInputText
+                 id="trailer"
+                 class="form__input"
+                 formControlName="trailer">
+        </div>
+      </ng-container>
+
+    </fieldset>
+  </form>
+</div>
