@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MenuItem } from 'primeng/api';
 import { endReleaseAtValidator, productionYearValidator } from './validators';
+import { environment } from '../../../environments/environment.development';
+import { DropdownItem } from '../../shared/dropdown-item.type';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-new-film',
@@ -10,11 +13,13 @@ import { endReleaseAtValidator, productionYearValidator } from './validators';
 })
 export class NewFilmComponent implements OnInit {
   filmForm!: FormGroup;
-
   items!: MenuItem[];
   activeStep = 0;
+  suggestedGenres!: DropdownItem[];
+  suggestedCountries!: { name: string, flag: { png: string, alt: string } }[];
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder,
+              private http: HttpClient) {
   }
 
   ngOnInit() {
@@ -27,7 +32,7 @@ export class NewFilmComponent implements OnInit {
         genres: this.formBuilder.array<string>([]),
         duration: [1, [Validators.required, Validators.min(1)]],
         productionYear: [
-          now.getFullYear(),
+          now,
           [
             Validators.required,
             productionYearValidator()
@@ -79,12 +84,59 @@ export class NewFilmComponent implements OnInit {
     return this.filmForm.get('crew.actors') as FormArray;
   }
 
-  addGenre() {
+  async addGenre() {
+    if (!this.suggestedGenres) {
+      await this.setSuggestedGenres();
+    }
     this.genres.push(this.formBuilder.control(''));
   }
 
-  addCountry() {
+  private async setSuggestedGenres() {
+    const options = {
+      headers: {
+        accept: 'application/json',
+        Authorization: `Bearer ${environment.tmdb.accessToken}`
+      }
+    };
+    const url = `${environment.tmdb.apiUrl}genre/movie/list`;
+    this.http.get<GenreResponse>(url, options)
+      .subscribe({
+        next: data =>
+          this.suggestedGenres = data.genres.map(
+            genre => ({ label: genre.name, value: genre.name })
+          ),
+        error: err => {
+          throw new Error(err.message);
+        }
+      });
+  }
+
+  async addCountry() {
+    if (!this.suggestedCountries) {
+      await this.setSuggestedCountries();
+    }
     this.countries.push(this.formBuilder.control(''));
+  }
+
+
+  private async setSuggestedCountries() {
+    const url = `${environment.countryApiUrl}all`;
+    this.http.get<any>(url)
+      .subscribe({
+        next: (data: any[]) =>
+          this.suggestedCountries = data.map(
+            country => ({
+              name: country.name.common,
+              flag: {
+                png: country.flags.png,
+                alt: country.flags.alt
+              }
+            })
+          ).sort((a, b) => a.name.localeCompare(b.name)),
+        error: err => {
+          throw new Error(err.message);
+        }
+      });
   }
 
   addActor() {
@@ -95,8 +147,27 @@ export class NewFilmComponent implements OnInit {
     this.sessions.push(this.formBuilder.control(''));
   }
 
+  deleteGenre(index: number) {
+    this.genres.removeAt(index);
+  }
+
+  deleteCountry(index: number) {
+    this['countries'].removeAt(index);
+    this.countries.removeAt(index);
+  }
 
   onSubmit() {
 
   }
+
+  onMove(step: number) {
+    this.activeStep += step;
+  }
+}
+
+interface GenreResponse {
+  genres: {
+    id: number,
+    name: string
+  }[];
 }

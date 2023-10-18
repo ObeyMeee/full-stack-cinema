@@ -74,11 +74,14 @@ header {
     }
 
     &__link:hover,
-    &__link:active,
     &__notifications:hover,
     &__logout:hover {
       color: var(--color-grey-light-1);
       transform: scale(1.1);
+    }
+
+    &__link:active {
+      transform: scale(1);
     }
 
     &__link:hover::after,

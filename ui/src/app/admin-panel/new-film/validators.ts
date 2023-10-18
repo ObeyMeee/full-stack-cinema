@@ -8,7 +8,7 @@ export function productionYearValidator(): ValidatorFn {
 
     const FIRST_FILM_RELEASED_AT = new Date(1895, 11, 27);
     const isValid = value > FIRST_FILM_RELEASED_AT;
-    return !isValid ? { productionYear: true } : null;
+    return !isValid ? { min: true } : null;
   };
 }
 

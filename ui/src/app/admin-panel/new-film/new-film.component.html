@@ -1,89 +1,220 @@
-<div class="bg-image">
+<section class="section-add-film">
   <p-steps [model]="items"
            [(activeIndex)]="activeStep"
            [readonly]="false">
   </p-steps>
 
+  <p-button label="Next"
+            icon="pi pi-arrow-right"
+            iconPos="right"
+            (click)="onMove(1)"
+            styleClass="btn-nav btn-right p-button-lg"
+            *ngIf="activeStep !== items.length - 1">
+  </p-button>
+  <p-button label="Back"
+            icon="pi pi-arrow-left"
+            (click)="onMove(-1)"
+            styleClass="btn-nav btn-back p-button-lg"
+            *ngIf="activeStep !== 0">
+  </p-button>
   <form class="form" [formGroup]="filmForm" (ngSubmit)="onSubmit()">
     <fieldset formGroupName="generalInformation"
               [ngClass]="{'d-none': activeStep !== 0}">
-      <legend>General Information</legend>
+      <legend class="form__legend">General Information</legend>
       <div class="form__group">
-        <label for="title" class="form__label">Title</label>
+        <label for="title" class="form__label">
+          <span class="form__label-number">1.</span>
+          <span class="form__label-key">Title</span>
+          <span class="text-red-600">*</span>
+        </label>
+
+        <ng-container *ngIf="filmForm.get('generalInformation.title') as titleControl">
+          <small *ngIf="titleControl.invalid &&
+            (titleControl.dirty || titleControl.touched)" class="p-error">
+          <span *ngIf="titleControl.errors?.['required']">
+            Title is required
+          </span>
+          </small>
+        </ng-container>
+
         <input pInputText
                id="title"
                formControlName="title"
-               class="form__input">
+               class="form__input"
+               autofocus>
       </div>
 
       <div class="form__group">
-        <label for="description" class="form__label">Description</label>
-        <input pInputText
-               id="description"
-               formControlName="description"
-               class="form__input">
+        <label for="description" class="form__label">
+          <span class="form__label-number">2.</span>
+          <span class="form__label-key">Description</span>
+          <span class="text-red-600">*</span>
+        </label>
+
+        <ng-container *ngIf="filmForm.get('generalInformation.description') as descriptionControl">
+          <small *ngIf="descriptionControl.invalid &&
+            (descriptionControl.dirty || descriptionControl.touched)"
+                 class="p-error">
+            <span *ngIf="descriptionControl.errors?.['required']">
+              Description is required
+            </span>
+          </small>
+        </ng-container>
+
+        <textarea class="form__input"
+                  pInputTextarea
+                  rows="5"
+                  formControlName="description"
+                  id="description">
+        </textarea>
       </div>
 
       <div class="form__group" formArrayName="genres">
-        <label class="form__label">Genres</label>
+        <label class="form__label">
+          <span class="form__label-number">3.</span>
+          <span class="form__label-key">Genres</span>
+          <span class="text-red-600">*</span>
+        </label>
+
+        <ng-container *ngIf="filmForm.get('generalInformation.genres') as genresControl">
+          <small *ngIf="genresControl.invalid &&
+            (genresControl.dirty || genresControl.touched)" class="p-error">
+            <span *ngIf="genresControl.errors?.['required']">
+              Add at least 1 genre
+            </span>
+          </small>
+        </ng-container>
+
+        <div class="array-controls">
+          <div *ngFor="let _ of genres.controls; let i=index">
+            <p-dropdown [options]="suggestedGenres"
+                        inputId="genre--{{i}}"
+                        placeholder="Select a Genre"
+                        [filter]="true"
+                        [formControlName]="i">
+            </p-dropdown>
+            <p-button icon="pi pi-times"
+                      styleClass="p-button-rounded p-button-danger p-button-text p-button-raised p-button-lg"
+                      (click)="deleteGenre(i)">
+            </p-button>
+          </div>
+        </div>
         <p-button icon="pi pi-plus"
                   label="Add genre"
-                  styleClass="p-button-rounded p-button-success p-button-text p-button-raised"
+                  styleClass="p-button-rounded p-button-success p-button-text p-button-raised p-button-lg"
                   (click)="addGenre()">
         </p-button>
-
-        <div *ngFor="let _ of genres.controls; let i=index">
-          <label for="genre-{{ i }}">Genre:</label>
-          <input pInputText
-                 id="genre-{{i}}"
-                 [formControlName]="i"
-                 class="form__input">
-        </div>
-      </div>
-
-
-      <div class="form__group">
-        <label for="duration" class="form__label">Duration</label>
-        <input pInputText
-               type="number"
-               id="duration"
-               formControlName="duration"
-               class="form__input">
       </div>
 
       <div class="form__group">
-        <label for="production-year" class="form__label">Production Year</label>
-        <input pInputText
-               type="number"
-               id="production-year"
-               formControlName="productionYear"
-               class="form__input">
+        <label for="duration" class="form__label">
+          <span class="form__label-number">4.</span>
+          <span class="form__label-key">Duration</span>
+          <span class="text-red-600">*</span>
+        </label>
+
+        <ng-container *ngIf="filmForm.get('generalInformation.duration') as durationControl">
+          <small *ngIf="durationControl.invalid &&
+            (durationControl.dirty || durationControl.touched)" class="p-error">
+            <span *ngIf="durationControl.errors?.['required']">
+              Duration is required
+            </span>
+
+            <span *ngIf="durationControl.errors?.['min']">
+              Duration should be a positive number
+            </span>
+          </small>
+        </ng-container>
+
+        <p-inputNumber inputId="duration"
+                       formControlName="duration"
+                       suffix=" minutes"
+                       [showButtons]="true"
+                       buttonLayout="horizontal"
+                       [min]="1">
+        </p-inputNumber>
+      </div>
+
+      <div class="form__group">
+        <label for="production-year" class="form__label">
+          <span class="form__label-number">5.</span>
+          <span class="form__label-key">Production Year</span>
+          <span class="text-red-600">*</span>
+        </label>
+
+        <ng-container *ngIf="filmForm.get('generalInformation.productionYear') as productionYearControl">
+          <small *ngIf="productionYearControl.invalid &&
+            (productionYearControl.dirty || productionYearControl.touched)" class="p-error">
+            <span *ngIf="productionYearControl.errors?.['required']">
+              Production year is required
+            </span>
+
+            <span *ngIf="productionYearControl.errors?.['min']">
+              Production year must be greater than 1895
+            </span>
+          </small>
+        </ng-container>
+
+        <p-calendar view="year"
+                    dateFormat="yy"
+                    inputId="production-year"
+                    [showIcon]="true"
+                    formControlName="productionYear">
+        </p-calendar>
       </div>
 
       <div class="form__group" formArrayName="countries">
-        <label class="form__label">Countries</label>
+        <label class="form__label">
+          <span class="form__label-number">6.</span>
+          <span class="form__label-key">Countries</span>
+          <span class="text-red-600">*</span>
+        </label>
+
+        <ng-container *ngIf="filmForm.get('generalInformation.countries') as countriesControl">
+          <small *ngIf="countriesControl.invalid &&
+            (countriesControl.dirty || countriesControl.touched)" class="p-error">
+            <span *ngIf="countriesControl.errors?.['required']">
+              Add at least 1 country
+            </span>
+          </small>
+        </ng-container>
+
+        <div class="array-controls">
+          <div *ngFor="let _ of countries.controls; let i=index">
+            <p-dropdown [options]="suggestedCountries"
+                        optionValue="name"
+                        optionLabel="name"
+                        inputId="country--{{i}}"
+                        placeholder="Select a Country"
+                        [filter]="true"
+                        [formControlName]="i">
+              <ng-template let-country pTemplate="item">
+                <div class="p-dropdown-item-box">
+                  <img [src]="country.flag.png" [alt]="country.flag.alt">
+                  <span>{{ country.name }}</span>
+                </div>
+              </ng-template>
+            </p-dropdown>
+            <p-button icon="pi pi-times"
+                      styleClass="p-button-rounded p-button-danger p-button-text p-button-raised p-button-lg"
+                      (click)="deleteCountry(i)">
+            </p-button>
+          </div>
+        </div>
+
         <p-button icon="pi pi-plus"
                   label="Add country"
-                  styleClass="p-button-rounded p-button-success p-button-text p-button-raised"
+                  styleClass="p-button-rounded p-button-success p-button-text p-button-raised p-button-lg"
                   (click)="addCountry()">
         </p-button>
-
-        <div *ngFor="let _ of countries.controls; let i=index">
-          <label for="country-{{ i }}">Country:</label>
-          <input pInputText
-                 id="country-{{i}}"
-                 [formControlName]="i"
-                 class="form__input">
-        </div>
       </div>
-
     </fieldset>
 
     <fieldset formGroupName="crew"
               [ngClass]="{'d-none': activeStep !== 1}">
-      <legend>Crew</legend>
+      <legend class="form__legend">Crew</legend>
       <div class="form__group">
-        <label for="director" class="form__label">Director</label>
+        <label for="director" class="form__label">Director*</label>
         <input pInputText
                id="director"
                class="form__input"
@@ -91,7 +222,7 @@
       </div>
 
       <div class="form__group">
-        <label for="screenwriter" class="form__label">Screenwriter</label>
+        <label for="screenwriter" class="form__label">Screenwriter*</label>
         <input pInputText
                id="screenwriter"
                class="form__input"
@@ -99,7 +230,7 @@
       </div>
 
       <div class="form__group" formGroupName="actors">
-        <label class="form__label">Actors</label>
+        <label class="form__label">Actors*</label>
         <p-button icon="pi pi-plus"
                   label="Add actor"
                   styleClass="p-button-rounded p-button-success p-button-text p-button-raised"
@@ -118,9 +249,9 @@
 
     <fieldset formGroupName="additionalInfo"
               [ngClass]="{'d-none': activeStep !== 2}">
-      <legend>Additional Information</legend>
+      <legend class="form__legend">Additional Information</legend>
       <div class="form__group">
-        <label for="language" class="form__label">Language</label>
+        <label for="language" class="form__label">Language*</label>
         <input pInputText
                id="language"
                class="form__input"
@@ -128,7 +259,7 @@
       </div>
 
       <div class="form__group">
-        <label for="age" class="form__label">Age</label>
+        <label for="age" class="form__label">Age*</label>
         <input pInputText
                type="number"
                id="age"
@@ -137,7 +268,7 @@
       </div>
 
       <div class="form__group">
-        <label for="start-release" class="form__label">Start Release</label>
+        <label for="start-release" class="form__label">Start Release*</label>
         <input pInputText
                type="date"
                id="start-release"
@@ -146,7 +277,7 @@
       </div>
 
       <div class="form__group">
-        <label for="end-release" class="form__label">End Release</label>
+        <label for="end-release" class="form__label">End Release*</label>
         <input pInputText
                type="date"
                id="end-release"
@@ -156,21 +287,20 @@
 
       <ng-container formGroupName="media">
         <div class="form__group">
-          <label for="poster" class="form__label">Poster</label>
+          <label for="poster" class="form__label">Poster*</label>
           <input pInputText
                  id="poster"
                  class="form__input"
                  formControlName="poster">
         </div>
         <div class="form__group">
-          <label for="trailer" class="form__label">Trailer</label>
+          <label for="trailer" class="form__label">Trailer*</label>
           <input pInputText
                  id="trailer"
                  class="form__input"
                  formControlName="trailer">
         </div>
       </ng-container>
-
     </fieldset>
   </form>
-</div>
+</section>
