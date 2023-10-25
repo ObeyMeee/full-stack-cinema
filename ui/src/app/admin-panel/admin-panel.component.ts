@@ -11,9 +11,22 @@ export class AdminPanelComponent {
 
   ngOnInit() {
     this.items = [
-      { label: 'Users', icon: 'pi pi-user', routerLink: 'users' },
-      { label: 'Films', icon: 'bi bi-camera-reels', routerLink: 'films' },
-      { label: 'New film', icon: 'pi pi-plus', routerLink: ['films', 'new'] }
+      {
+        label: 'Users',
+        icon: 'pi pi-user',
+        routerLink: 'users'
+      },
+      {
+        label: 'Films',
+        icon: 'bi bi-camera-reels',
+        routerLink: 'films',
+        routerLinkActiveOptions: { exact: true }
+      },
+      {
+        label: 'New film',
+        icon: 'pi pi-plus',
+        routerLink: ['films', 'new']
+      }
     ];
   }
 }
