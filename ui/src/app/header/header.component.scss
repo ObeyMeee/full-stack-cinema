@@ -80,7 +80,8 @@ header {
       transform: scale(1.1);
     }
 
-    &__link:active {
+    &__link:active,
+    &__logout:active {
       transform: scale(1);
     }
 
