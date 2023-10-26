@@ -18,6 +18,6 @@ export function endReleaseAtValidator(): ValidatorFn {
     if (!value) return null;
 
     const isValid = isFuture(value);
-    return !isValid ? { endReleaseAt: true } : null;
+    return !isValid ? { isFuture: true } : null;
   };
 }

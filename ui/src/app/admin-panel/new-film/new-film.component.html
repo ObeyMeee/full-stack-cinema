@@ -1,6 +1,7 @@
 <section class="section-add-film">
   <p-steps [model]="items"
            [(activeIndex)]="activeStep"
+           (activeIndexChange)="setStepToLocalStorage()"
            [readonly]="false">
   </p-steps>
 
@@ -17,6 +18,7 @@
             styleClass="btn-nav btn-back p-button-lg"
             *ngIf="activeStep !== 0">
   </p-button>
+
   <form class="form" [formGroup]="filmForm" (ngSubmit)="onSubmit()">
     <fieldset formGroupName="generalInformation"
               [ngClass]="{'d-none': activeStep !== 0}">
@@ -99,11 +101,13 @@
             </p-button>
           </div>
         </div>
-        <p-button icon="pi pi-plus"
-                  label="Add genre"
-                  styleClass="p-button-rounded p-button-success p-button-text p-button-raised p-button-lg"
-                  (click)="addGenre()">
-        </p-button>
+        <div class="d-inline-block">
+          <p-button icon="pi pi-plus"
+                    label="Add genre"
+                    styleClass="p-button-rounded p-button-success p-button-text p-button-raised p-button-lg"
+                    (click)="addGenre()">
+          </p-button>
+        </div>
       </div>
 
       <div class="form__group">
@@ -186,9 +190,17 @@
                         optionLabel="name"
                         inputId="country--{{i}}"
                         placeholder="Select a Country"
+                        [virtualScroll]="true"
+                        [virtualScrollItemSize]="35"
                         [filter]="true"
                         [formControlName]="i">
               <ng-template let-country pTemplate="item">
+                <div class="p-dropdown-item-box">
+                  <img [src]="country.flag.png" [alt]="country.flag.alt">
+                  <span>{{ country.name }}</span>
+                </div>
+              </ng-template>
+              <ng-template let-country pTemplate="selectedItem">
                 <div class="p-dropdown-item-box">
                   <img [src]="country.flag.png" [alt]="country.flag.alt">
                   <span>{{ country.name }}</span>
@@ -202,47 +214,178 @@
           </div>
         </div>
 
-        <p-button icon="pi pi-plus"
-                  label="Add country"
-                  styleClass="p-button-rounded p-button-success p-button-text p-button-raised p-button-lg"
-                  (click)="addCountry()">
-        </p-button>
+        <div class="d-inline-block">
+          <p-button icon="pi pi-plus"
+                    label="Add country"
+                    styleClass="p-button-rounded p-button-success p-button-text p-button-raised p-button-lg"
+                    (click)="addCountry()">
+          </p-button>
+        </div>
       </div>
     </fieldset>
 
     <fieldset formGroupName="crew"
               [ngClass]="{'d-none': activeStep !== 1}">
       <legend class="form__legend">Crew</legend>
-      <div class="form__group">
-        <label for="director" class="form__label">Director*</label>
-        <input pInputText
-               id="director"
-               class="form__input"
-               formControlName="director">
+
+      <div class="form__group" formArrayName="directors">
+        <label class="form__label">
+          <span class="form__label-number">7.</span>
+          <span class="form__label-key">Director</span>
+          <span class="text-red-600">*</span>
+        </label>
+
+        <ng-container *ngIf="filmForm.get('crew.director') as directorControl">
+          <small *ngIf="directorControl.invalid &&
+            (directorControl.dirty || directorControl.touched)" class="p-error">
+          <span *ngIf="directorControl.errors?.['required']">
+            Add at least 1 director
+          </span>
+          </small>
+        </ng-container>
+
+        <div class="array-controls">
+          <div *ngFor="let _ of directors.controls; let i=index">
+            <p-autoComplete inputId="director--{{i}}"
+                            styleClass="form__input"
+                            placeholder="Director"
+                            [minLength]="4"
+                            [suggestions]="suggestedCrewMembers"
+                            (completeMethod)="filterPeople($event)"
+                            [dropdown]="true"
+                            [formControlName]="i"
+                            [showClear]="true"
+                            [showEmptyMessage]="true"
+                            emptyMessage="No people found"
+                            field="name">
+
+              <ng-template let-crewMember pTemplate="item">
+                <div class="autocomplete-item">
+                  <img [src]="crewMember.imgUrl" />
+                  <span>{{ crewMember.name }}</span>
+                </div>
+              </ng-template>
+
+            </p-autoComplete>
+            <p-button icon="pi pi-times"
+                      styleClass="p-button-rounded p-button-danger p-button-text p-button-raised p-button-lg"
+                      (click)="deleteDirector(i)">
+            </p-button>
+          </div>
+        </div>
+
+        <div class="d-inline-block">
+          <p-button icon="pi pi-plus"
+                    label="Add Director"
+                    styleClass="p-button-rounded p-button-success p-button-text p-button-raised p-button-lg"
+                    (click)="addDirector()">
+          </p-button>
+        </div>
       </div>
 
-      <div class="form__group">
-        <label for="screenwriter" class="form__label">Screenwriter*</label>
-        <input pInputText
-               id="screenwriter"
-               class="form__input"
-               formControlName="screenwriter">
+      <div class="form__group" formArrayName="screenwriters">
+        <label class="form__label">
+          <span class="form__label-number">8.</span>
+          <span class="form__label-key">Screenwriter</span>
+          <span class="text-red-600">*</span>
+        </label>
+
+        <ng-container *ngIf="filmForm.get('crew.screenwriters') as screenwriterControl">
+          <small *ngIf="screenwriterControl.invalid &&
+            (screenwriterControl.dirty || screenwriterControl.touched)" class="p-error">
+            <span *ngIf="screenwriterControl.errors?.['required']">
+              Add at least 1 screenwriter
+            </span>
+          </small>
+        </ng-container>
+
+        <div class="array-controls">
+          <div *ngFor="let _ of screenwriters.controls; let i=index">
+            <p-autoComplete inputId="screenwriter--{{i}}"
+                            styleClass="form__input"
+                            placeholder="Screenwriter"
+                            [minLength]="4"
+                            [suggestions]="suggestedCrewMembers"
+                            (completeMethod)="filterPeople($event)"
+                            [formControlName]="i"
+                            [showClear]="true"
+                            [showEmptyMessage]="true"
+                            emptyMessage="No people found"
+                            field="name">
+              <ng-template let-crewMember pTemplate="item">
+                <div class="autocomplete-item">
+                  <img [src]="crewMember.imgUrl" />
+                  <span>{{ crewMember.name }}</span>
+                </div>
+              </ng-template>
+            </p-autoComplete>
+
+            <p-button icon="pi pi-times"
+                      styleClass="p-button-rounded p-button-danger p-button-text p-button-raised p-button-lg"
+                      (click)="deleteScreenwriter(i)">
+            </p-button>
+          </div>
+        </div>
+
+        <div class="d-inline-block">
+          <p-button icon="pi pi-plus"
+                    label="Add Screenwriter"
+                    styleClass="p-button-rounded p-button-success p-button-text p-button-raised p-button-lg"
+                    (click)="addScreenwriter()">
+          </p-button>
+        </div>
       </div>
 
       <div class="form__group" formGroupName="actors">
-        <label class="form__label">Actors*</label>
-        <p-button icon="pi pi-plus"
-                  label="Add actor"
-                  styleClass="p-button-rounded p-button-success p-button-text p-button-raised"
-                  (click)="addActor()">
-        </p-button>
+        <label class="form__label">
+          <span class="form__label-number">9.</span>
+          <span class="form__label-key">Actors</span>
+          <span class="text-red-600">*</span>
+        </label>
 
-        <div *ngFor="let _ of actors.controls; let i=index">
-          <label for="genre-{{ i }}">Actor:</label>
-          <input pInputText
-                 id="actor-{{i}}"
-                 [formControlName]="i"
-                 class="form__input">
+        <ng-container *ngIf="filmForm.get('crew.actors') as actorsControl">
+          <small *ngIf="actorsControl.invalid &&
+            (actorsControl.dirty || actorsControl.touched)" class="p-error">
+          <span *ngIf="actorsControl.errors?.['required']">
+            Add at least 1 screenwriter
+          </span>
+          </small>
+        </ng-container>
+
+        <div class="array-controls">
+          <div *ngFor="let _ of actors.controls; let i=index">
+            <p-autoComplete inputId="actor--{{i}}"
+                            styleClass="form__input"
+                            placeholder="Actor"
+                            [minLength]="4"
+                            [suggestions]="suggestedCrewMembers"
+                            (completeMethod)="filterPeople($event)"
+                            [formControlName]="i"
+                            [showClear]="true"
+                            [showEmptyMessage]="true"
+                            emptyMessage="No people found"
+                            field="name">
+              <ng-template let-crewMember pTemplate="item">
+                <div class="autocomplete-item">
+                  <img [src]="crewMember.imgUrl" />
+                  <span>{{ crewMember.name }}</span>
+                </div>
+              </ng-template>
+            </p-autoComplete>
+
+            <p-button icon="pi pi-times"
+                      styleClass="p-button-rounded p-button-danger p-button-text p-button-raised p-button-lg"
+                      (click)="deleteActor(i)">
+            </p-button>
+          </div>
+        </div>
+
+        <div class="d-inline-block">
+          <p-button icon="pi pi-plus"
+                    label="Add Actor"
+                    styleClass="p-button-rounded p-button-success p-button-text p-button-raised p-button-lg"
+                    (click)="addActor()">
+          </p-button>
         </div>
       </div>
     </fieldset>
@@ -251,56 +394,163 @@
               [ngClass]="{'d-none': activeStep !== 2}">
       <legend class="form__legend">Additional Information</legend>
       <div class="form__group">
-        <label for="language" class="form__label">Language*</label>
+        <label for="title" class="form__label">
+          <span class="form__label-number">10.</span>
+          <span class="form__label-key">Language</span>
+          <span class="text-red-600">*</span>
+        </label>
+
+        <ng-container *ngIf="filmForm.get('additionalInfo.language') as languageControl">
+          <small *ngIf="languageControl.invalid &&
+            (languageControl.dirty || languageControl.touched)" class="p-error">
+            <span *ngIf="languageControl.errors?.['required']">
+              Language is required
+            </span>
+          </small>
+        </ng-container>
+
         <input pInputText
                id="language"
+               formControlName="language"
                class="form__input"
-               formControlName="language">
+               autofocus>
       </div>
 
       <div class="form__group">
-        <label for="age" class="form__label">Age*</label>
-        <input pInputText
-               type="number"
-               id="age"
-               class="form__input"
-               formControlName="age">
+        <label for="age" class="form__label">
+          <span class="form__label-number">11.</span>
+          <span class="form__label-key">Age</span>
+          <span class="text-red-600">*</span>
+        </label>
+
+        <ng-container *ngIf="filmForm.get('additionalInfo.age') as ageControl">
+          <small *ngIf="ageControl.invalid &&
+            (ageControl.dirty || ageControl.touched)" class="p-error">
+            <span *ngIf="ageControl.errors?.['required']">
+              Age is required
+            </span>
+            <span *ngIf="ageControl.errors?.['min'] || ageControl.errors?.['max']">
+              Age should be in range from 0 to 18
+            </span>
+          </small>
+        </ng-container>
+
+        <p-inputNumber inputId="age"
+                       [showButtons]="true"
+                       buttonLayout="horizontal"
+                       [min]="0"
+                       [max]="21"
+                       formControlName="age">
+        </p-inputNumber>
       </div>
 
       <div class="form__group">
-        <label for="start-release" class="form__label">Start Release*</label>
-        <input pInputText
-               type="date"
-               id="start-release"
-               class="form__input"
-               formControlName="startReleaseAt">
+        <label for="start-release" class="form__label">
+          <span class="form__label-number">12.</span>
+          <span class="form__label-key">Start Realease</span>
+          <span class="text-red-600">*</span>
+        </label>
+
+        <ng-container *ngIf="filmForm.get('additionalInfo.startReleaseAt') as startReleaseControl">
+          <small *ngIf="startReleaseControl.invalid &&
+            (startReleaseControl.dirty || startReleaseControl.touched)" class="p-error">
+            <span *ngIf="startReleaseControl.errors?.['required']">
+              Start Release is required
+            </span>
+          </small>
+        </ng-container>
+
+        <p-calendar inputId="start-release"
+                    [showIcon]="true"
+                    [showButtonBar]="true"
+                    [selectOtherMonths]="true"
+                    [minDate]="minEndReleaseAt"
+                    styleClass="form__input"
+                    formControlName="startReleaseAt">
+        </p-calendar>
       </div>
 
       <div class="form__group">
-        <label for="end-release" class="form__label">End Release*</label>
-        <input pInputText
-               type="date"
-               id="end-release"
-               class="form__input"
-               formControlName="endReleaseAt">
+        <label for="end-release" class="form__label">
+          <span class="form__label-number">13.</span>
+          <span class="form__label-key">End Realease</span>
+          <span class="text-red-600">*</span>
+        </label>
+
+        <ng-container *ngIf="filmForm.get('additionalInfo.endReleaseAt') as endReleaseControl">
+          <small *ngIf="endReleaseControl.invalid &&
+            (endReleaseControl.dirty || endReleaseControl.touched)" class="p-error">
+            <span *ngIf="endReleaseControl.errors?.['required']">
+              End Release is required
+            </span>
+            <span *ngIf="endReleaseControl.errors?.['isFuture']">
+              End Release must be future date
+            </span>
+          </small>
+        </ng-container>
+
+        <p-calendar inputId="end-release"
+                    [showIcon]="true"
+                    [showButtonBar]="true"
+                    [selectOtherMonths]="true"
+                    [minDate]="minEndReleaseAt"
+                    styleClass="form__input"
+                    formControlName="endReleaseAt">
+        </p-calendar>
       </div>
 
       <ng-container formGroupName="media">
         <div class="form__group">
-          <label for="poster" class="form__label">Poster*</label>
-          <input pInputText
-                 id="poster"
-                 class="form__input"
-                 formControlName="poster">
+          <label for="poster" class="form__label">
+            <span class="form__label-number">14.</span>
+            <span class="form__label-key">Poster</span>
+            <span class="text-red-600">*</span>
+          </label>
+
+          <ng-container *ngIf="filmForm.get('additionalInfo.media.poster') as posterControl">
+            <small *ngIf="posterControl.invalid &&
+            (posterControl.dirty || posterControl.touched)" class="p-error">
+              <span *ngIf="posterControl.errors?.['required']">
+                Poster is required
+              </span>
+            </small>
+          </ng-container>
+
+          <p-fileUpload #posterUpload
+                        id="poster"
+                        accept="image/*"
+                        [maxFileSize]="10000000"
+                        [previewWidth]="100"
+                        [customUpload]="true"
+                        [showCancelButton]="false"
+                        [auto]="true"
+                        (uploadHandler)="uploadFile($event)"
+                        styleClass="form__input">
+          </p-fileUpload>
         </div>
         <div class="form__group">
-          <label for="trailer" class="form__label">Trailer*</label>
+          <label for="trailer" class="form__label">
+            <span class="form__label-number">15.</span>
+            <span class="form__label-key">Trailer</span>
+            <span class="text-red-600">*</span>
+          </label>
+
+          <ng-container *ngIf="filmForm.get('additionalInfo.media.trailer') as trailerControl">
+            <small *ngIf="trailerControl.invalid &&
+            (trailerControl.dirty || trailerControl.touched)" class="p-error">
+              <span *ngIf="trailerControl.errors?.['required']">
+                Trailer is required
+              </span>
+            </small>
+          </ng-container>
+
           <input pInputText
                  id="trailer"
                  class="form__input"
                  formControlName="trailer">
         </div>
       </ng-container>
+      <button type="submit">Submit</button>
     </fieldset>
   </form>
 </section>

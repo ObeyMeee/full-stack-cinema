@@ -1,7 +1,18 @@
+@import "../../../custom-bootstrap";
+
+$bg-input-field: rgba(var(--color-grey-dark-1-rgb), .25);
+
 @mixin input-field {
-  background: rgba(var(--color-grey-dark-1-rgb), .25);
+  background: $bg-input-field;
   font-size: 1.6rem;
   letter-spacing: 1px;
+}
+
+@mixin dropdown-item {
+  span {
+    font-size: 1.4rem;
+    letter-spacing: 1px;
+  }
 }
 
 :host ::ng-deep {
@@ -19,24 +30,64 @@
     }
   }
 
+  .p-autocomplete-loader {
+    margin-right: 15px;
+    color: var(--color-primary);
+  }
+
   .p-calendar-w-btn,
+  .p-inputtext,
   .p-inputnumber {
+    @include input-field;
     width: 100%;
   }
-  .p-inputtext {
-    @include input-field;
+
+  .p-fileupload {
+    &-buttonbar,
+    &-content {
+      @include input-field;
+    }
+  }
+
+  .p-datepicker .p-yearpicker .p-yearpicker-year {
+    padding: 1.5rem .5rem;
   }
 
   .p-dropdown {
+    background: $bg-input-field;
+    width: 20rem;
+
+    &-item {
+      @include dropdown-item;
+    }
+
     &-item-box {
+      @include dropdown-item;
+
       img {
         height: 15px;
         width: 25px
       }
+    }
+  }
 
-      span {
-        font-size: 1.4rem;
-        letter-spacing: 1px;
+  .p-autocomplete {
+    &-panel {
+      .autocomplete-item {
+        display: flex;
+        align-items: center;
+        grid-column-gap: 1rem;
+
+        img {
+          display: inline-block;
+          width: 4rem;
+          background-size: cover;
+          border-radius: $border-radius-lg
+        }
+
+        span {
+          font-size: 1.4rem;
+        }
       }
     }
   }
@@ -77,6 +128,18 @@
 }
 
 .form {
+  height: 100vh;
+  overflow-y: scroll;
+
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
   &__legend {
     color: var(--color-grey-light-1);
     text-align: center;
@@ -91,12 +154,21 @@
     grid-template-columns: 1fr;
     grid-row-gap: 4rem;
     align-items: center;
-    padding: 0 30rem;
-    padding-bottom: 10rem;
+    padding: 0 30rem 10rem;
   }
 
   &__group {
     display: grid;
+
+    &:nth-child(2n + 1) {
+      animation: lightSpeedInLeft;
+      animation-duration: .8s;
+    }
+
+    &:nth-child(2n) {
+      animation: lightSpeedInRight;
+      animation-duration: .8s;
+    }
   }
 
   &__label {

@@ -1,10 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MenuItem } from 'primeng/api';
 import { endReleaseAtValidator, productionYearValidator } from './validators';
 import { environment } from '../../../environments/environment.development';
 import { DropdownItem } from '../../shared/dropdown-item.type';
 import { HttpClient } from '@angular/common/http';
+import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
+import { CrewService } from './crew.service';
+import { FileUploadHandlerEvent } from 'primeng/fileupload';
 
 @Component({
   selector: 'app-new-film',
@@ -14,22 +17,29 @@ import { HttpClient } from '@angular/common/http';
 export class NewFilmComponent implements OnInit {
   filmForm!: FormGroup;
   items!: MenuItem[];
-  activeStep = 0;
+  activeStep!: number;
   suggestedGenres!: DropdownItem[];
   suggestedCountries!: { name: string, flag: { png: string, alt: string } }[];
+  suggestedCrewMembers!: CrewMember[];
+  minEndReleaseAt = new Date();
+
+  @ViewChild('posterUpload') posterUploadRef!: ElementRef;
 
   constructor(private formBuilder: FormBuilder,
-              private http: HttpClient) {
+              private http: HttpClient,
+              private crewService: CrewService) {
   }
 
   ngOnInit() {
     this.setSteps();
+    // if there is no set activeStep then conversion returns 0
+    this.activeStep = Number(localStorage.getItem('activeStep'));
     const now = new Date();
     this.filmForm = this.formBuilder.group({
       generalInformation: this.formBuilder.group({
         title: ['', Validators.required],
         description: ['', Validators.required],
-        genres: this.formBuilder.array<string>([]),
+        genres: this.getFormArray(),
         duration: [1, [Validators.required, Validators.min(1)]],
         productionYear: [
           now,
@@ -38,12 +48,12 @@ export class NewFilmComponent implements OnInit {
             productionYearValidator()
           ]
         ],
-        countries: this.formBuilder.array<string>([])
+        countries: this.getFormArray()
       }),
       crew: this.formBuilder.group({
-        director: ['', Validators.required],
-        screenwriter: ['', Validators.required],
-        actors: this.formBuilder.array<string>([])
+        directors: this.getFormArray(),
+        screenwriters: this.getFormArray(),
+        actors: this.getFormArray()
       }),
       additionalInfo: this.formBuilder.group({
         language: ['', Validators.required],
@@ -57,6 +67,10 @@ export class NewFilmComponent implements OnInit {
       }),
       sessions: this.formBuilder.array([], Validators.required)
     });
+  }
+
+  private getFormArray() {
+    return this.formBuilder.array<string>([]);
   }
 
   setSteps() {
@@ -80,6 +94,14 @@ export class NewFilmComponent implements OnInit {
     return this.filmForm.get('generalInformation.countries') as FormArray;
   }
 
+  get directors() {
+    return this.filmForm.get('crew.directors') as FormArray;
+  }
+
+  get screenwriters() {
+    return this.filmForm.get('crew.screenwriters') as FormArray;
+  }
+
   get actors() {
     return this.filmForm.get('crew.actors') as FormArray;
   }
@@ -93,9 +115,8 @@ export class NewFilmComponent implements OnInit {
 
   private async setSuggestedGenres() {
     const options = {
-      headers: {
-        accept: 'application/json',
-        Authorization: `Bearer ${environment.tmdb.accessToken}`
+      params: {
+        api_key: environment.tmdb.apiKey
       }
     };
     const url = `${environment.tmdb.apiUrl}genre/movie/list`;
@@ -147,21 +168,62 @@ export class NewFilmComponent implements OnInit {
     this.sessions.push(this.formBuilder.control(''));
   }
 
+  addScreenwriter() {
+    this.screenwriters.push(this.formBuilder.control(''));
+  }
+
+  addDirector() {
+    this.directors.push(this.formBuilder.control(''));
+  }
+
   deleteGenre(index: number) {
     this.genres.removeAt(index);
   }
 
+  deleteDirector(index: number) {
+    this.directors.removeAt(index);
+  }
+
   deleteCountry(index: number) {
-    this['countries'].removeAt(index);
     this.countries.removeAt(index);
   }
 
-  onSubmit() {
+  deleteScreenwriter(index: number) {
+    this.screenwriters.removeAt(index);
+  }
 
+  deleteActor(index: number) {
+    this.actors.removeAt(index);
+  }
+
+  onSubmit() {
+    console.log(this.filmForm.value);
   }
 
   onMove(step: number) {
     this.activeStep += step;
+    this.setStepToLocalStorage()
+  }
+
+  async filterPeople($event: AutoCompleteCompleteEvent) {
+    (await this.crewService.filterCrewMembers($event.query)).subscribe(
+      crewMembers => this.suggestedCrewMembers = [...crewMembers]
+    );
+  }
+
+  uploadFile($event: FileUploadHandlerEvent) {
+    this.filmForm.patchValue({
+      additionalInfo: {
+        media: {
+          poster: $event.files[0]
+        }
+      }
+    });
+    this.filmForm.get('additionalInfo.media.poster')?.updateValueAndValidity();
+  }
+
+  setStepToLocalStorage() {
+    localStorage.setItem('activeStep', this.activeStep.toString())
   }
 }
 
@@ -170,4 +232,9 @@ interface GenreResponse {
     id: number,
     name: string
   }[];
+}
+
+type CrewMember = {
+  name: string,
+  imgUrl: string
 }
