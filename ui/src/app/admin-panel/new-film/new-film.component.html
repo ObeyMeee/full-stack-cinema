@@ -577,7 +577,7 @@
 
         <div class="array-controls">
           <div *ngFor="let _ of sessions.controls; let i=index">
-            <div class="session-group">
+            <div class="session-group" [formGroupName]="i">
               <div class="">
                 <label for="start">Start</label>
                 <p-calendar inputId="start"
