@@ -2,12 +2,15 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MenuItem } from 'primeng/api';
 import { endReleaseAtValidator, productionYearValidator } from './validators';
-import { environment } from '../../../environments/environment.development';
 import { DropdownItem } from '../../shared/dropdown-item.type';
-import { HttpClient } from '@angular/common/http';
 import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
-import { CrewService } from './crew.service';
+import { CrewMember, CrewService } from './services/crew.service';
 import { FileUploadHandlerEvent } from 'primeng/fileupload';
+import { GenreService } from './services/genre.service';
+import { Observable } from 'rxjs';
+import { CountryResponse, CountryService } from './services/country.service';
+
+type FormControlArray = 'genres' | 'directors' | 'countries' | 'screenwriters' | 'actors' | 'sessions';
 
 @Component({
   selector: 'app-new-film',
@@ -18,56 +21,61 @@ export class NewFilmComponent implements OnInit {
   filmForm!: FormGroup;
   items!: MenuItem[];
   activeStep!: number;
-  suggestedGenres!: DropdownItem[];
-  suggestedCountries!: { name: string, flag: { png: string, alt: string } }[];
-  suggestedCrewMembers!: CrewMember[];
-  minEndReleaseAt = new Date();
+    suggestedGenres$!: Observable<DropdownItem[]>;
+    suggestedCountries$!: Observable<CountryResponse[]>;
+    suggestedCrewMembers!: CrewMember[];
+    now = new Date();
 
   @ViewChild('posterUpload') posterUploadRef!: ElementRef;
 
   constructor(private formBuilder: FormBuilder,
-              private http: HttpClient,
-              private crewService: CrewService) {
+              private crewService: CrewService,
+              private countryService: CountryService,
+              private genreService: GenreService) {
   }
 
   ngOnInit() {
     this.setSteps();
     // if there is no set activeStep then conversion returns 0
     this.activeStep = Number(localStorage.getItem('activeStep'));
-    const now = new Date();
-    this.filmForm = this.formBuilder.group({
-      generalInformation: this.formBuilder.group({
-        title: ['', Validators.required],
-        description: ['', Validators.required],
-        genres: this.getFormArray(),
-        duration: [1, [Validators.required, Validators.min(1)]],
-        productionYear: [
-          now,
-          [
-            Validators.required,
-            productionYearValidator()
-          ]
-        ],
-        countries: this.getFormArray()
-      }),
-      crew: this.formBuilder.group({
-        directors: this.getFormArray(),
-        screenwriters: this.getFormArray(),
-        actors: this.getFormArray()
-      }),
-      additionalInfo: this.formBuilder.group({
-        language: ['', Validators.required],
-        age: [0, [Validators.required, Validators.min(0), Validators.max(18)]],
-        startReleaseAt: [now, [Validators.required]],
-        endReleaseAt: [now, [Validators.required, endReleaseAtValidator()]],
-        media: this.formBuilder.group({
-          poster: ['', Validators.required],
-          trailer: ['', Validators.required]
-        })
-      }),
-      sessions: this.formBuilder.array([], Validators.required)
-    });
+    this.buildForm();
   }
+
+  private buildForm() {
+        const now = new Date();
+        this.filmForm = this.formBuilder.group({
+            generalInformation: this.formBuilder.group({
+                title: ['', Validators.required],
+                description: ['', Validators.required],
+                genres: this.getFormArray(),
+                duration: [1, [Validators.required, Validators.min(1)]],
+                productionYear: [
+                    now,
+                    [
+                        Validators.required,
+                        productionYearValidator()
+                    ]
+                ],
+                countries: this.getFormArray()
+            }),
+            crew: this.formBuilder.group({
+                directors: this.getFormArray(),
+                screenwriters: this.getFormArray(),
+                actors: this.getFormArray()
+            }),
+            additionalInfo: this.formBuilder.group({
+                language: ['', Validators.required],
+                age: [0, [Validators.required, Validators.min(0), Validators.max(18)]],
+                startReleaseAt: [now, [Validators.required]],
+                endReleaseAt: [now, [Validators.required, endReleaseAtValidator()]],
+                media: this.formBuilder.group({
+                    poster: ['', Validators.required],
+                    trailer: ['', Validators.required]
+                })
+            }),
+            sessions: this.formBuilder.array([this.buildSessionGroup()])
+        });
+    }
 
   private getFormArray() {
     return this.formBuilder.array<string>([]);
@@ -107,57 +115,17 @@ export class NewFilmComponent implements OnInit {
   }
 
   async addGenre() {
-    if (!this.suggestedGenres) {
-      await this.setSuggestedGenres();
+      if (!this.suggestedGenres$) {
+          this.suggestedGenres$ = this.genreService.getAll();
     }
     this.genres.push(this.formBuilder.control(''));
   }
 
-  private async setSuggestedGenres() {
-    const options = {
-      params: {
-        api_key: environment.tmdb.apiKey
-      }
-    };
-    const url = `${environment.tmdb.apiUrl}genre/movie/list`;
-    this.http.get<GenreResponse>(url, options)
-      .subscribe({
-        next: data =>
-          this.suggestedGenres = data.genres.map(
-            genre => ({ label: genre.name, value: genre.name })
-          ),
-        error: err => {
-          throw new Error(err.message);
-        }
-      });
-  }
-
   async addCountry() {
-    if (!this.suggestedCountries) {
-      await this.setSuggestedCountries();
+      if (!this.suggestedCountries$) {
+          this.suggestedCountries$ = this.countryService.getAll();
     }
     this.countries.push(this.formBuilder.control(''));
-  }
-
-
-  private async setSuggestedCountries() {
-    const url = `${environment.countryApiUrl}all`;
-    this.http.get<any>(url)
-      .subscribe({
-        next: (data: any[]) =>
-          this.suggestedCountries = data.map(
-            country => ({
-              name: country.name.common,
-              flag: {
-                png: country.flags.png,
-                alt: country.flags.alt
-              }
-            })
-          ).sort((a, b) => a.name.localeCompare(b.name)),
-        error: err => {
-          throw new Error(err.message);
-        }
-      });
   }
 
   addActor() {
@@ -165,8 +133,17 @@ export class NewFilmComponent implements OnInit {
   }
 
   addSession() {
-    this.sessions.push(this.formBuilder.control(''));
+      this.sessions.push(this.buildSessionGroup());
   }
+
+  buildSessionGroup() {
+        return this.formBuilder.group({
+            startAt: [this.now, Validators.required],
+            hall: [1, [Validators.required, Validators.min(1)]],
+            goodRowPrice: [1, [Validators.required, Validators.min(1)]],
+            luxRowPrice: [1, [Validators.required, Validators.min(1)]]
+        });
+    }
 
   addScreenwriter() {
     this.screenwriters.push(this.formBuilder.control(''));
@@ -176,24 +153,8 @@ export class NewFilmComponent implements OnInit {
     this.directors.push(this.formBuilder.control(''));
   }
 
-  deleteGenre(index: number) {
-    this.genres.removeAt(index);
-  }
-
-  deleteDirector(index: number) {
-    this.directors.removeAt(index);
-  }
-
-  deleteCountry(index: number) {
-    this.countries.removeAt(index);
-  }
-
-  deleteScreenwriter(index: number) {
-    this.screenwriters.removeAt(index);
-  }
-
-  deleteActor(index: number) {
-    this.actors.removeAt(index);
+  deleteFormControlAt(formControlArray: FormControlArray, index: number) {
+        this[formControlArray].removeAt(index);
   }
 
   onSubmit() {
@@ -225,16 +186,4 @@ export class NewFilmComponent implements OnInit {
   setStepToLocalStorage() {
     localStorage.setItem('activeStep', this.activeStep.toString())
   }
-}
-
-interface GenreResponse {
-  genres: {
-    id: number,
-    name: string
-  }[];
-}
-
-type CrewMember = {
-  name: string,
-  imgUrl: string
 }

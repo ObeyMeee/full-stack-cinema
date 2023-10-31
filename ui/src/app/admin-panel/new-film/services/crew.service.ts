@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom, forkJoin, map, Observable } from 'rxjs';
-import { environment } from '../../../environments/environment.development';
+import { environment } from '../../../../environments/environment.development';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -36,7 +36,7 @@ export class CrewService {
       );
   }
 
-  private findCrewMemberDetailsById(id: number) {
+  private findCrewMemberDetailsById(id: number):Observable<CrewMember> {
     const url = `${this.baseUrl}person/${id}`;
     const options = {
       params: {
@@ -51,4 +51,9 @@ export class CrewService {
       )
     );
   }
+}
+
+export type CrewMember = {
+  name: string,
+  imgUrl: string
 }
