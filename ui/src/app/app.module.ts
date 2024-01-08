@@ -12,13 +12,11 @@ import { HallComponent } from './hall/hall.component';
 import { LoginComponent } from './login/login.component';
 import { OktaAuthGuard, OktaAuthModule, OktaCallbackComponent } from '@okta/okta-angular';
 import { AuthInterceptorService } from './interceptor/auth-interceptor.service';
-import { HoverDirective } from './shared/directives/hover.directive';
 import { TooltipModule } from 'primeng/tooltip';
 import { UserComponent } from './user/user.component';
 import { ProfileComponent } from './user/profile/profile.component';
 import { OperationsContainerComponent } from './user/operations-container/operations-container.component';
 import { PosterElementComponent } from './poster/poster-element/poster-element.component';
-import { DropdownDirective } from './shared/directives/dropdown.directive';
 import { TicketComponent } from './hall/ticket/ticket.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -79,6 +77,8 @@ import { NewFilmComponent } from './admin-panel/new-film/new-film.component';
 import { StepsModule } from 'primeng/steps';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { FileUploadModule } from 'primeng/fileupload';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { getStorage, provideStorage } from '@angular/fire/storage';
 
 const routes: Route[] = [
   { path: '', component: PosterComponent, pathMatch: 'full' },
@@ -126,13 +126,11 @@ const oktaAuth = new OktaAuth(environment.okta);
     FilmComponent,
     HallComponent,
     LoginComponent,
-    HoverDirective,
     UserComponent,
     ProfileComponent,
     OperationsContainerComponent,
     PurchasesTableComponent,
     PosterElementComponent,
-    DropdownDirective,
     TicketComponent,
     SignUpComponent,
     SafeUrlPipe,
@@ -158,43 +156,45 @@ const oktaAuth = new OktaAuth(environment.okta);
     NewFilmComponent
   ],
     imports: [
-        BrowserModule,
-        BrowserAnimationsModule,
-        CarouselModule,
-        HttpClientModule,
-        RouterModule.forRoot(routes),
-        OktaAuthModule.forRoot({ oktaAuth }),
-        TooltipModule,
-        FormsModule,
-        PasswordModule,
-        DividerModule,
-        MessagesModule,
-        ProgressSpinnerModule,
-        ToastModule,
-        FieldsetModule,
-        RatingModule,
-        MessageModule,
-        PaginatorModule,
-        InputTextareaModule,
-        ButtonModule,
-        DialogModule,
-        NgOptimizedImage,
-        TableModule,
-        RippleModule,
-        StyleClassModule,
-        InputTextModule,
-        ConfirmDialogModule,
-        TagModule,
-        KeyFilterModule,
-        NgxIntlTelInputModule,
-        SkeletonModule,
-        SocialLoginModule,
-        CalendarModule,
-        TabMenuModule,
-        ReactiveFormsModule,
-        StepsModule,
-        AutoCompleteModule,
-        FileUploadModule
+      BrowserModule,
+      BrowserAnimationsModule,
+      CarouselModule,
+      HttpClientModule,
+      RouterModule.forRoot(routes),
+      OktaAuthModule.forRoot({ oktaAuth }),
+      TooltipModule,
+      FormsModule,
+      PasswordModule,
+      DividerModule,
+      MessagesModule,
+      ProgressSpinnerModule,
+      ToastModule,
+      FieldsetModule,
+      RatingModule,
+      MessageModule,
+      PaginatorModule,
+      InputTextareaModule,
+      ButtonModule,
+      DialogModule,
+      NgOptimizedImage,
+      TableModule,
+      RippleModule,
+      StyleClassModule,
+      InputTextModule,
+      ConfirmDialogModule,
+      TagModule,
+      KeyFilterModule,
+      NgxIntlTelInputModule,
+      SkeletonModule,
+      SocialLoginModule,
+      CalendarModule,
+      TabMenuModule,
+      ReactiveFormsModule,
+      StepsModule,
+      AutoCompleteModule,
+      FileUploadModule,
+      provideFirebaseApp(() => initializeApp(environment.firebase)),
+      provideStorage(() => getStorage()),
     ],
   providers: [
     {

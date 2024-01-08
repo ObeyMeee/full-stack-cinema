@@ -18,13 +18,15 @@ public class Row {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+
     private int number;
 
     @Enumerated(EnumType.STRING)
     private RowType type;
-    private int price;
+
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "row")
     private List<Seat> seats;
+
     @ManyToOne
     @JsonIgnore
     @ToString.Exclude

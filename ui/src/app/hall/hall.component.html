@@ -2,7 +2,7 @@
   <div class="hall">
     <figure class="hall__shape">
       <figcaption class="hall__film-caption"></figcaption>
-      <img alt="{{session.title}}" class="hall__film-poster" src="{{session.image}}">
+      <img alt="{{session.title}}" class="hall__film-poster" src="{{session.poster}}">
     </figure>
     <div class="hall__movie-container">
       <h1 class="hall__title heading-1">{{session.title}}</h1>
@@ -35,12 +35,14 @@
     <div class="hall__price-list">
       <ng-container *ngIf="session.hall.type !== 'CHILL_OUT'">
         <div class="hall__seat hall__seat--good"></div>
-        <span class="hall__seat-price">{{session.hall.rows[0].type}} &hyphen; {{session.hall.rows[0].price}}UAH</span>
+        <span class="hall__seat-price">
+          {{session.hall.rows[0].type}} &hyphen; &#8372;{{session.goodRowPrice}}
+        </span>
       </ng-container>
       <div class="hall__seat hall__seat--lux"></div>
-      <span class="hall__seat-price">{{session.hall.rows.at(-1)?.type}}
-        &hyphen; {{session.hall.rows.at(-1)?.price}}
-        UAH</span>
+      <span class="hall__seat-price">
+        {{session.hall.rows.at(-1)?.type}} &hyphen; &#8372;{{session.luxRowPrice}}
+      </span>
     </div>
 
     <svg class="hall__screen" viewBox="0 0 806 21" xmlns="http://www.w3.org/2000/svg">
@@ -56,7 +58,7 @@
         <button #hallSeat
                 *ngFor="let seat of row.seats"
                 (click)="onSelectSeat(hallSeat)"
-                [attr.data-price]="row.price"
+                [attr.data-price]="session[lastRow ? 'luxRowPrice' : 'goodRowPrice']"
                 [attr.data-row]="row.number"
                 [attr.data-seat]="seat.number"
                 [attr.data-type]="row.type"
@@ -66,7 +68,10 @@
                  'hall__seat--good': !isSeatTaken(row.number, seat.number) && !lastRow && session.hall.type !== 'CHILL_OUT',
                  'hall__seat--taken': isSeatTaken(row.number, seat.number)
                  }"
-                pTooltip="{{isSeatTaken(row.number, seat.number) ? 'This seat is taken' : row.number + ' Row, ' + seat.number + ' Seat\nPrice: ' + row.price  + ' UAH'}}"
+                pTooltip="{{
+                isSeatTaken(row.number, seat.number)
+                ? 'This seat is taken'
+                : row.number + ' Row, ' + seat.number + ' Seat\nPrice: ' + session[lastRow ? 'luxRowPrice' : 'goodRowPrice'] + ' UAH'}}"
                 tooltipStyleClass="tooltip"
                 tooltipPosition="top">
           &nbsp;

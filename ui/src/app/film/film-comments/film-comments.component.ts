@@ -7,7 +7,7 @@ import { Comment } from '../model/comment.model';
 import { CommentService } from './comment.service';
 import { SortType } from './sort-type.enum';
 import { Page } from '../../shared/pagination/page.interface';
-import { ToastService } from '../../shared/toast.service';
+import { ToastService } from '../../shared/services/toast.service';
 import { capitalize } from 'lodash';
 import OktaAuth, { UserClaims } from '@okta/okta-auth-js';
 import { Status } from '../../shared/pending/status.enum';

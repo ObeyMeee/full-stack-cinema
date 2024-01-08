@@ -1,15 +1,15 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { UserService } from '../../shared/user.service';
+import { UserService } from '../../shared/services/user.service';
 import { Pending } from '../../shared/pending/pending.interface';
 import { UserTableDto } from './user-table.dto';
 import { ConfirmationService } from 'primeng/api';
-import { ToastService } from '../../shared/toast.service';
+import { ToastService } from '../../shared/services/toast.service';
 import { UserStatus } from '../../shared/enums/user-status.enum';
 import { Status } from '../../shared/pending/status.enum';
 import { Table } from 'primeng/table';
 import { Phone } from '../../shared/phone.model';
 import { CountryISO } from 'ngx-intl-tel-input';
-import { ExcelSaver } from '../../shared/excel-saver.service';
+import { ExcelSaver } from '../../shared/services/excel-saver.service';
 
 @Component({
   selector: 'app-users-managing',

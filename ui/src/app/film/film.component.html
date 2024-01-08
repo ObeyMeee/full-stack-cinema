@@ -9,7 +9,7 @@
 <section class="section-film-info"
          (click)="hideDateDropdown($event)">
   <div class="media" *ngIf="film$.data | async as film">
-    <img alt="{{film.title}}" class="media__poster" src="{{film.media.image}}">
+    <img alt="{{film.title}}" class="media__poster" src="{{film.media.poster}}">
     <button class="btn media__trailer-btn" (click)="toggleTrailer()">
       <i class="bi bi-play-fill"></i>
       <span>Watch trailer</span>

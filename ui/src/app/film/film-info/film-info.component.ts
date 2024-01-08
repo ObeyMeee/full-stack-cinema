@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { isSameDay } from 'date-fns';
 import { Film } from '../model/film.model';
-import { FilmService } from '../film.service';
+import { FilmService } from '../../shared/services/film.service';
 import { ActivatedRoute } from '@angular/router';
 import { SessionDto } from '../../poster/dto/session.dto';
 import { isSessionWithinPastThirtyMinutes } from '../../shared/session-utils';

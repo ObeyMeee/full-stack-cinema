@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FilmService } from './film.service';
+import { FilmService } from '../shared/services/film.service';
 import { Film } from './model/film.model';
 import { ActivatedRoute } from '@angular/router';
 import { DateDropdownService } from '../shared/date-dropdown/date-dropdown.service';

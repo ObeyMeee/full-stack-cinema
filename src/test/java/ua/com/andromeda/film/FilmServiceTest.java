@@ -20,7 +20,7 @@ class FilmServiceTest {
     FilmRepository filmRepository;
 
     @MockBean
-    Mapper mapper;
+    FilmMapper filmMapper;
 
     @Autowired
     FilmService target;
@@ -32,14 +32,14 @@ class FilmServiceTest {
 
         // config
         when(filmRepository.findAllByEnabled(true)).thenReturn(films);
-        when(mapper.toPosterDto(any(Film.class))).thenReturn(new PosterDto());
+        when(filmMapper.toPosterDto(any(Film.class))).thenReturn(new PosterDto());
 
         // method invocation
         List<PosterDto> result = target.getPoster();
 
         // test
         verify(filmRepository, times(1)).findAllByEnabled(true);
-        verify(mapper, times(3)).toPosterDto(any(Film.class));
+        verify(filmMapper, times(3)).toPosterDto(any(Film.class));
         assertEquals(films.size(), result.size());
     }
 }

@@ -16,15 +16,25 @@ public class SessionBuyTicketDto {
     private String title;
     private LocalDateTime startAt;
     private int duration;
-    private String image;
+    private String poster;
     private Hall hall;
+    private int goodRowPrice;
+    private int luxRowPrice;
     private List<TicketDto> boughtTickets;
 
-    public SessionBuyTicketDto(String title, LocalDateTime startAt, int duration, String image, Hall hall) {
+    public SessionBuyTicketDto(String title,
+                               LocalDateTime startAt,
+                               int duration,
+                               String poster,
+                               Hall hall,
+                               int goodRowPrice,
+                               int luxRowPrice) {
         this.title = title;
         this.duration = duration;
         this.startAt = startAt;
-        this.image = image;
+        this.poster = poster;
         this.hall = hall;
+        this.goodRowPrice = goodRowPrice;
+        this.luxRowPrice = luxRowPrice;
     }
 }

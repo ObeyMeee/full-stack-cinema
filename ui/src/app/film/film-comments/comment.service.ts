@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BaseService } from '../../shared/base.service';
+import { BaseService } from '../../shared/services/base.service';
 import { HttpClient } from '@angular/common/http';
 import { Comment } from '../model/comment.model';
 import { SortType } from './sort-type.enum';

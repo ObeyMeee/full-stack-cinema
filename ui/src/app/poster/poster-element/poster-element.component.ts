@@ -3,7 +3,7 @@ import { compareAsc, isSameDay } from 'date-fns';
 import { PosterDto } from '../dto/poster.dto';
 import { SessionDto } from '../dto/session.dto';
 import { firstValueFrom } from 'rxjs';
-import { FilmService } from '../../film/film.service';
+import { FilmService } from '../../shared/services/film.service';
 import { isSessionWithinPastThirtyMinutes } from '../../shared/session-utils';
 import { DateDropdownService } from '../../shared/date-dropdown/date-dropdown.service';
 

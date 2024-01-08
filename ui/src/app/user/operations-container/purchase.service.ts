@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { PurchaseDto } from './purchase.dto';
-import { BaseService } from '../../shared/base.service';
+import { BaseService } from '../../shared/services/base.service';
 import { isFuture } from 'date-fns';
 import { map } from 'rxjs';
 import { RequestStatusService } from '../../shared/pending/request-status.service';

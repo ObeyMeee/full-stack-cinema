@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BaseService } from '../../shared/base.service';
+import { BaseService } from '../../shared/services/base.service';
 import { ReactionType } from '../model/reaction-type';
 import { RequestStatusService } from '../../shared/pending/request-status.service';
 import HTTPMethod from 'http-method-enum';

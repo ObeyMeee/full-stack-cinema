@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { UserService } from '../../../shared/user.service';
-import { ToastService } from '../../../shared/toast.service';
+import { UserService } from '../../../shared/services/user.service';
+import { ToastService } from '../../../shared/services/toast.service';
 import { Pending } from '../../../shared/pending/pending.interface';
 import { Status } from '../../../shared/pending/status.enum';
 

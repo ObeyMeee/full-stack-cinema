@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@angular/core';
 import { OKTA_AUTH } from '@okta/okta-angular';
 import OktaAuth from '@okta/okta-auth-js';
-import { ToastService } from '../shared/toast.service';
-import { UserGroup } from '../shared/user-group.enum';
+import { ToastService } from '../shared/services/toast.service';
+import { UserGroup } from '../shared/enums/user-group.enum';
 
 @Injectable({
   providedIn: 'root',

@@ -1,22 +1,34 @@
-create table actors
+create table countries
 (
-    id        uuid not null
+    id   uuid         not null
+        primary key,
+    name varchar(255) not null
+        constraint uk_1pyiwrqimi3hnl3vtgsypj5r
+            unique
+);
+
+create table crew_members
+(
+    id        bigint not null
         primary key,
     full_name varchar(255)
 );
 
-create table countries
+create table crew_roles
 (
-    id   uuid not null
-        primary key,
-    name varchar(255)
+    crew_member bigint not null
+        constraint fk9791bo7i6digq25pkwyg9qkyc
+            references crew_members,
+    roles       smallint
 );
 
 create table genres
 (
-    id   uuid not null
+    id   uuid         not null
         primary key,
-    name varchar(255)
+    name varchar(255) not null
+        constraint uk_pe1a9woik1k97l87cieguyhh4
+            unique
 );
 
 create table halls
@@ -31,21 +43,30 @@ create table media
 (
     id      uuid not null
         primary key,
-    image   text,
-    trailer text
+    poster  varchar(255),
+    trailer varchar(255)
 );
 
 create table films
 (
-    id              uuid    not null
+    id               uuid    not null
         primary key,
-    description     varchar(255),
-    director        varchar(255),
-    duration        integer not null,
-    enabled         boolean not null,
-    production_year integer,
-    title           varchar(255),
-    media_id        uuid
+    age_restriction  integer
+        constraint films_age_restriction_check
+            check (age_restriction >= 0),
+    description      text,
+    duration         integer not null
+        constraint films_duration_check
+            check (duration >= 0),
+    enabled          boolean not null,
+    end_release_at   date,
+    language         varchar(255),
+    production_year  integer
+        constraint films_production_year_check
+            check (production_year >= 1895),
+    start_release_at date,
+    title            varchar(255),
+    media_id         uuid
         constraint fkrdfc2dr0b455fesu2qf11qovo
             references media
 );
@@ -63,16 +84,6 @@ create table comments
             references films
 );
 
-create table films_actors
-(
-    film_id  uuid not null
-        constraint fkm871tpbjgvlefqev7aaq827s0
-            references films,
-    actor_id uuid not null
-        constraint fkdjtf3dy8e0s3x13r8noaif9w
-            references actors
-);
-
 create table films_countries
 (
     film_id    uuid not null
@@ -81,6 +92,17 @@ create table films_countries
     country_id uuid not null
         constraint fkr4qe9orc9gf3qnioq1fj1wgxq
             references countries
+);
+
+create table films_crew
+(
+    film_id        uuid   not null
+        constraint fk8fij7e6rr2k6b5tf12ne4fody
+            references films,
+    crew_member_id bigint not null
+        constraint fksdf10uvbpj7s4ojnspj4j4ygm
+            references crew_members,
+    primary key (film_id, crew_member_id)
 );
 
 create table films_genres
@@ -95,10 +117,10 @@ create table films_genres
 
 create table purchase
 (
-    id        bigserial
+    id       bigserial
         primary key,
     dealt_at timestamp(6),
-    username  varchar(255)
+    username varchar(255)
 );
 
 create table reactions
@@ -117,7 +139,6 @@ create table rows
     id      uuid    not null
         primary key,
     number  integer not null,
-    price   integer not null,
     type    varchar(255),
     hall_id uuid
         constraint fk8dwpdpkba6x7g4qbgg1ic0ik7
@@ -136,14 +157,20 @@ create table seats
 
 create table sessions
 (
-    id       uuid    not null
+    id             uuid    not null
         primary key,
-    enabled  boolean not null,
-    start_at timestamp(6),
-    film_id  uuid    not null
+    enabled        boolean not null,
+    good_row_price integer not null
+        constraint sessions_good_row_price_check
+            check (good_row_price >= 1),
+    lux_row_price  integer not null
+        constraint sessions_lux_row_price_check
+            check (lux_row_price >= 1),
+    start_at       timestamp(6),
+    film_id        uuid    not null
         constraint fkn2m0d43s7i2gofapl0d8qkvq7
             references films,
-    hall_id  uuid    not null
+    hall_id        uuid    not null
         constraint fkcbrgca6k34wv4jr41ik2qdoaf
             references halls
 );
@@ -162,4 +189,3 @@ create table tickets
         constraint fk6yhwfajgdoqa8kq4gnuimtkpp
             references sessions
 );
-

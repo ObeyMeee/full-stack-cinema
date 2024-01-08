@@ -6,7 +6,7 @@ import { SessionBuyTicketDto } from './session-buy-ticket.dto';
 import { Ticket } from './models/ticket.model';
 import { OktaAuthStateService } from '@okta/okta-angular';
 import { TicketService } from './ticket.service';
-import { ToastService } from '../shared/toast.service';
+import { ToastService } from '../shared/services/toast.service';
 import { addMinutes } from 'date-fns';
 import { isEqual } from 'lodash';
 import { Status } from '../shared/pending/status.enum';
@@ -23,8 +23,10 @@ export class HallComponent implements OnInit {
   tickets!: Ticket[];
   isAuthenticated: boolean | undefined;
   purchaseStatus$!: Observable<Status>;
+
   protected addMinutes = addMinutes;
   protected readonly Status = Status;
+
   @ViewChild('purchaseButton') purchaseButtonElementRef!: ElementRef;
   @ViewChild('hallContainer') hallContainerElementRef!: ElementRef;
 

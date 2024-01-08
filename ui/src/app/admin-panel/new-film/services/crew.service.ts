@@ -45,6 +45,7 @@ export class CrewService {
     }
     return this.http.get<any>(url, options).pipe(
       map(person => ({
+          id,
           name: person.name,
           imgUrl: `https://image.tmdb.org/t/p/w300${person.profile_path}`
         })
@@ -54,6 +55,7 @@ export class CrewService {
 }
 
 export type CrewMember = {
+  id: number,
   name: string,
   imgUrl: string
 }

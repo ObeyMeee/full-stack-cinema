@@ -12,17 +12,13 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
-@ToString
 public class Media {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(columnDefinition = "TEXT")
-    private String image;
-
-    @Column(columnDefinition = "TEXT")
+    private String poster;
     private String trailer;
 
     @OneToOne(mappedBy = "media")

@@ -14,5 +14,15 @@ export const environment = {
     apiKey: 'aea513d953c89483355274d062e95ca6',
     apiUrl: 'https://api.themoviedb.org/3/'
   },
+  firebase: {
+    apiKey: "AIzaSyBkuaB3uSqMdnYCwMHxOyVnhFJgbw6GUhw",
+    authDomain: "andromeda-cinema-f4271.firebaseapp.com",
+    databaseURL: "https://andromeda-cinema-f4271-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "andromeda-cinema-f4271",
+    storageBucket: "andromeda-cinema-f4271.appspot.com",
+    messagingSenderId: "593938470141",
+    appId: "1:593938470141:web:acd80ad19ab52fdbc5da94",
+    measurementId: "G-P9LKPLEES1",
+  },
   countryApiUrl: 'https://restcountries.com/v3.1/'
 };

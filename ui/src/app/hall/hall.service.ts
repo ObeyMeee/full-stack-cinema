@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { SessionBuyTicketDto } from './session-buy-ticket.dto';
 import { Ticket } from './models/ticket.model';
-import { BaseService } from '../shared/base.service';
+import { BaseService } from '../shared/services/base.service';
 import { RequestStatusService } from '../shared/pending/request-status.service';
 
 @Injectable({

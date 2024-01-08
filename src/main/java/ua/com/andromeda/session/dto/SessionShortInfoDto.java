@@ -21,6 +21,6 @@ public class SessionShortInfoDto {
     public SessionShortInfoDto(Session session) {
         this.id = session.getId();
         this.startAt = session.getStartAt();
-        this.minPrice = session.getHall().getRows().get(0).getPrice();
+        this.minPrice = session.getGoodRowPrice();
     }
 }

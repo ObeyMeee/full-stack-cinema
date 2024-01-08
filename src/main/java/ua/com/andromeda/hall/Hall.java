@@ -20,13 +20,15 @@ public class Hall {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private int number;
+
     @Enumerated(EnumType.STRING)
     private HallType type;
+
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "hall")
     private List<Row> rows;
 
-    @OneToOne(mappedBy = "hall")
+    @OneToMany(mappedBy = "hall")
     @JsonIgnore
     @ToString.Exclude
-    private Session session;
+    private List<Session> session;
 }

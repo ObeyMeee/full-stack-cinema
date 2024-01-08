@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { OKTA_AUTH, OktaAuthStateService } from '@okta/okta-angular';
 import OktaAuth, { AuthState } from '@okta/okta-auth-js';
 import { filter, map, Observable } from 'rxjs';
-import { UserGroup } from '../shared/user-group.enum';
+import { UserGroup } from '../shared/enums/user-group.enum';
 
 @Component({
   selector: 'app-header',

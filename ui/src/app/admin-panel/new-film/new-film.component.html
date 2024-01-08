@@ -20,7 +20,7 @@
   </p-button>
 
   <form class="form" [formGroup]="filmForm" (ngSubmit)="onSubmit()">
-    <fieldset formGroupName="generalInformation"
+    <fieldset formGroupName="generalInfo"
               [ngClass]="{'d-none': activeStep !== 0}">
       <legend class="form__legend">General Information</legend>
       <div class="form__group">
@@ -30,12 +30,15 @@
           <span class="text-red-600">*</span>
         </label>
 
-        <ng-container *ngIf="filmForm.get('generalInformation.title') as titleControl">
+        <ng-container *ngIf="filmForm.get('generalInfo.title') as titleControl">
           <small *ngIf="titleControl.invalid &&
             (titleControl.dirty || titleControl.touched)" class="p-error">
-          <span *ngIf="titleControl.errors?.['required']">
-            Title is required
-          </span>
+            <span *ngIf="titleControl.errors?.['required']">
+              Title is required
+            </span>
+            <span *ngIf="titleControl.errors?.['blank']">
+              Title cannot be blank
+            </span>
           </small>
         </ng-container>
 
@@ -53,12 +56,15 @@
           <span class="text-red-600">*</span>
         </label>
 
-        <ng-container *ngIf="filmForm.get('generalInformation.description') as descriptionControl">
+        <ng-container *ngIf="filmForm.get('generalInfo.description') as descriptionControl">
           <small *ngIf="descriptionControl.invalid &&
             (descriptionControl.dirty || descriptionControl.touched)"
                  class="p-error">
             <span *ngIf="descriptionControl.errors?.['required']">
               Description is required
+            </span>
+            <span *ngIf="descriptionControl.errors?.['blank']">
+              Description cannot be blank
             </span>
           </small>
         </ng-container>
@@ -78,7 +84,7 @@
           <span class="text-red-600">*</span>
         </label>
 
-        <ng-container *ngIf="filmForm.get('generalInformation.genres') as genresControl">
+        <ng-container *ngIf="filmForm.get('generalInfo.genres') as genresControl">
           <small *ngIf="genresControl.invalid &&
             (genresControl.dirty || genresControl.touched)" class="p-error">
             <span *ngIf="genresControl.errors?.['required']">
@@ -117,7 +123,7 @@
           <span class="text-red-600">*</span>
         </label>
 
-        <ng-container *ngIf="filmForm.get('generalInformation.duration') as durationControl">
+        <ng-container *ngIf="filmForm.get('generalInfo.duration') as durationControl">
           <small *ngIf="durationControl.invalid &&
             (durationControl.dirty || durationControl.touched)" class="p-error">
             <span *ngIf="durationControl.errors?.['required']">
@@ -146,7 +152,7 @@
           <span class="text-red-600">*</span>
         </label>
 
-        <ng-container *ngIf="filmForm.get('generalInformation.productionYear') as productionYearControl">
+        <ng-container *ngIf="filmForm.get('generalInfo.productionYear') as productionYearControl">
           <small *ngIf="productionYearControl.invalid &&
             (productionYearControl.dirty || productionYearControl.touched)" class="p-error">
             <span *ngIf="productionYearControl.errors?.['required']">
@@ -174,7 +180,7 @@
           <span class="text-red-600">*</span>
         </label>
 
-        <ng-container *ngIf="filmForm.get('generalInformation.countries') as countriesControl">
+        <ng-container *ngIf="filmForm.get('generalInfo.countries') as countriesControl">
           <small *ngIf="countriesControl.invalid &&
             (countriesControl.dirty || countriesControl.touched)" class="p-error">
             <span *ngIf="countriesControl.errors?.['required']">
@@ -222,6 +228,12 @@
           </p-button>
         </div>
       </div>
+      <p-button label="Submit"
+                type="submit"
+                icon="pi pi-check"
+                styleClass="p-button-raised btn-submit"
+                [loading]="false">
+      </p-button>
     </fieldset>
 
     <fieldset formGroupName="crew"
@@ -347,7 +359,7 @@
           <small *ngIf="actorsControl.invalid &&
             (actorsControl.dirty || actorsControl.touched)" class="p-error">
           <span *ngIf="actorsControl.errors?.['required']">
-            Add at least 1 screenwriter
+            Add at least 1 actor
           </span>
           </small>
         </ng-container>
@@ -359,12 +371,12 @@
                             placeholder="Actor"
                             [minLength]="4"
                             [suggestions]="suggestedCrewMembers"
-                            (completeMethod)="filterPeople($event)"
                             [formControlName]="i"
                             [showClear]="true"
                             [showEmptyMessage]="true"
                             emptyMessage="No people found"
-                            field="name">
+                            field="name"
+                            (completeMethod)="filterPeople($event)">
               <ng-template let-crewMember pTemplate="item">
                 <div class="autocomplete-item">
                   <img [src]="crewMember.imgUrl" />
@@ -388,6 +400,12 @@
           </p-button>
         </div>
       </div>
+      <p-button label="Submit"
+                type="submit"
+                icon="pi pi-check"
+                styleClass="p-button-raised btn-submit"
+                [loading]="false">
+      </p-button>
     </fieldset>
 
     <fieldset formGroupName="additionalInfo"
@@ -406,6 +424,9 @@
             <span *ngIf="languageControl.errors?.['required']">
               Language is required
             </span>
+            <span *ngIf="languageControl.errors?.['blank']">
+              Title cannot be blank
+            </span>
           </small>
         </ng-container>
 
@@ -417,13 +438,13 @@
       </div>
 
       <div class="form__group">
-        <label for="age" class="form__label">
+        <label for="age_restriction" class="form__label">
           <span class="form__label-number">11.</span>
           <span class="form__label-key">Age</span>
           <span class="text-red-600">*</span>
         </label>
 
-        <ng-container *ngIf="filmForm.get('additionalInfo.age') as ageControl">
+        <ng-container *ngIf="filmForm.get('additionalInfo.ageRestriction') as ageControl">
           <small *ngIf="ageControl.invalid &&
             (ageControl.dirty || ageControl.touched)" class="p-error">
             <span *ngIf="ageControl.errors?.['required']">
@@ -435,12 +456,12 @@
           </small>
         </ng-container>
 
-        <p-inputNumber inputId="age"
+        <p-inputNumber inputId="age_restriction"
                        [showButtons]="true"
                        buttonLayout="horizontal"
                        [min]="0"
                        [max]="21"
-                       formControlName="age">
+                       formControlName="ageRestriction">
         </p-inputNumber>
       </div>
 
@@ -457,6 +478,9 @@
             <span *ngIf="startReleaseControl.errors?.['required']">
               Start Release is required
             </span>
+            <span *ngIf="startReleaseControl.errors?.['min']">
+              Start Release may start within past month or in the future
+            </span>
           </small>
         </ng-container>
 
@@ -464,7 +488,6 @@
                     [showIcon]="true"
                     [showButtonBar]="true"
                     [selectOtherMonths]="true"
-                    [minDate]="now"
                     styleClass="form__input"
                     formControlName="startReleaseAt">
         </p-calendar>
@@ -485,6 +508,9 @@
             </span>
             <span *ngIf="endReleaseControl.errors?.['isFuture']">
               End Release must be future date
+            </span>
+            <span *ngIf="endReleaseControl.errors?.['endReleaseGreaterThanStart']">
+              End Release must be greater than start release
             </span>
           </small>
         </ng-container>
@@ -549,12 +575,19 @@
                  class="form__input"
                  formControlName="trailer">
 
-          <iframe *ngIf="filmForm.get('additionalInfo.media.trailer')?.value as trailer"
-                  [src]="trailer | safe">
-          </iframe>
+          <div class="trailer-preview">
+            <iframe *ngIf="filmForm.get('additionalInfo.media.trailer')?.value as trailer"
+                    [src]="trailer | safe">
+            </iframe>
+          </div>
         </div>
       </ng-container>
-      <button type="submit">Submit</button>
+      <p-button label="Submit"
+                type="submit"
+                icon="pi pi-check"
+                styleClass="p-button-raised btn-submit"
+                [loading]="false">
+      </p-button>
     </fieldset>
 
     <fieldset formArrayName="sessions" [ngClass]="{'d-none': activeStep !== 3}">
@@ -569,29 +602,55 @@
         <ng-container *ngIf="filmForm.get('sessions') as sessionControl">
           <small *ngIf="sessionControl.invalid &&
             (sessionControl.dirty || sessionControl.touched)" class="p-error">
-          <span *ngIf="sessionControl.errors?.['required']">
-            Add at least 1 session
-          </span>
+            <span *ngIf="sessionControl.errors?.['required']">
+              Add at least 1 session
+            </span>
           </small>
         </ng-container>
 
-        <div class="array-controls">
-          <div *ngFor="let _ of sessions.controls; let i=index">
-            <div class="session-group" [formGroupName]="i">
-              <div class="">
-                <label for="start">Start</label>
+        <div class="session-controls">
+          <div class="session-group"
+               *ngFor="let _ of sessions.controls; let i=index"
+               [formGroupName]="i">
+            <div class="session-group__field">
+              <label class="session-group__label" for="start">Start</label>
+              <ng-container *ngIf="filmForm.get('sessions.startAt') as sessionStartAtControl">
+                <small class="p-error"
+                       *ngIf="sessionStartAtControl.invalid &&
+                     (sessionStartAtControl.dirty || sessionStartAtControl.touched)">
+                  <span *ngIf="sessionStartAtControl.errors?.['required']">
+                    This field is required
+                  </span>
+                  <span *ngIf="sessionStartAtControl.errors?.['isFuture']">
+                    Start session must be future date
+                  </span>
+                </small>
+              </ng-container>
                 <p-calendar inputId="start"
                             [showIcon]="true"
                             [showButtonBar]="true"
                             [selectOtherMonths]="true"
                             [minDate]="now"
+                            [showTime]="true"
                             styleClass="form__input"
                             formControlName="startAt">
                 </p-calendar>
               </div>
 
-              <div class="">
-                <label for="hall">Hall</label>
+            <div class="session-group__field">
+              <label class="session-group__label" for="hall">Hall</label>
+              <ng-container *ngIf="filmForm.get('sessions.hall') as sessionHallControl">
+                <small class="p-error"
+                       *ngIf="sessionHallControl.invalid &&
+                     (sessionHallControl.dirty || sessionHallControl.touched)">
+                  <span *ngIf="sessionHallControl.errors?.['required']">
+                    This field is required
+                  </span>
+                  <span *ngIf="sessionHallControl.errors?.['isFuture']">
+                    Hall number must be positive number
+                  </span>
+                </small>
+              </ng-container>
                 <p-inputNumber inputId="hall"
                                [showButtons]="true"
                                buttonLayout="horizontal"
@@ -599,31 +658,55 @@
                                formControlName="hall">
                 </p-inputNumber>
               </div>
-              <div class="">
-                <label for="good-row-price">Good row price</label>
-                <p-inputNumber inputId="good-row-price"
-                               [showButtons]="true"
-                               prefix="₴"
-                               buttonLayout="horizontal"
-                               [min]="1"
-                               formControlName="goodRowPrice">
-                </p-inputNumber>
+
+            <div class="session-group__field">
+              <label class="session-group__label" for="good-row-price">Good row price</label>
+              <ng-container *ngIf="filmForm.get('sessions.hall') as sessionGoodPriceControl">
+                <small class="p-error"
+                       *ngIf="sessionGoodPriceControl.invalid &&
+                     (sessionGoodPriceControl.dirty || sessionGoodPriceControl.touched)">
+                  <span *ngIf="sessionGoodPriceControl.errors?.['required']">
+                    This field is required
+                  </span>
+                  <span *ngIf="sessionGoodPriceControl.errors?.['isFuture']">
+                    Price must be positive number
+                  </span>
+                </small>
+              </ng-container>
+              <p-inputNumber inputId="good-row-price"
+                             [showButtons]="true"
+                             prefix="₴"
+                             buttonLayout="horizontal"
+                             [min]="1"
+                             formControlName="goodRowPrice">
+              </p-inputNumber>
               </div>
-              <div class="">
-                <label for="lux-row-price">Lux row price</label>
-                <p-inputNumber inputId="lux-row-price"
-                               [showButtons]="true"
-                               prefix="₴"
-                               buttonLayout="horizontal"
-                               [min]="1"
-                               formControlName="luxRowPrice">
-                </p-inputNumber>
-              </div>
+            <div class="session-group__field">
+              <label class="session-group__label" for="lux-row-price">Lux row price</label>
+              <ng-container *ngIf="filmForm.get('sessions.hall') as sessionLuxPriceControl">
+                <small class="p-error"
+                       *ngIf="sessionLuxPriceControl.invalid &&
+                     (sessionLuxPriceControl.dirty || sessionLuxPriceControl.touched)">
+                  <span *ngIf="sessionLuxPriceControl.errors?.['required']">
+                    This field is required
+                  </span>
+                  <span *ngIf="sessionLuxPriceControl.errors?.['isFuture']">
+                    Price must be positive number
+                  </span>
+                </small>
+              </ng-container>
+              <p-inputNumber inputId="lux-row-price"
+                             [showButtons]="true"
+                             prefix="₴"
+                             buttonLayout="horizontal"
+                             [min]="1"
+                             formControlName="luxRowPrice">
+              </p-inputNumber>
             </div>
 
             <p-button icon="pi pi-times"
                       styleClass="p-button-rounded p-button-danger p-button-text p-button-raised p-button-lg"
-                      (click)="deleteFormControlAt('sessions',i)">
+                      (click)="deleteFormControlAt('sessions', i)">
             </p-button>
           </div>
         </div>
@@ -631,11 +714,17 @@
         <div class="d-inline-block">
           <p-button icon="pi pi-plus"
                     label="Add Session"
-                    styleClass="p-button-rounded p-button-success p-button-text p-button-raised p-button-lg"
+                    styleClass="p-button-rounded p-button-success p-button-text p-button-raised p-button-lg mt-3"
                     (click)="addSession()">
           </p-button>
         </div>
       </div>
+      <p-button label="Submit"
+                type="submit"
+                icon="pi pi-check"
+                styleClass="p-button-raised btn-submit"
+                [loading]="false">
+      </p-button>
     </fieldset>
   </form>
 </section>

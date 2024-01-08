@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { PosterDto } from './dto/poster.dto';
-import { BaseService } from '../shared/base.service';
+import { BaseService } from '../shared/services/base.service';
 import { RequestStatusService } from '../shared/pending/request-status.service';
 
 @Injectable({

@@ -2,7 +2,9 @@ package ua.com.andromeda.session;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -19,6 +21,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
 public class Session {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -26,13 +29,20 @@ public class Session {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
     private LocalDateTime startAt;
+
     private boolean enabled;
+
+    @Min(1)
+    private int goodRowPrice;
+
+    @Min(1)
+    private int luxRowPrice;
 
     @ManyToOne
     @JoinColumn(name = "film_id", nullable = false)
     private Film film;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "hall_id", nullable = false)
     private Hall hall;
 

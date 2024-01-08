@@ -5,7 +5,9 @@ export class SessionBuyTicketDto {
   title!: string;
   startAt!: Date;
   duration!: number;
-  image!: string;
+  poster!: string;
   hall!: Hall;
+  goodRowPrice!: number;
+  luxRowPrice!: number;
   boughtTickets!: Ticket[];
 }

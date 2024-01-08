@@ -1,5 +1,5 @@
 export class Media {
   id!: string;
-  image!: string;
+  poster!: string;
   trailer!: string;
 }

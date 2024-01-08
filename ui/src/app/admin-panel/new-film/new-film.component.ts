@@ -1,7 +1,13 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MenuItem } from 'primeng/api';
-import { endReleaseAtValidator, productionYearValidator } from './validators';
+import {
+  endReleaseAtValidator,
+  notBlankValidator,
+  productionYearValidator,
+  sessionStartAtValidator,
+  startReleaseAtValidator
+} from './validators';
 import { DropdownItem } from '../../shared/dropdown-item.type';
 import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
 import { CrewMember, CrewService } from './services/crew.service';
@@ -9,6 +15,10 @@ import { FileUploadHandlerEvent } from 'primeng/fileupload';
 import { GenreService } from './services/genre.service';
 import { Observable } from 'rxjs';
 import { CountryResponse, CountryService } from './services/country.service';
+import { FilmService } from '../../shared/services/film.service';
+import { NewFilmDto } from './new-film.dto';
+import { FirebaseStorageService } from './services/firebase-storage-service';
+import { ToastService } from '../../shared/services/toast.service';
 
 type FormControlArray = 'genres' | 'directors' | 'countries' | 'screenwriters' | 'actors' | 'sessions';
 
@@ -21,14 +31,18 @@ export class NewFilmComponent implements OnInit {
   filmForm!: FormGroup;
   items!: MenuItem[];
   activeStep!: number;
-    suggestedGenres$!: Observable<DropdownItem[]>;
-    suggestedCountries$!: Observable<CountryResponse[]>;
-    suggestedCrewMembers!: CrewMember[];
-    now = new Date();
+  suggestedGenres$!: Observable<DropdownItem[]>;
+  suggestedCountries$!: Observable<CountryResponse[]>;
+  suggestedCrewMembers!: CrewMember[];
+  now = new Date();
 
   @ViewChild('posterUpload') posterUploadRef!: ElementRef;
+  @ViewChild('formElement') filmFormElementRef!: ElementRef;
 
   constructor(private formBuilder: FormBuilder,
+              private firebaseStorageService: FirebaseStorageService,
+              private toastService: ToastService,
+              private filmService: FilmService,
               private crewService: CrewService,
               private countryService: CountryService,
               private genreService: GenreService) {
@@ -41,22 +55,17 @@ export class NewFilmComponent implements OnInit {
     this.buildForm();
   }
 
+
   private buildForm() {
         const now = new Date();
         this.filmForm = this.formBuilder.group({
-            generalInformation: this.formBuilder.group({
-                title: ['', Validators.required],
-                description: ['', Validators.required],
-                genres: this.getFormArray(),
-                duration: [1, [Validators.required, Validators.min(1)]],
-                productionYear: [
-                    now,
-                    [
-                        Validators.required,
-                        productionYearValidator()
-                    ]
-                ],
-                countries: this.getFormArray()
+          generalInfo: this.formBuilder.group({
+            title: ['', [Validators.required, notBlankValidator()]],
+            description: ['', [Validators.required, notBlankValidator()]],
+            genres: this.getFormArray(),
+            duration: [1, [Validators.required, Validators.min(1)]],
+            productionYear: [now, [Validators.required, productionYearValidator()]],
+            countries: this.getFormArray()
             }),
             crew: this.formBuilder.group({
                 directors: this.getFormArray(),
@@ -64,18 +73,21 @@ export class NewFilmComponent implements OnInit {
                 actors: this.getFormArray()
             }),
             additionalInfo: this.formBuilder.group({
-                language: ['', Validators.required],
-                age: [0, [Validators.required, Validators.min(0), Validators.max(18)]],
-                startReleaseAt: [now, [Validators.required]],
-                endReleaseAt: [now, [Validators.required, endReleaseAtValidator()]],
-                media: this.formBuilder.group({
-                    poster: ['', Validators.required],
-                    trailer: ['', Validators.required]
-                })
+              language: ['', [Validators.required, notBlankValidator()]],
+              ageRestriction: [0, [Validators.required, Validators.min(0), Validators.max(18)]],
+              startReleaseAt: [now, [Validators.required, startReleaseAtValidator()]],
+              endReleaseAt: [now],
+              media: this.formBuilder.group({
+                poster: ['', Validators.required],
+                trailer: ['', Validators.required]
+              })
             }),
             sessions: this.formBuilder.array([this.buildSessionGroup()])
         });
-    }
+    this.filmForm.get('additionalInfo.startReleaseAt')?.setValidators([
+      Validators.required, endReleaseAtValidator(this.filmForm)
+    ]);
+  }
 
   private getFormArray() {
     return this.formBuilder.array<string>([]);
@@ -95,11 +107,11 @@ export class NewFilmComponent implements OnInit {
   }
 
   get genres() {
-    return this.filmForm.get('generalInformation.genres') as FormArray;
+    return this.filmForm.get('generalInfo.genres') as FormArray;
   }
 
   get countries() {
-    return this.filmForm.get('generalInformation.countries') as FormArray;
+    return this.filmForm.get('generalInfo.countries') as FormArray;
   }
 
   get directors() {
@@ -137,13 +149,14 @@ export class NewFilmComponent implements OnInit {
   }
 
   buildSessionGroup() {
-        return this.formBuilder.group({
-            startAt: [this.now, Validators.required],
-            hall: [1, [Validators.required, Validators.min(1)]],
-            goodRowPrice: [1, [Validators.required, Validators.min(1)]],
-            luxRowPrice: [1, [Validators.required, Validators.min(1)]]
-        });
-    }
+    const formControl = [1, [Validators.required, Validators.min(1)]];
+    return this.formBuilder.group({
+      startAt: [this.now, [Validators.required, sessionStartAtValidator()]],
+      hall: formControl,
+      goodRowPrice: formControl,
+      luxRowPrice: formControl
+    });
+  }
 
   addScreenwriter() {
     this.screenwriters.push(this.formBuilder.control(''));
@@ -154,11 +167,44 @@ export class NewFilmComponent implements OnInit {
   }
 
   deleteFormControlAt(formControlArray: FormControlArray, index: number) {
-        this[formControlArray].removeAt(index);
+    this[formControlArray].removeAt(index);
   }
 
   onSubmit() {
-    console.log(this.filmForm.value);
+    const newFilm = this.filmForm.value as NewFilmDto;
+    this.firebaseStorageService.uploadFile(newFilm.additionalInfo.media.poster as File)
+      .subscribe({
+        next: downloadURL => {
+          newFilm.additionalInfo.media.poster = downloadURL;
+          this.filmService.save(newFilm).data.subscribe({
+              next: () => {
+                this.toastService.showToast(false, 'You have successfully added new film!', 'success');
+                this.resetAll();
+                this.activeStep = 0; // return to first page
+              },
+              error: err => {
+                this.toastService.showToast(true, 'Error occurred while saving new film', 'error');
+                console.log(err);
+              }
+            }
+          );
+        },
+        error: err => {
+          this.toastService.showToast(true, 'Error occurred while uploading file', 'error');
+          console.log(err);
+        }
+      });
+  }
+
+  private resetAll() {
+    this.filmForm.reset();
+    this.actors.clear()
+    this.actors.clear();
+    this.screenwriters.clear();
+    this.directors.clear();
+    this.countries.clear();
+    this.genres.clear();
+    this.sessions.clear();
   }
 
   onMove(step: number) {

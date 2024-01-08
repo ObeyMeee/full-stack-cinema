@@ -9,7 +9,10 @@ export class Film {
   description!: string;
   director!: string;
   duration!: number;
+  ageRestriction!: number;
   productionYear!: number;
+  startReleaseAt!: Date;
+  endReleaseAt!: Date;
   countries!: Country[];
   media!: Media;
   actors!: Actor[];

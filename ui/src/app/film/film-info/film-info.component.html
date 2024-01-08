@@ -3,13 +3,15 @@
   <div class="film-details" *ngIf="film$.data | async as film">
     <h1 class="heading-1 film-details__title">{{film.title}}</h1>
     <div class="film-details__text">Age:</div>
-    <div class="film-details__value">16+</div>
+    <div class="film-details__value">{{film.ageRestriction}}+</div>
     <div class="film-details__text">Year:</div>
     <div class="film-details__value">{{film.productionYear}}</div>
     <div class="film-details__text">Director:</div>
     <div class="film-details__value">{{film.director}}</div>
     <div class="film-details__text">Rental period:</div>
-    <div class="film-details__value">20.04.2022-23.01.2023</div>
+    <div class="film-details__value">
+      {{film.startReleaseAt | date:'mediumDate'}} - {{film.endReleaseAt | date:'mediumDate'}}
+    </div>
     <div class="film-details__text">Genre:</div>
     <div class="film-details__value">
       <a class="film-details__genre"

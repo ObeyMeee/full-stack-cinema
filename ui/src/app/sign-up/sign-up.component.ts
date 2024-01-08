@@ -4,7 +4,7 @@ import { Message } from 'primeng/api';
 import { Status } from '../shared/pending/status.enum';
 import { Pending } from '../shared/pending/pending.interface';
 import { Router } from '@angular/router';
-import { ToastService } from '../shared/toast.service';
+import { ToastService } from '../shared/services/toast.service';
 import { UserRegisterDto } from './user-register.dto';
 import { GoogleLoginProvider, SocialAuthService } from 'angularx-social-login';
 

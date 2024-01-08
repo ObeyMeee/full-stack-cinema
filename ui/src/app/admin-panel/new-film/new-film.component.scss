@@ -15,6 +15,16 @@ $bg-input-field: rgba(var(--color-grey-dark-1-rgb), .25);
   }
 }
 
+@mixin btn-primary-bg {
+  background-color: var(--color-primary);
+
+  &:hover,
+  &:active,
+  &:focus {
+    background-color: var(--color-primary-dark);
+  }
+}
+
 :host ::ng-deep {
   .p-steps-title {
     font-size: 2rem;
@@ -28,11 +38,6 @@ $bg-input-field: rgba(var(--color-grey-dark-1-rgb), .25);
       transform: scale(1.2);
       background-color: var(--color-grey-dark-1);
     }
-  }
-
-  .p-autocomplete-loader {
-    margin-right: 15px;
-    color: var(--color-primary);
   }
 
   .p-calendar-w-btn,
@@ -72,6 +77,11 @@ $bg-input-field: rgba(var(--color-grey-dark-1-rgb), .25);
   }
 
   .p-autocomplete {
+    &-loader {
+      margin-right: 15px;
+      color: var(--color-primary);
+    }
+
     &-panel {
       .autocomplete-item {
         display: flex;
@@ -93,15 +103,9 @@ $bg-input-field: rgba(var(--color-grey-dark-1-rgb), .25);
   }
 
   .btn-nav {
+    @include btn-primary-bg;
     position: fixed;
     bottom: 8%;
-    background-color: var(--color-primary);
-
-    &:hover,
-    &:active,
-    &:focus {
-      background-color: var(--color-primary-dark);
-    }
   }
 
   .btn-left {
@@ -110,6 +114,24 @@ $bg-input-field: rgba(var(--color-grey-dark-1-rgb), .25);
 
   .btn-right {
     right: 8rem;
+  }
+
+  .btn-submit {
+    @include btn-primary-bg;
+    display: block;
+    font-size: 1.5rem;
+    height: 4rem;
+    width: 10rem;
+    margin: 0 auto;
+    transition: all .3s;
+
+    &:hover {
+      transform: translateY(-2px) scale(1);
+    }
+
+    &:active {
+      transform: translateY(-1px) scale(.95);
+    }
   }
 
   .p-error {
@@ -169,6 +191,10 @@ $bg-input-field: rgba(var(--color-grey-dark-1-rgb), .25);
       animation: lightSpeedInRight;
       animation-duration: .8s;
     }
+
+    &--active {
+      border: 1px solid var(--color-primary-dark);
+    }
   }
 
   &__label {
@@ -202,5 +228,34 @@ $bg-input-field: rgba(var(--color-grey-dark-1-rgb), .25);
     display: flex;
     grid-gap: 1rem;
     align-items: center;
+  }
+}
+
+.session-controls {
+  display: grid;
+  grid-row-gap: 1rem;
+
+  & .session-group {
+    display: flex;
+    grid-gap: 1rem;
+    align-items: center;
+
+    &__label {
+      font-size: 1.3rem;
+      font-style: italic;
+      color: var(--color-grey-light-1);
+      margin-bottom: .4rem;
+    }
+  }
+}
+
+.trailer-preview {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+
+  & iframe {
+    height: 40rem;
+    width: 100%;
   }
 }

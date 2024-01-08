@@ -18,8 +18,10 @@ public interface SessionRepository extends ListCrudRepository<Session, UUID> {
                     s.film.title,
                     s.startAt,
                     s.film.duration,
-                    s.film.media.image,
-                    s.hall
+                    s.film.media.poster,
+                    s.hall,
+                    s.goodRowPrice,
+                    s.luxRowPrice
             )
             from Session s
             where s.id = :id
