@@ -21,6 +21,13 @@ public class FilmController {
         return ResponseEntity.ok(posters);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Film> findById(@PathVariable String id) {
+        Film foundedFilm = filmService.findById(id);
+        return ResponseEntity.ok(foundedFilm);
+    }
+
+
     @PostMapping
     public ResponseEntity<Void> save(@Valid @RequestBody NewFilmDto newFilmDto) {
         filmService.save(newFilmDto);

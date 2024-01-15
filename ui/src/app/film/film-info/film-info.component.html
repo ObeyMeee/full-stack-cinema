@@ -6,8 +6,20 @@
     <div class="film-details__value">{{film.ageRestriction}}+</div>
     <div class="film-details__text">Year:</div>
     <div class="film-details__value">{{film.productionYear}}</div>
-    <div class="film-details__text">Director:</div>
-    <div class="film-details__value">{{film.director}}</div>
+    <div class="film-details__text">Directors:</div>
+    <div class="film-details__value">
+      <ng-container *ngFor="let director of directors; let last=last">
+        <span class="film-details__director">{{ director.fullName }}</span>
+        <span *ngIf="!last">, &nbsp;</span>
+      </ng-container>
+    </div>
+    <div class="film-details__text">Screenwriters:</div>
+    <div class="film-details__value">
+      <ng-container *ngFor="let screenwriter of screenwriters; let last=last">
+        <span class="film-details__screenwriter">{{ screenwriter.fullName }}</span>
+        <span *ngIf="!last">, &nbsp;</span>
+      </ng-container>
+    </div>
     <div class="film-details__text">Rental period:</div>
     <div class="film-details__value">
       {{film.startReleaseAt | date:'mediumDate'}} - {{film.endReleaseAt | date:'mediumDate'}}
@@ -30,7 +42,7 @@
     </div>
     <div class="film-details__text">Actors:</div>
     <div class="film-details__value">
-      <ng-container *ngFor="let actor of film.actors; let last=last">
+      <ng-container *ngFor="let actor of actors; let last=last">
         <span class="film-details__actor">{{actor.fullName}}</span>
         <span *ngIf="!last">, &nbsp;</span>
       </ng-container>

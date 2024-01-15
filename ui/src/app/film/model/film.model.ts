@@ -1,20 +1,19 @@
 import { Country } from './country.model';
-import { Actor } from './actor.model';
 import { Media } from './media.model';
 import { Genre } from './genre.model';
+import { CrewMemberDto } from './crew-member.dto';
 
 export class Film {
   enabled!: boolean;
   title!: string;
   description!: string;
-  director!: string;
   duration!: number;
   ageRestriction!: number;
   productionYear!: number;
   startReleaseAt!: Date;
   endReleaseAt!: Date;
   countries!: Country[];
+  crew!: CrewMemberDto[]
   media!: Media;
-  actors!: Actor[];
   genres!: Genre[];
 }

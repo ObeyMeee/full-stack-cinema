@@ -14,14 +14,6 @@ create table crew_members
     full_name varchar(255)
 );
 
-create table crew_roles
-(
-    crew_member bigint not null
-        constraint fk9791bo7i6digq25pkwyg9qkyc
-            references crew_members,
-    roles       smallint
-);
-
 create table genres
 (
     id   uuid         not null
@@ -132,6 +124,26 @@ create table reactions
     comment_id uuid
         constraint fk49rifnmyo1sd243acaysemlbw
             references comments
+);
+
+create table roles
+(
+    id   serial
+        primary key,
+    role varchar(255)
+        constraint uk_g50w4r0ru3g9uf6i6fr4kpro8
+            unique
+);
+
+create table crew_roles
+(
+    crew_id bigint  not null
+        constraint fkkb1c4015xhw4oi2o4lougic42
+            references crew_members,
+    role_id integer not null
+        constraint fkmr5ov3skbcpx56cdja2xf4av2
+            references roles,
+    primary key (crew_id, role_id)
 );
 
 create table rows

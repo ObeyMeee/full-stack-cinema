@@ -1,23 +1,14 @@
-INSERT INTO public.crew_members (full_name, role)
--- The Lord of the Rings
-VALUES ('J.R.R. Tolkien', 'SCREENWRITER'),
-       ('Fran Walsh', 'SCREENWRITER'),
-       ('Philippa Boyens', 'SCREENWRITER'),
-       ('Peter Jackson', 'SCREENWRITER'),
---        Dark Knignt: Rises
-       ('Jonathan Nolan', 'SCREENWRITER'),
-       ('Christopher Nolan', 'SCREENWRITER'),
-       ('David S. Goyer', 'SCREENWRITER'),
-       ('Bob Kane', 'SCREENWRITER'),
---     Pirates of the Caribbean: The Curse of the Black Pearl
-       ('Ted Elliott', 'SCREENWRITER'),
-       ('Terry Rossio', 'SCREENWRITER'),
-       ('Stuart Beattie', 'SCREENWRITER'),
-       ('Jay Wolpert', 'SCREENWRITER'),
---     Harry Potter and the Philosopher stone
-       ('J.K. Rowling', 'SCREENWRITER'),
-       ('Steve Kloves', 'SCREENWRITER'),
---     star wars 1977
-       ('George Lucas', 'SCREENWRITER'),
---     Home alone
-       ('John Hughes', 'SCREENWRITER')
+INSERT INTO public.crew_members (id, full_name)
+VALUES (129, 'J.R.R. Tolkien'),
+       (126, 'Fran Walsh'),
+       (128, 'Philippa Boyens'),
+       (527, 'Jonathan Nolan'),
+       (3893, 'David S. Goyer'),
+       (3794, 'Bob Kane'),
+       (1705, 'Ted Elliott'),
+       (1706, 'Terry Rossio'),
+       (1707, 'Stuart Beattie'),
+       (1708, 'Jay Wolpert'),
+       (10966, 'J.K. Rowling'),
+       (10967, 'Steve Kloves'),
+       (11505, 'John Hughes')

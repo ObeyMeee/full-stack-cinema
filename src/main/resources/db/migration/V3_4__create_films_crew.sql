@@ -133,34 +133,28 @@ VALUES ('2073d25d-bf80-46d0-9c20-da96dd8cbaad', (SELECT id FROM crew_members WHE
 INSERT INTO public.films_crew (film_id, crew_member_id)
 VALUES ('2073d25d-bf80-46d0-9c20-da96dd8cbaad', (SELECT id FROM crew_members WHERE full_name = 'Dominic Monaghan'));
 
--- Directors
 INSERT INTO public.films_crew (film_id, crew_member_id)
 VALUES ('2073d25d-bf80-46d0-9c20-da96dd8cbaad', (SELECT id FROM crew_members WHERE full_name = 'Peter Jackson'));
 INSERT INTO public.films_crew (film_id, crew_member_id)
 VALUES ('303e7f44-4606-4848-ab3c-b8ba767ea526', (SELECT id FROM crew_members WHERE full_name = 'Christopher Nolan'));
 INSERT INTO public.films_crew (film_id, crew_member_id)
-VALUES ('dba5a1bb-454e-484c-8695-48010c99a57a', (SELECT id FROM crew_members WHERE full_name = 'Gore Verbinskiy'));
+VALUES ('dba5a1bb-454e-484c-8695-48010c99a57a', (SELECT id FROM crew_members WHERE full_name = 'Gore Verbinski'));
 INSERT INTO public.films_crew (film_id, crew_member_id)
 VALUES ('203c2490-f370-4684-a7cd-7290ceeddae0', (SELECT id FROM crew_members WHERE full_name = 'Chris Columbus'));
 INSERT INTO public.films_crew (film_id, crew_member_id)
 VALUES ('4108bc1f-cc23-422c-babd-3e19be79ac05', (SELECT id FROM crew_members WHERE full_name = 'Chris Columbus'));
 INSERT INTO public.films_crew (film_id, crew_member_id)
-VALUES ('37262b52-d1b4-420d-ae3a-fc32574da793', (SELECT id FROM crew_members WHERE full_name = 'George Lukas'));
+VALUES ('37262b52-d1b4-420d-ae3a-fc32574da793', (SELECT id FROM crew_members WHERE full_name = 'George Lucas'));
 
--- Screenwriters
 INSERT INTO public.films_crew (film_id, crew_member_id)
 VALUES ('2073d25d-bf80-46d0-9c20-da96dd8cbaad', (SELECT id FROM crew_members WHERE full_name = 'J.R.R. Tolkien'));
 INSERT INTO public.films_crew (film_id, crew_member_id)
 VALUES ('2073d25d-bf80-46d0-9c20-da96dd8cbaad', (SELECT id FROM crew_members WHERE full_name = 'Fran Walsh'));
 INSERT INTO public.films_crew (film_id, crew_member_id)
 VALUES ('2073d25d-bf80-46d0-9c20-da96dd8cbaad', (SELECT id FROM crew_members WHERE full_name = 'Philippa Boyens'));
-INSERT INTO public.films_crew (film_id, crew_member_id)
-VALUES ('2073d25d-bf80-46d0-9c20-da96dd8cbaad', (SELECT id FROM crew_members WHERE full_name = 'Peter Jackson'));
 
 INSERT INTO public.films_crew (film_id, crew_member_id)
 VALUES ('303e7f44-4606-4848-ab3c-b8ba767ea526', (SELECT id FROM crew_members WHERE full_name = 'Jonathan Nolan'));
-INSERT INTO public.films_crew (film_id, crew_member_id)
-VALUES ('303e7f44-4606-4848-ab3c-b8ba767ea526', (SELECT id FROM crew_members WHERE full_name = 'Christopher Nolan'));
 INSERT INTO public.films_crew (film_id, crew_member_id)
 VALUES ('303e7f44-4606-4848-ab3c-b8ba767ea526', (SELECT id FROM crew_members WHERE full_name = 'David S. Goyer'));
 INSERT INTO public.films_crew (film_id, crew_member_id)
@@ -180,8 +174,3 @@ VALUES ('203c2490-f370-4684-a7cd-7290ceeddae0', (SELECT id FROM crew_members WHE
 
 INSERT INTO public.films_crew (film_id, crew_member_id)
 VALUES ('4108bc1f-cc23-422c-babd-3e19be79ac05', (SELECT id FROM crew_members WHERE full_name = 'J.K. Rowling'));
-INSERT INTO public.films_crew (film_id, crew_member_id)
-VALUES ('4108bc1f-cc23-422c-babd-3e19be79ac05', (SELECT id FROM crew_members WHERE full_name = 'Chris Columbus'));
-
-INSERT INTO public.films_crew (film_id, crew_member_id)
-VALUES ('37262b52-d1b4-420d-ae3a-fc32574da793', (SELECT id FROM crew_members WHERE full_name = 'George Lukas'));

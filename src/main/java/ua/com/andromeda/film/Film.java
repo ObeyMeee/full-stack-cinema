@@ -14,6 +14,7 @@ import ua.com.andromeda.media.Media;
 import ua.com.andromeda.session.Session;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -71,7 +72,8 @@ public class Film {
             joinColumns = @JoinColumn(name = "film_id"),
             inverseJoinColumns = @JoinColumn(name = "country_id")
     )
-    private List<Country> countries;
+    @Builder.Default
+    private Set<Country> countries = new HashSet<>();
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "media_id")
@@ -86,18 +88,19 @@ public class Film {
             joinColumns = @JoinColumn(name = "film_id"),
             inverseJoinColumns = @JoinColumn(name = "crew_member_id")
     )
-    private Set<CrewMember> crew;
+    @Builder.Default
+    private Set<CrewMember> crew = new HashSet<>();
 
     @ManyToMany(
             fetch = FetchType.EAGER,
-            cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
-    )
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(
             name = "films_genres",
             joinColumns = @JoinColumn(name = "film_id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id")
     )
-    private List<Genre> genres;
+    @Builder.Default
+    private Set<Genre> genres = new HashSet<>();
 
     @OneToMany(mappedBy = "film")
     @JsonIgnore
