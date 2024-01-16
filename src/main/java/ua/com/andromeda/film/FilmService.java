@@ -42,4 +42,19 @@ public class FilmService {
         Film film = filmMapper.toFilm(newFilmDto);
         filmRepository.save(film);
     }
+
+    @Transactional
+    public void updateById(UUID id, boolean enabled) {
+        Film filmToUpdate = filmRepository
+                .findById(id)
+                .orElseThrow(() -> new FilmNotFoundException(id));
+
+        filmToUpdate.setEnabled(enabled);
+        filmRepository.save(filmToUpdate);
+    }
+
+    @Transactional
+    public void deleteById(UUID id) {
+        filmRepository.deleteById(id);
+    }
 }

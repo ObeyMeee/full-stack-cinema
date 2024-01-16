@@ -50,6 +50,18 @@ export class FilmService extends BaseService {
     return this.requestStatusService.handleRequestWithStatus<void>(request);
   }
 
+  deleteById(filmId: string) {
+    const url = `${this.filmsUrl}/${filmId}`;
+    const request = this.http.delete<void>(url);
+    return this.requestStatusService.handleRequestWithStatus<void>(request);
+  }
+
+  updateEnabled(filmId: string, enabled: boolean) {
+    const url = `${this.filmsUrl}/${filmId}`;
+    const request = this.http.patch<void>(url, { enabled });
+    return this.requestStatusService.handleRequestWithStatus<void>(request);
+  }
+
   private mapToBody(film: any) {
     const newDirectors: CrewMemberRequest[] = this.mapCrewMembers(film, 'directors');
     const newScreenWriters: CrewMemberRequest[] = this.mapCrewMembers(film, 'screenwriters');

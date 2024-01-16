@@ -5,10 +5,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ua.com.andromeda.film.dto.FilmManagingDto;
+import ua.com.andromeda.film.dto.FilmUpdateRequestDto;
 import ua.com.andromeda.film.dto.NewFilmDto;
 import ua.com.andromeda.film.dto.PosterDto;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -38,5 +40,20 @@ public class FilmController {
     public ResponseEntity<Void> save(@Valid @RequestBody NewFilmDto newFilmDto) {
         filmService.save(newFilmDto);
         return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Void> updateFilmEnabled(
+            @PathVariable UUID id,
+            @RequestBody FilmUpdateRequestDto filmUpdateRequest
+    ) {
+        filmService.updateById(id, filmUpdateRequest.enabled());
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable UUID id) {
+        filmService.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 }

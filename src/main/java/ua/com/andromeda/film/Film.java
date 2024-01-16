@@ -102,12 +102,18 @@ public class Film {
     @Builder.Default
     private Set<Genre> genres = new HashSet<>();
 
-    @OneToMany(mappedBy = "film")
+    @OneToMany(
+            mappedBy = "film",
+            cascade = CascadeType.REMOVE
+    )
     @JsonIgnore
     @ToString.Exclude
     private List<Session> sessions;
 
-    @OneToMany(mappedBy = "film")
+    @OneToMany(
+            mappedBy = "film",
+            cascade = CascadeType.REMOVE
+    )
     @JsonIgnore
     @ToString.Exclude
     private List<Comment> comments;

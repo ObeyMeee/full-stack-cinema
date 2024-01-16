@@ -8,11 +8,8 @@
 
 <section class="section-films">
   <h2 class="heading-2 mb-4">Films</h2>
-
-  <ng-container *ngIf="(filmsPage$.data | async) as films">
     <p-table #filmsTable
-             [value]="films"
-             dataKey="film.id"
+             [value]="filmsCached"
              [scrollable]="true"
              scrollHeight="60rem"
              [paginator]="true"
@@ -22,7 +19,6 @@
              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} films"
              [globalFilterFields]="['title']"
              [filterDelay]="100"
-
     >
       <ng-template pTemplate="caption">
         <div class="flex">
@@ -54,17 +50,11 @@
           </th>
           <th scope="col">
             <span>Enabled</span>
+            <p-columnFilter type="boolean" field="enabled"></p-columnFilter>
           </th>
           <th scope="col">
             <span>Actions</span>
           </th>
-        </tr>
-        <tr>
-          <th colspan="4"></th>
-          <th>
-            <p-columnFilter type="boolean" field="enabled"></p-columnFilter>
-          </th>
-          <th></th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-film>
@@ -85,34 +75,33 @@
             <span class="film__end-release">{{ film.endReleaseAt | date:'mediumDate' }}</span>
           </td>
           <td>
-
             <p-button
               icon="pi pi-{{film.enabled ? 'check' : 'times'}}"
               styleClass="p-button-outlined
                           p-button-{{film.enabled ? 'success text-green-500' : 'danger text-red-500'}}
                           btn-action"
-              (click)="toggleState(film.id)"
+              (click)="toggleState(film)"
               pTooltip="Film is {{film.enabled ? 'active' : 'disabled'}}"
-              tooltipPosition="top">
+              tooltipPosition="top"
+              [loading]="(toggleEnabledFilm$?.status | async) === Status.LOADING">
             </p-button>
           </td>
           <td>
-            <button pButton
-                    pRipple
-                    icon="pi pi-pencil"
-                    class="p-button-success btn-action me-2"
-                    (click)="edit(film.id)"
-                    pTooltip="Edit film"
-                    tooltipPosition="top">
-            </button>
-            <button pButton
-                    pRipple
-                    icon="pi pi-trash"
-                    class="p-button-danger btn-action"
-                    (click)="delete(film.id)"
-                    pTooltip="Delete film"
-                    tooltipPosition="top">
-            </button>
+            <p-button pRipple
+                      icon="pi pi-pencil"
+                      styleClass="p-button-success btn-action me-2"
+                      (click)="edit(film.id)"
+                      pTooltip="Edit film"
+                      tooltipPosition="top">
+            </p-button>
+            <p-button pRipple
+                      icon="pi pi-trash"
+                      styleClass="p-button-danger btn-action"
+                      (click)="delete(film)"
+                      pTooltip="Delete film"
+                      tooltipPosition="top"
+                      [loading]="(deleteFilm$?.status | async) === Status.LOADING">
+            </p-button>
           </td>
         </tr>
       </ng-template>
@@ -122,5 +111,14 @@
         </tr>
       </ng-template>
     </p-table>
-  </ng-container>
 </section>
+
+<p-confirmDialog #cd [closeOnEscape]="true" [style]="{width: '50vw'}">
+  <ng-template pTemplate="header">
+    <h3>Confirmation</h3>
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <p-button label="No" icon="pi pi-times" styleClass="btn-secondary" (click)="cd.reject()"></p-button>
+    <p-button label="Yes" icon="pi pi-check" styleClass="btn-primary" (click)="cd.accept()"></p-button>
+  </ng-template>
+</p-confirmDialog>

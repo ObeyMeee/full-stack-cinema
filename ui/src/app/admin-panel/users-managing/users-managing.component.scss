@@ -1,41 +1,6 @@
 @import "../../../custom-bootstrap";
 
 :host ::ng-deep {
-  // CONFIRM DIALOG
-  .p-component-overlay {
-    backdrop-filter: blur(3px) brightness(50%);
-  }
-
-  .p-confirm-dialog .p-dialog-content {
-    font-size: 1.6rem;
-
-    .p-confirm-dialog-icon {
-      color: gold;
-    }
-  }
-
-  .btn-primary {
-    font-size: 1.5rem;
-    background-color: var(--color-primary);
-
-    &:hover,
-    &:focus {
-      color: var(--color-grey-light-1);
-      background-color: var(--color-primary-dark);
-    }
-  }
-
-  .btn-secondary {
-    font-size: 1.5rem;
-    background-color: var(--color-grey-light-3);
-
-    &:hover,
-    &:focus {
-      color: var(--color-grey-light-1);
-      background-color: var(--color-grey-dark-1);
-    }
-  }
-
   //EDIT FORM
   .form {
     font-size: 1.5rem;

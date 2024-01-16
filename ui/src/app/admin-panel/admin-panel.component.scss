@@ -38,7 +38,7 @@
       letter-spacing: 2px;
 
       & > tr > th {
-        padding: 1.5rem;
+        padding: 1rem;
 
         & .p-column-filter-row {
           & p-columnfilterformelement {
@@ -70,10 +70,45 @@
         }
 
         & > td {
-          padding: 1.5rem;
+          padding: 1rem;
           max-width: 20rem;
         }
       }
+    }
+  }
+
+  // CONFIRM DIALOG
+  .p-confirm-dialog .p-dialog-content {
+    font-size: 1.6rem;
+
+    .p-confirm-dialog-icon {
+      color: gold;
+    }
+  }
+
+  .p-component-overlay {
+    backdrop-filter: blur(3px) brightness(50%);
+  }
+
+  .btn-primary {
+    font-size: 1.5rem;
+    background-color: var(--color-primary);
+
+    &:hover,
+    &:focus {
+      color: var(--color-grey-light-1);
+      background-color: var(--color-primary-dark);
+    }
+  }
+
+  .btn-secondary {
+    font-size: 1.5rem;
+    background-color: var(--color-grey-light-3);
+
+    &:hover,
+    &:focus {
+      color: var(--color-grey-light-1);
+      background-color: var(--color-grey-dark-1);
     }
   }
 
