@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ua.com.andromeda.film.dto.FilmManagingDto;
 import ua.com.andromeda.film.dto.NewFilmDto;
 import ua.com.andromeda.film.dto.PosterDto;
 
@@ -27,6 +28,11 @@ public class FilmController {
         return ResponseEntity.ok(foundedFilm);
     }
 
+    @GetMapping("/manage")
+    public ResponseEntity<List<FilmManagingDto>> findAllFilmsToManage() {
+        List<FilmManagingDto> films = filmService.findAllManaging();
+        return ResponseEntity.ok(films);
+    }
 
     @PostMapping
     public ResponseEntity<Void> save(@Valid @RequestBody NewFilmDto newFilmDto) {

@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ua.com.andromeda.film.dto.FilmManagingDto;
 import ua.com.andromeda.film.dto.NewFilmDto;
 import ua.com.andromeda.film.dto.PosterDto;
 import ua.com.andromeda.film.exception.FilmNotFoundException;
@@ -17,6 +18,17 @@ public class FilmService {
     private final FilmRepository filmRepository;
     private final FilmMapper filmMapper;
 
+    public Film findById(String id) {
+        UUID uuid = UUID.fromString(id);
+        return filmRepository
+                .findById(uuid)
+                .orElseThrow(() -> new FilmNotFoundException(uuid));
+    }
+
+    public List<FilmManagingDto> findAllManaging() {
+        return filmRepository.findAllManagingDtos();
+    }
+
     public List<PosterDto> getPoster() {
         List<Film> enabledFilms = filmRepository.findAllByEnabled(true);
         return enabledFilms
@@ -29,12 +41,5 @@ public class FilmService {
     public void save(@Valid NewFilmDto newFilmDto) {
         Film film = filmMapper.toFilm(newFilmDto);
         filmRepository.save(film);
-    }
-
-    public Film findById(String id) {
-        UUID uuid = UUID.fromString(id);
-        return filmRepository
-                .findById(uuid)
-                .orElseThrow(() -> new FilmNotFoundException(uuid));
     }
 }
