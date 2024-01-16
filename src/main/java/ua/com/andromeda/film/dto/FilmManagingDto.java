@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Getter
@@ -16,4 +17,6 @@ public class FilmManagingDto {
     private String title;
     private boolean enabled;
     private String posterUrl;
+    private LocalDate startReleaseAt;
+    private LocalDate endReleaseAt;
 }

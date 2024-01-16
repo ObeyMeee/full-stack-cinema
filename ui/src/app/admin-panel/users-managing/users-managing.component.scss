@@ -1,70 +1,6 @@
 @import "../../../custom-bootstrap";
 
 :host ::ng-deep {
-
-  // DATATABLE
-  .p-datatable-table {
-    min-height: 40rem;
-
-    & .p-datatable-thead {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--color-grey-light-3);
-      text-transform: uppercase;
-      letter-spacing: 2px;
-
-      & > tr > th {
-        padding: 1.5rem;
-
-        & .p-column-filter-row .p-inputtext:focus {
-          border-color: var(--color-primary);
-          box-shadow: 0 0 1rem rgba(var(--color-primary-rgb), .2);
-        }
-      }
-    }
-
-    & .p-datatable-tbody {
-      font-size: 1.4rem;
-      color: var(--color-grey-light-1);
-
-      & > tr {
-        border-color: var(--color-grey-light-3);
-
-        &:nth-child(2n) {
-          background: var(--color-grey-dark-2);
-        }
-
-        &:hover {
-          background: var(--color-grey-dark-1);
-        }
-
-        & > td {
-          padding: 1.5rem;
-          max-width: 20rem;
-        }
-      }
-    }
-
-  }
-
-  .btn-delete,
-  .btn-edit {
-    border-radius: 10rem;
-    transition: all .3s;
-
-    &:hover {
-      transform: translateY(-2px);
-    }
-
-    &:active {
-      transform: translateY(-1px);
-    }
-
-    & span {
-      font-size: 1.5rem;
-    }
-  }
-
   // CONFIRM DIALOG
   .p-component-overlay {
     backdrop-filter: blur(3px) brightness(50%);
@@ -169,5 +105,5 @@
 }
 
 .section-users {
-  padding: 3rem 10rem;
+  padding: var(--padding-admin-panel-table);
 }

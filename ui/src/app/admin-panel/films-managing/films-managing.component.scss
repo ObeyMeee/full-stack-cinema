@@ -1,0 +1,31 @@
+:host ::ng-deep {
+  .p-datatable-table .p-datatable-tbody > tr > td {
+    text-align: center;
+    max-width: 100%;
+  }
+}
+
+.section-films {
+  padding: var(--padding-admin-panel-table);
+}
+
+.film {
+  &__title {
+    font-size: 2.2rem;
+  }
+
+  &__poster {
+    display: block;
+    min-width: 10rem;
+    max-width: 10rem;
+    min-height: 13.5rem;
+    max-height: 13.5rem;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  &__start-release,
+  &__end-release {
+    font-size: 1.6rem;
+  }
+}

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 
 @Component({
@@ -6,7 +6,7 @@ import { MenuItem } from 'primeng/api';
   templateUrl: './admin-panel.component.html',
   styleUrls: ['./admin-panel.component.scss'],
 })
-export class AdminPanelComponent {
+export class AdminPanelComponent implements OnInit {
   items: MenuItem[] | undefined;
 
   ngOnInit() {

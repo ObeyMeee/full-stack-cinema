@@ -7,6 +7,7 @@ import { RequestStatusService } from '../pending/request-status.service';
 import { Session } from '../../admin-panel/new-film/session.model';
 import { CrewMember } from '../../admin-panel/new-film/services/crew.service';
 import { NewFilmDto } from '../../admin-panel/new-film/new-film.dto';
+import { FilmManagingDto } from '../../admin-panel/films-managing/film-managing.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -31,6 +32,14 @@ export class FilmService extends BaseService {
     const url = `${this.filmsUrl}/${id}/sessions`;
     const request = this.http.get<SessionDto[]>(url);
     return this.requestStatusService.handleRequestWithStatus<SessionDto[]>(
+      request
+    );
+  }
+
+  getManagedFilms() {
+    const url = `${this.filmsUrl}/manage`;
+    const request = this.http.get<FilmManagingDto[]>(url);
+    return this.requestStatusService.handleRequestWithStatus<FilmManagingDto[]>(
       request
     );
   }

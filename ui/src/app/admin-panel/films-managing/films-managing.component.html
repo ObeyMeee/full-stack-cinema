@@ -1,1 +1,126 @@
-<p>films works!</p>
+<div class="position-relative" *ngIf="(filmsPage$?.status | async) === Status.LOADING">
+  <div class="loading-container">
+    <app-loading [status$]="filmsPage$.status"
+                 collection="films">
+    </app-loading>
+  </div>
+</div>
+
+<section class="section-films">
+  <h2 class="heading-2 mb-4">Films</h2>
+
+  <ng-container *ngIf="(filmsPage$.data | async) as films">
+    <p-table #filmsTable
+             [value]="films"
+             dataKey="film.id"
+             [scrollable]="true"
+             scrollHeight="60rem"
+             [paginator]="true"
+             [rows]="10"
+             [showCurrentPageReport]="true"
+             [rowsPerPageOptions]="[5, 10, 15]"
+             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} films"
+             [globalFilterFields]="['title']"
+             [filterDelay]="100"
+
+    >
+      <ng-template pTemplate="caption">
+        <div class="flex">
+          <span class="p-input-icon-left ml-auto">
+                <i class="pi pi-search"></i>
+                <input pInputText
+                       type="text"
+                       (input)="applyFilterGlobal($event, 'contains')"
+                       placeholder="Search keyword" />
+          </span>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th scope="col">
+            <span>Poster</span>
+          </th>
+          <th scope="col" pSortableColumn="title">
+            <span>Title</span>
+            <p-sortIcon field="title"></p-sortIcon>
+          </th>
+          <th scope="col" pSortableColumn="start-release">
+            <span>Start Release</span>
+            <p-sortIcon field="start-release"></p-sortIcon>
+          </th>
+          <th scope="col" pSortableColumn="end-release">
+            <span>End Release</span>
+            <p-sortIcon field="end-release"></p-sortIcon>
+          </th>
+          <th scope="col">
+            <span>Enabled</span>
+          </th>
+          <th scope="col">
+            <span>Actions</span>
+          </th>
+        </tr>
+        <tr>
+          <th colspan="4"></th>
+          <th>
+            <p-columnFilter type="boolean" field="enabled"></p-columnFilter>
+          </th>
+          <th></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-film>
+        <tr>
+          <td>
+            <img [src]="film.posterUrl"
+                 class="film__poster"
+                 [alt]="film.title"
+            >
+          </td>
+          <td>
+            <h1 class="film__title heading-1">{{ film.title }}</h1>
+          </td>
+          <td>
+            <span class="film__start-release">{{ film.startReleaseAt | date:'mediumDate' }}</span>
+          </td>
+          <td>
+            <span class="film__end-release">{{ film.endReleaseAt | date:'mediumDate' }}</span>
+          </td>
+          <td>
+
+            <p-button
+              icon="pi pi-{{film.enabled ? 'check' : 'times'}}"
+              styleClass="p-button-outlined
+                          p-button-{{film.enabled ? 'success text-green-500' : 'danger text-red-500'}}
+                          btn-action"
+              (click)="toggleState(film.id)"
+              pTooltip="Film is {{film.enabled ? 'active' : 'disabled'}}"
+              tooltipPosition="top">
+            </p-button>
+          </td>
+          <td>
+            <button pButton
+                    pRipple
+                    icon="pi pi-pencil"
+                    class="p-button-success btn-action me-2"
+                    (click)="edit(film.id)"
+                    pTooltip="Edit film"
+                    tooltipPosition="top">
+            </button>
+            <button pButton
+                    pRipple
+                    icon="pi pi-trash"
+                    class="p-button-danger btn-action"
+                    (click)="delete(film.id)"
+                    pTooltip="Delete film"
+                    tooltipPosition="top">
+            </button>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="6">No films found.</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </ng-container>
+</section>

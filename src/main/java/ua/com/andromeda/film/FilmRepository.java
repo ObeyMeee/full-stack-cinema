@@ -19,7 +19,9 @@ public interface FilmRepository extends CrudRepository<Film, UUID> {
                 f.id,
                 f.title,
                 f.enabled,
-                f.media.poster
+                f.media.poster,
+                f.startReleaseAt,
+                f.endReleaseAt
             )
              from Film f
             """

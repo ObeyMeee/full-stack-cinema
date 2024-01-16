@@ -38,7 +38,6 @@ export class FilmInfoComponent implements OnInit, OnDestroy {
     this.film$.data.subscribe(film => {
       const crew = film.crew;
       this.actors = this.filter(crew, 'ACTOR');
-      console.log(crew);
       this.directors = this.filter(crew, 'DIRECTOR');
       this.screenwriters = this.filter(crew, 'SCREENWRITER');
     });

@@ -124,14 +124,18 @@
             <button pButton
                     pRipple
                     icon="pi pi-pencil"
-                    class="p-button-success btn-edit me-2"
-                    (click)="edit(user)">
+                    class="p-button-success btn-action me-2"
+                    (click)="edit(user)"
+                    pTooltip="Edit user"
+                    tooltipPosition="top">
             </button>
             <button pButton
                     pRipple
                     icon="pi pi-trash"
-                    class="p-button-danger btn-delete"
-                    (click)="delete(user)">
+                    class="p-button-danger btn-action"
+                    (click)="delete(user)"
+                    pTooltip="Delete user"
+                    tooltipPosition="top">
             </button>
           </td>
         </tr>
