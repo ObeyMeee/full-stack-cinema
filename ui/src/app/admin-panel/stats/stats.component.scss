@@ -1,0 +1,23 @@
+.section-stats {
+  padding: var(--padding-admin-panel-table);
+}
+
+.chart {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 4rem;
+
+  &__income--by-film {
+    grid-column: span 2;
+  }
+}
+
+// Get the height of the line chart canvas
+$lineChartHeight: 30rem;
+
+// Apply the same height to all bar chart canvases
+:host ::ng-deep {
+  .chart__income p-chart canvas {
+    height: #{$lineChartHeight};
+  }
+}

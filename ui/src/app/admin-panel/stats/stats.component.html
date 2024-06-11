@@ -1,0 +1,16 @@
+<section class="section-stats">
+  <div class="chart">
+    <div class="chart__income chart__income--last-time">
+      <h2 class="heading-2">Last time incomes</h2>
+      <p-chart type="line" [data]="lastTimeTotalIncomeData" [options]="lastTimeTotalIncomeOptions"></p-chart>
+    </div>
+    <div class="chart__income chart__income--by-weekday">
+      <h2 class="heading-2">Incomes by weekday</h2>
+      <p-chart type="bar" [data]="weekdayTotalIncomeData" [options]="weekdayTotalIncomeOptions"></p-chart>
+    </div>
+    <div class="chart__income chart__income--by-film">
+      <h2 class="heading-2">Film sales rating</h2>
+      <p-chart type="bar" [data]="filmTotalIncomeData" [options]="filmTotalIncomeOptions"></p-chart>
+    </div>
+  </div>
+</section>
