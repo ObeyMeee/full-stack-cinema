@@ -25,6 +25,7 @@ public class Hall {
     private HallType type;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "hall")
+    @ToString.Exclude
     private List<Row> rows;
 
     @OneToMany(mappedBy = "hall")

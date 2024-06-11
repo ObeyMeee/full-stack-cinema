@@ -12,6 +12,7 @@ import ua.com.andromeda.common.QRCodeGenerator;
 import ua.com.andromeda.purchase.dto.OrderNumberResponse;
 import ua.com.andromeda.purchase.dto.PurchaseDto;
 import ua.com.andromeda.purchase.dto.PurchaseProfileDto;
+import ua.com.andromeda.purchase.dto.PurchaseStatsDto;
 import ua.com.andromeda.session.Session;
 import ua.com.andromeda.session.SessionRepository;
 import ua.com.andromeda.session.exception.SessionNotFoundException;
@@ -21,6 +22,7 @@ import ua.com.andromeda.user.exception.UserNotAuthenticatedException;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.nio.file.Files;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -41,6 +43,14 @@ public class PurchaseService {
         }
         return purchaseRepository.findAllByUsernameOrderByDealtAtDesc(username)
                 .map(PurchaseProfileDto::new)
+                .toList();
+    }
+
+    public Collection<PurchaseStatsDto> findAll() {
+        return purchaseRepository
+                .findAll()
+                .stream()
+                .map(PurchaseStatsDto::new)
                 .toList();
     }
 

@@ -53,29 +53,12 @@
     <p>Here you can connect your social networks to account and change password</p>
 
     <div class="info-block">
-      
+
       <app-profile-editor [value]="'*'.repeat(10)"
                           labelIcon="pi pi-lock"
                           key="password"
                           labelValue="Password">
       </app-profile-editor>
-
-      <div class="authentication__social-network-container">
-        <div class="authentication__google">
-          <i class="google-icon">Google</i>
-          <button class="btn authentication__btn">Connect</button>
-        </div>
-
-        <div class="social-login__facebook">
-          <i class="google-icon">Facebook</i>
-          <button class="btn authentication__btn">Connect</button>
-        </div>
-
-        <div class="social-login__apple">
-          <i class="google-icon">Apple</i>
-          <button class="btn authentication__btn">Connect</button>
-        </div>
-      </div>
     </div>
   </div>
 </section>

@@ -80,6 +80,8 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getStorage, provideStorage } from '@angular/fire/storage';
 import { DataViewModule } from 'primeng/dataview';
+import { StatsComponent } from './admin-panel/stats/stats.component';
+import { ChartModule } from 'primeng/chart';
 
 const routes: Route[] = [
   { path: '', component: PosterComponent, pathMatch: 'full' },
@@ -111,7 +113,8 @@ const routes: Route[] = [
     children: [
       { path: 'users', component: UsersManagingComponent },
       { path: 'films', component: FilmsManagingComponent },
-      { path: 'films/new', component: NewFilmComponent }
+      { path: 'films/new', component: NewFilmComponent },
+      { path: 'stats', component: StatsComponent }
     ]
   },
   { path: '**', component: PosterComponent }
@@ -154,50 +157,52 @@ const oktaAuth = new OktaAuth(environment.okta);
     RangePipe,
     PasswordErrorMessagesComponent,
     FilmsManagingComponent,
-    NewFilmComponent
+    NewFilmComponent,
+    StatsComponent
   ],
-    imports: [
-        BrowserModule,
-        BrowserAnimationsModule,
-        CarouselModule,
-        HttpClientModule,
-        RouterModule.forRoot(routes),
-        OktaAuthModule.forRoot({ oktaAuth }),
-        TooltipModule,
-        FormsModule,
-        PasswordModule,
-        DividerModule,
-        MessagesModule,
-        ProgressSpinnerModule,
-        ToastModule,
-        FieldsetModule,
-        RatingModule,
-        MessageModule,
-        PaginatorModule,
-        InputTextareaModule,
-        ButtonModule,
-        DialogModule,
-        NgOptimizedImage,
-        TableModule,
-        RippleModule,
-        StyleClassModule,
-        InputTextModule,
-        ConfirmDialogModule,
-        TagModule,
-        KeyFilterModule,
-        NgxIntlTelInputModule,
-        SkeletonModule,
-        SocialLoginModule,
-        CalendarModule,
-        TabMenuModule,
-        ReactiveFormsModule,
-        StepsModule,
-        AutoCompleteModule,
-        FileUploadModule,
-        provideFirebaseApp(() => initializeApp(environment.firebase)),
-        provideStorage(() => getStorage()),
-        DataViewModule
-    ],
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    CarouselModule,
+    HttpClientModule,
+    RouterModule.forRoot(routes),
+    OktaAuthModule.forRoot({ oktaAuth }),
+    TooltipModule,
+    FormsModule,
+    PasswordModule,
+    DividerModule,
+    MessagesModule,
+    ProgressSpinnerModule,
+    ToastModule,
+    FieldsetModule,
+    RatingModule,
+    MessageModule,
+    PaginatorModule,
+    InputTextareaModule,
+    ButtonModule,
+    DialogModule,
+    NgOptimizedImage,
+    TableModule,
+    RippleModule,
+    StyleClassModule,
+    InputTextModule,
+    ConfirmDialogModule,
+    TagModule,
+    KeyFilterModule,
+    NgxIntlTelInputModule,
+    SkeletonModule,
+    SocialLoginModule,
+    CalendarModule,
+    TabMenuModule,
+    ReactiveFormsModule,
+    StepsModule,
+    AutoCompleteModule,
+    FileUploadModule,
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideStorage(() => getStorage()),
+    DataViewModule,
+    ChartModule
+  ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,

@@ -6,6 +6,7 @@ import { FilmManagingDto } from './film-managing.dto';
 import { Table } from 'primeng/table';
 import { ConfirmationService } from 'primeng/api';
 import { ToastService } from '../../shared/services/toast.service';
+import { FirebaseStorageService } from '../../shared/services/firebase-storage.service';
 
 @Component({
   selector: 'app-films-managing',
@@ -25,8 +26,9 @@ export class FilmsManagingComponent implements OnInit {
 
   constructor(
     private filmService: FilmService,
-    private confirmationService: ConfirmationService,
-    private toastService: ToastService
+    private firebaseService: FirebaseStorageService,
+    private toastService: ToastService,
+    private confirmationService: ConfirmationService
   ) {
   }
 
@@ -54,6 +56,14 @@ export class FilmsManagingComponent implements OnInit {
           {
             next: () => {
               const indexOfDeletedFilm = this.filmsCached.indexOf(film);
+              this.firebaseService
+                .delete(film.posterUrl)
+                .subscribe({
+                  error: (error => {
+                    console.error(error);
+                    this.toastService.showToast(true, 'Error occurred while deleting poster from storage', 'error');
+                  })
+                });
               this.filmsCached.splice(indexOfDeletedFilm, 1);
               this.toastService.showToast(true, `Film ${title} has been deleted`, 'info');
             },

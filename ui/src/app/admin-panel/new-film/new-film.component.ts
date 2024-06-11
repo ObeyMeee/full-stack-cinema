@@ -17,7 +17,7 @@ import { Observable } from 'rxjs';
 import { CountryResponse, CountryService } from './services/country.service';
 import { FilmService } from '../../shared/services/film.service';
 import { NewFilmDto } from './new-film.dto';
-import { FirebaseStorageService } from './services/firebase-storage-service';
+import { FirebaseStorageService } from '../../shared/services/firebase-storage.service';
 import { ToastService } from '../../shared/services/toast.service';
 
 type FormControlArray = 'genres' | 'directors' | 'countries' | 'screenwriters' | 'actors' | 'sessions';

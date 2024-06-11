@@ -1,16 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { PurchaseDto } from './purchase.dto';
-import { BaseService } from '../../shared/services/base.service';
+import { PurchaseDto } from '../../user/operations-container/purchase.dto';
+import { BaseService } from './base.service';
 import { isFuture } from 'date-fns';
 import { map } from 'rxjs';
-import { RequestStatusService } from '../../shared/pending/request-status.service';
-import { Pending } from '../../shared/pending/pending.interface';
+import { RequestStatusService } from '../pending/request-status.service';
+import { Pending } from '../pending/pending.interface';
+import { PurchaseStatsDto } from '../../admin-panel/stats/purchase-stats.dto';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PurchaseService extends BaseService {
+  private BASE_URL = `${this.baseUrl}purchases`;
   private _purchaseDtos$!: Pending<PurchaseDto[]>;
 
   constructor(
@@ -20,8 +22,13 @@ export class PurchaseService extends BaseService {
     super(requestStatusService);
   }
 
-  getAllActive(): Pending<PurchaseDto[]> {
-    const activePurchases$ = this.getAll().data.pipe(
+  getAll(): Pending<PurchaseStatsDto[]> {
+    const request = this.http.get<PurchaseStatsDto[]>(this.BASE_URL);
+    return this.requestStatusService.handleRequestWithStatus<PurchaseStatsDto[]>(request)
+  }
+
+  getAllActiveByUser(): Pending<PurchaseDto[]> {
+    const activePurchases$ = this.getAllByUser().data.pipe(
       map((purchases) =>
         this.shallowCopyData(purchases).filter((p) =>
           isFuture(p.sessionStartAt),
@@ -31,7 +38,7 @@ export class PurchaseService extends BaseService {
     return { data: activePurchases$, status: this._purchaseDtos$.status };
   }
 
-  getAll() {
+  getAllByUser() {
     if (!this._purchaseDtos$) {
       this.sendRequest();
     }
@@ -48,7 +55,7 @@ export class PurchaseService extends BaseService {
   }
 
   private sendRequest() {
-    const url = `${this.baseUrl}purchases/user`;
+    const url = `${this.BASE_URL}/user`;
     const request = this.http.get<PurchaseDto[]>(url);
     this._purchaseDtos$ =
       this.requestStatusService.handleRequestWithStatus<PurchaseDto[]>(request);

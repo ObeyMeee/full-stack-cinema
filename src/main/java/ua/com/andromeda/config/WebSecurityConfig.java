@@ -27,6 +27,7 @@ public class WebSecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/users/new").permitAll()
                 .requestMatchers(HttpMethod.DELETE, "/users/{userId}").hasAuthority(ADMIN)
                 .requestMatchers(HttpMethod.PUT, "/users").hasAuthority(ADMIN)
+                .requestMatchers(HttpMethod.GET, "/purchases").hasAuthority(ADMIN)
                 .requestMatchers(HttpMethod.GET, "/films/manage").hasAuthority(ADMIN)
                 .requestMatchers(HttpMethod.PATCH, "/films/id").hasAuthority(ADMIN)
                 .requestMatchers(HttpMethod.DELETE, "/films/id").hasAuthority(ADMIN)

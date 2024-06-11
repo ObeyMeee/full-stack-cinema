@@ -1,18 +1,17 @@
 import { Injectable } from '@angular/core';
-import { getDownloadURL, ref, uploadBytesResumable } from '@angular/fire/storage';
+import { deleteObject, getDownloadURL, ref, Storage, uploadBytesResumable } from '@angular/fire/storage';
 import { Observable, Observer } from 'rxjs';
-import { AngularFireStorage } from '@angular/fire/compat/storage';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FirebaseStorageService {
-  constructor(private fireStorage: AngularFireStorage) {
+  constructor(private storage: Storage) {
   }
 
   uploadFile(file: File) {
     return new Observable((observer: Observer<string>) => {
-      const storageRef = ref(this.fireStorage.storage, `posters/${file.name}`);
+      const storageRef = ref(this.storage, `posters/${file.name}`);
       const uploadTask = uploadBytesResumable(storageRef, file);
 
       uploadTask.on(
@@ -35,6 +34,14 @@ export class FirebaseStorageService {
   }
 
   delete(downloadUrl: string) {
-    return this.fireStorage.storage.refFromURL(downloadUrl).delete();
+    const storageRef = ref(this.storage, downloadUrl);
+    return new Observable((observer: Observer<void>) => {
+      deleteObject(storageRef)
+        .then(() => {
+          observer.next();
+          observer.complete();
+        })
+        .catch(observer.error);
+    });
   }
 }

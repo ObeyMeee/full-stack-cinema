@@ -18,10 +18,8 @@ import java.util.Map;
 
 @Component
 public class QRCodeGenerator {
-
     private static final int WHITE = 0x000000;
     private static final int BLACK = 0xFFFFFF;
-
 
     public List<ByteArrayOutputStream> generateQRCodesBytesArray(List<Ticket> tickets, int width, int height) {
         return tickets.stream()

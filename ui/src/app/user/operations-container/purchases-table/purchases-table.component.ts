@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { PurchaseDto } from '../purchase.dto';
-import { PurchaseService } from '../purchase.service';
+import { PurchaseService } from '../../../shared/services/purchase.service';
 import { Pending } from '../../../shared/pending/pending.interface';
 
 @Component({
@@ -19,8 +19,8 @@ export class PurchasesTableComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (changes['onlyActiveTickets']) {
       this.purchases$ = this.onlyActiveTickets
-        ? this.purchaseService.getAllActive()
-        : this.purchaseService.getAll();
+        ? this.purchaseService.getAllActiveByUser()
+        : this.purchaseService.getAllByUser();
     }
   }
 }

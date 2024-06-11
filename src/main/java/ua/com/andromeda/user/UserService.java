@@ -63,14 +63,14 @@ public class UserService {
     }
 
     public void update(Map<String, Object> newFields, Principal principal) {
-        User user = findByEmail(principal);
+        User user = findByLogin(principal);
         UserProfile profile = user.getProfile();
         profile.putAll(newFields);
         user.update(true);
         LOGGER.info("User {} is updated", profile.getLogin());
     }
 
-    private User findByEmail(Principal principal) {
+    public User findByLogin(Principal principal) {
         String login = principal.getName();
         return oktaClient.listUsers(null, null, "profile.login eq \"" + login + "\"", null, null)
                 .stream()

@@ -26,6 +26,11 @@ export class AdminPanelComponent implements OnInit {
         label: 'New film',
         icon: 'pi pi-plus',
         routerLink: ['films', 'new']
+      },
+      {
+        label: 'Stats',
+        icon: 'pi pi-chart-line',
+        routerLink: ['stats']
       }
     ];
   }

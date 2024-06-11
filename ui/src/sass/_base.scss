@@ -3,6 +3,11 @@
   --color-primary-rgb: 255, 0, 27;
   --color-primary-light: #ff3355;
   --color-primary-dark: #cc0011 ;
+  
+  --color-primary-transparent-1: rgb(var(--color-primary-rgb), .8);
+  --color-primary-transparent-2: rgb(var(--color-primary-rgb), .6);
+  --color-primary-transparent-3: rgb(var(--color-primary-rgb), .4);
+  --color-primary-transparent-4: rgb(var(--color-primary-rgb), .2);
 
   --color-black: #0d0004;
 
